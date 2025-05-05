@@ -1,13 +1,8 @@
 @import "bootstrap";
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: arial;
-}
 
-.container_main {
+
+.main-container {
     width: 100%;
     max-width: 1640px;
     margin: auto;
@@ -16,10 +11,6 @@
 
 body {
     color: white;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(135deg,
             rgb(15, 0, 0) 40%,
             /* Nero meno invasivo in alto a sinistra */

@@ -1,7 +1,6 @@
 .jumbotron {
-    background: transparent;
-
-    margin: 0;
+    width: 100%;
+    display: flex;
 
     .gallery-slider {
         display: flex;
@@ -36,7 +35,7 @@
         width: 100%;
         height: 100%;
         transform: translateX(-50%);
-        object-fit: cover;
+        object-fit: cover
     }
 
     .gallery-slider__slide.active {
@@ -49,6 +48,7 @@
         position: absolute;
         top: 0;
         object-fit: cover;
+
         width: 183px;
         height: 564px;
         opacity: 1;
@@ -87,27 +87,18 @@
     }
 }
 
-@media (max-width: 767px) {
-    .gallery-slider__slide {
-        display: none;
-    }
-
-    .gallery-slider__slide:nth-child(-n+2) {
-        display: block;
-    }
+.mobile-slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
 }
 
-@media (min-width: 768px) {
-    .gallery-slider__wrapper {
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .gallery-slider__slide {
-        display: block;
-    }
-
-    .gallery-slider__slide:nth-child(-n+3) {
-        display: block;
-    }
+.mobile-slider__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
 }

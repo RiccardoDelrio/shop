@@ -4,9 +4,11 @@ import Navbar from '../components/Navbar/Navbar'
 function DefaultLayout() {
     return (
         <>
+            <div className="main-container">
+                <Navbar />
+                <Outlet />
 
-            <Navbar />
-            <Outlet />
+            </div>
 
 
         </>
