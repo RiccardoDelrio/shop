@@ -1,3 +1,5 @@
+@import "bootstrap";
+
 * {
     margin: 0;
     padding: 0;
@@ -5,11 +7,48 @@
     font-family: arial;
 }
 
+.container_main {
+    width: 100%;
+    max-width: 1640px;
+    margin: auto;
+    padding: 20px;
+}
+
 body {
-    background-color: #343434;
+    color: white;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,
+            rgb(15, 0, 0) 40%,
+            /* Nero meno invasivo in alto a sinistra */
+            rgb(65, 1, 1) 100%
+            /* Oro semi-trasparente in basso a destra */
+        );
+    background-size: 300% 300%;
+    /* Dimensione più ampia per un effetto morbido */
+    animation: wave 15s infinite ease-in-out;
+    /* Animazione più lenta */
+}
+
+@keyframes wave {
+    0% {
+        background-position: 0% 50%;
+        /* Punto di partenza */
+    }
+
+    50% {
+        background-position: 100% 50%;
+        /* Movimento laterale fluido */
+    }
+
+    100% {
+        background-position: 0% 50%;
+        /* Ritorno al punto di partenza */
+    }
 }
 
 li {
     list-style: none;
-
 }

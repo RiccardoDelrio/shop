@@ -41,7 +41,7 @@ const Jumbotron = () => {
         setActiveSlide(id);
     };
     return (
-        <div className="jumbotron" style={{ width: '100%', overflow: 'hidden' }}>
+        <div className="jumbotron">
             <div className="gallery-slider">
                 <div className="gallery-slider__wrapper">
                     {slidesData.map((slide) => (

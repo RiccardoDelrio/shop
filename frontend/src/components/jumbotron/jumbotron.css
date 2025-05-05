@@ -1,4 +1,7 @@
 .jumbotron {
+    background: transparent;
+
+    margin: 0;
 
     .gallery-slider {
         display: flex;
