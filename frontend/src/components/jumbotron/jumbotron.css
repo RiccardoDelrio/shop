@@ -1,7 +1,110 @@
 .jumbotron {
-    h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #f80000;
+
+    .gallery-slider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gallery-slider__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1390px;
+        gap: 40px;
+        overflow: hidden;
+    }
+
+    .gallery-slider__slide {
+        position: relative;
+        overflow: hidden;
+        width: 183px;
+        height: 564px;
+        max-width: 498px;
+        filter: grayscale(100%);
+        transition: width 1.2s cubic-bezier(1, 0.3, 0.5, 1), filter 0.8s ease-in-out;
+        cursor: pointer;
+    }
+
+    .gallery-slider__image {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(-50%);
+        object-fit: cover;
+    }
+
+    .gallery-slider__slide.active {
+        width: 498px;
+        filter: none;
+    }
+
+    .gallery-slider__img-prev,
+    .gallery-slider__img-next {
+        position: absolute;
+        top: 0;
+        object-fit: cover;
+        width: 183px;
+        height: 564px;
+        opacity: 1;
+        visibility: visible;
+        transition: width 1.2s cubic-bezier(1, 0.3, 0.5, 1), opacity 1.2s ease-in-out,
+            visibility 1.2s ease-in-out;
+    }
+
+    .gallery-slider__slide.active .gallery-slider__img-prev {
+        width: 498px;
+        z-index: 1;
+        animation: zoom-img 1.2s ease-in-out 0.5s 1 forwards;
+    }
+
+    .gallery-slider__slide.active .gallery-slider__img-next {
+        width: 498px;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    @keyframes zoom-img {
+        0% {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        50% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1.4);
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .gallery-slider__slide {
+        display: none;
+    }
+
+    .gallery-slider__slide:nth-child(-n+2) {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) {
+    .gallery-slider__wrapper {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .gallery-slider__slide {
+        display: block;
+    }
+
+    .gallery-slider__slide:nth-child(-n+3) {
+        display: block;
     }
 }

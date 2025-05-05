@@ -1,0 +1,5 @@
+* {
+    background: linear-gradient(135deg, #1a1a1a 30%, #b8860b 100%);
+    color: #ffffff;
+    /* Ensure text is readable on the new background */
+}
