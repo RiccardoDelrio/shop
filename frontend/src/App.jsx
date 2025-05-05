@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import { useState } from 'react'
+import Navbar from './components/Navbar/Navbar'
+
 
 function App() {
 
@@ -17,6 +20,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <Navbar />
     </>
   )
 }

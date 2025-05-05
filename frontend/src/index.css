@@ -1,5 +1,15 @@
 * {
-    background: linear-gradient(135deg, #1a1a1a 30%, #b8860b 100%);
-    color: #ffffff;
-    /* Ensure text is readable on the new background */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: arial;
+}
+
+body {
+    background-color: #343434;
+}
+
+li {
+    list-style: none;
+
 }

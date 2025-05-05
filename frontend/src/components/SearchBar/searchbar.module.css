@@ -1,0 +1,15 @@
+.searchOpen {
+    padding: .5rem 2rem .5rem 1rem;
+    border: 1px solid grey;
+    border-radius: .7rem;
+
+}
+
+.searchOpen::placeholder {
+    color: rgb(99, 99, 99);
+    font-size: .8rem;
+}
+
+.search {
+    cursor: pointer;
+}
