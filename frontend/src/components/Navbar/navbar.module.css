@@ -1,0 +1,59 @@
+.navbar {
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #000;
+    color: white;
+
+
+}
+
+.rightnav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    color: gold;
+}
+
+ul {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.navlink {
+    color: white;
+    cursor: pointer;
+    position: relative;
+}
+
+.leftnav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+}
+
+.navlink::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: gold;
+    transition: width 0.3s ease;
+}
+
+.navlink:hover::after {
+    width: 100%;
+}
