@@ -33,6 +33,7 @@ body {
     /* Dimensione più ampia per un effetto morbido */
     animation: wave 15s infinite ease-in-out;
     /* Animazione più lenta */
+
 }
 
 @keyframes wave {

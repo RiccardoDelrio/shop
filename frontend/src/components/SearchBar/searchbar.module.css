@@ -1,15 +1,23 @@
 .searchOpen {
-    padding: .5rem 2rem .5rem 1rem;
+    padding: .3rem 2rem .3rem 1rem;
+    max-height: 100%;
     border: 1px solid grey;
-    border-radius: .7rem;
+    border-radius: 2rem;
 
 }
 
 .searchOpen::placeholder {
     color: rgb(99, 99, 99);
-    font-size: .8rem;
+    font-size: .9rem;
 }
 
 .search {
     cursor: pointer;
+    font-size: 1.2rem;
+}
+
+@media screen and (max-width : 768px) {
+    .searchOpen {
+        padding: .2rem 1rem .2rem .5rem;
+    }
 }

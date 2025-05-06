@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './navbar.module.css'
 import SearchBar from '../SearchBar/SearchBar'
 import Cart from '../Cart/Cart'
 
 const Navbar = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen)
+    }
+
     return (
         <div className={styles.navbar}>
-
             {/* Right nav */}
             <div className={styles.rightnav}>
                 <div className={styles.logo}>
                     Logo
                 </div>
-                <ul className={styles.ul}>
+
+                <ul className={`${styles.ul} ${isMenuOpen ? styles.menuOpen : ''}`}>
                     {['Home', 'Prodotti', 'Contatti'].map(navlink => (
                         <li key={navlink} className={styles.navlink}>{navlink}</li>
                     ))}
@@ -23,10 +29,10 @@ const Navbar = () => {
             <div className={styles.leftnav}>
                 <SearchBar />
                 <Cart />
-
+                <div className={styles.hamburgerMenu} onClick={toggleMenu}>
+                    <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+                </div>
             </div>
-
-
         </div>
     )
 }

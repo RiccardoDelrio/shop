@@ -4,8 +4,6 @@
     justify-content: space-between;
     align-items: center;
     color: white;
-
-
 }
 
 .rightnav {
@@ -25,7 +23,7 @@ ul {
     display: flex;
     align-items: center;
     gap: 1rem;
-
+    margin: 0;
 }
 
 .navlink {
@@ -38,7 +36,6 @@ ul {
     display: flex;
     gap: 2rem;
     align-items: center;
-
 }
 
 .navlink::after {
@@ -54,4 +51,69 @@ ul {
 
 .navlink:hover::after {
     width: 100%;
+}
+
+.hamburgerMenu {
+    font-size: 1.4rem;
+    cursor: pointer;
+    z-index: 100;
+}
+
+@media screen and (min-width: 768px) {
+    .hamburgerMenu {
+        display: none;
+    }
+
+    /* Hide the mobile menu on desktop */
+    .ul {
+        display: none !important;
+    }
+
+    /* Show regular navigation on desktop */
+    ul {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        position: relative;
+    }
+
+    /* Hide desktop navigation on mobile */
+    ul {
+        display: none;
+    }
+
+    /* Mobile menu styles */
+    .ul {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 68px;
+        right: -100%;
+        height: 100vh;
+        width: 100%;
+        /* Changed from 250px to 100% */
+        background-color: rgba(0, 0, 0, 0.95);
+        /* Slightly darker background */
+        padding: 6rem 2rem;
+        /* Increased top padding */
+        gap: 2rem;
+        transition: right 0.4s ease;
+        z-index: 999;
+        align-items: center;
+        /* Center items horizontally */
+        justify-content: flex-start;
+        /* Start from top */
+    }
+
+    .menuOpen {
+        right: 0;
+    }
+
+    .navlink {
+        font-size: 1.4rem;
+        /* Slightly larger font */
+    }
 }
