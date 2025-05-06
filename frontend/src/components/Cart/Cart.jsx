@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import styles from './cart.module.css'
 import { Link } from 'react-router'
+import { useGlobal } from '../../contexts/GlobalContext'
 
 const Cart = () => {
+    const { products } = useGlobal()
+    console.log(products);
+
     const [isOpen, setIsOpen] = useState(false)
     const [cartItems, setCartItems] = useState([
         {
