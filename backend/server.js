@@ -34,5 +34,8 @@ http://localhost:3000/api/v1/products?macro_area=top
 index w/ category (slug)
 http://localhost:3000/api/v1/products?category=outerwear
 
+index w/ group_id
+http://localhost:3000/api/v1/products?group_id=2
+
 show
 http://localhost:3000/api/v1/products/francois-overcoat-black  */
