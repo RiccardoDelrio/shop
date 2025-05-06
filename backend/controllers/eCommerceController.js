@@ -1,7 +1,7 @@
 const connection = require('../database/db')
 
 function index(req, res) {
-    const { macro_area, category } = req.query;
+    const { macro_area, category, group_id } = req.query;
 
     let sql = `
         SELECT 
@@ -32,6 +32,11 @@ function index(req, res) {
     if (category) {
         conditions.push('categories.slug = ?');
         params.push(category);
+    }
+
+    if (group_id) { // Add group_id filter
+        conditions.push('products.group_id = ?');
+        params.push(group_id);
     }
 
     if (conditions.length > 0) {
