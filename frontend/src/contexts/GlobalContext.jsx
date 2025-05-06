@@ -5,7 +5,6 @@ const GlobalContext = createContext()
 function GlobalProvider({ children }) {
     const [products, setProducts] = useState([])
     const [cartItems, setCartItems] = useState([])
-    const [macroArea, setMacroArea] = useState('')
     const [top, setTop] = useState([])
     const [bottom, setBottom] = useState([])
     const [accessories, setAccessories] = useState([])

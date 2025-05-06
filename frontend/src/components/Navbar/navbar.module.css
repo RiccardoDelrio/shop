@@ -4,6 +4,16 @@
     justify-content: space-between;
     align-items: center;
     color: white;
+    padding: 1.2rem 0;
+    position: sticky;
+    inset: 0;
+    z-index: 998;
+    background: #000
+        /* linear-gradient(to bottom,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 1) 60%,
+            rgba(0, 0, 0, 0.7) 80%,
+            rgba(0, 0, 0, 0) 100%); */
 }
 
 .rightnav {
@@ -16,6 +26,8 @@
     font-size: 2rem;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-style: italic;
+    display: flex;
+    align-items: center;
 
     img {
         width: 80px;
@@ -65,7 +77,7 @@ ul {
     z-index: 100;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
     .hamburgerMenu {
         display: none;
     }
@@ -79,14 +91,22 @@ ul {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
     .navbar {
         position: relative;
+    }
+
+    h1 {
+        display: none;
     }
 
     /* Hide desktop navigation on mobile */
     ul {
         display: none;
+    }
+
+    input {
+        max-width: 300px;
     }
 
     /* Mobile menu styles */
@@ -126,4 +146,20 @@ ul {
         justify-content: end;
         padding-left: 1.5rem;
     }
+}
+
+h1 {
+    font-family: "Allura", cursive;
+    font-weight: 400;
+    font-style: normal;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(135deg,
+            rgb(252, 230, 134) 15%,
+            /* Brown */
+            rgb(255, 215, 0) 60%);
+    font-size: 4rem;
+    margin: 0;
+
 }

@@ -16,6 +16,7 @@ const Navbar = () => {
             <div className={styles.rightnav}>
                 <div className={styles.logo}>
                     <img src="./img/logo.svg" alt="" />
+                    <h1>Boolean</h1>
                 </div>
 
                 <ul className={`${styles.ul} ${isMenuOpen ? styles.menuOpen : ''}`}>

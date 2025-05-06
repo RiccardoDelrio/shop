@@ -1,4 +1,4 @@
-import Jumbotron from "../components/jumbotron/jumbotron";
+import Jumbotron from "../components/Jumbotron/jumbotron";
 import CategoryCards from "../components/CategoryCards/CategoryCards";
 export default function Home() {
 
