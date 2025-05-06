@@ -1,12 +1,14 @@
 import './footer.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import { NavLink } from 'react-router';
 
 export default function Footer() {
     return (
         <>
+
             <footer className="">
                 <div className="main-container">
+                    <hr />
                     <div className="row justify-content-between align-items-center">
                         {/* Contenitore per le due sezioni di sinistra */}
                         <div className="col-12  col-md-5 mb-4  ">
@@ -16,13 +18,13 @@ export default function Footer() {
                                     <h5 className="text-center">Information</h5>
                                     <ul className="nav flex-column text-center">
                                         <li className="nav-item mb-2">
-                                            <a className="nav-link p-0 text-muted" href="#">Home</a>
+                                            < NavLink to="/" className="nav-link p-0 text-muted">Home</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            <a className="nav-link p-0 text-muted" href="#">About</a>
+                                            < NavLink to="/" className="nav-link p-0 text-muted">About</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            <a className="nav-link p-0 text-muted" href="#">Services</a>
+                                            < NavLink to="/" className="nav-link p-0 text-muted">Services</NavLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -32,13 +34,13 @@ export default function Footer() {
                                     <h5 className="text-center">Products</h5>
                                     <ul className="nav flex-column">
                                         <li className="nav-item mb-2">
-                                            <a className="nav-link p-0 text-muted" href="#">Contact</a>
+
                                         </li>
                                         <li className="nav-item mb-2">
-                                            <a className="nav-link p-0 text-muted" href="#">Blog</a>
+                                            < NavLink to="/" className="nav-link p-0 text-muted">Contact</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            <a className="nav-link p-0 text-muted" href="#">FAQ</a>
+                                            < NavLink to="/" className="nav-link p-0 text-muted">Email</NavLink>
                                         </li>
                                     </ul>
                                 </div>
