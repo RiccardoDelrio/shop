@@ -24,3 +24,15 @@ app.use(serverError);
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
+
+/* index
+http://localhost:3000/api/v1/products
+
+index w/ macro_area (ONLY top, bottom or accessories)
+http://localhost:3000/api/v1/products?macro_area=top
+
+index w/ category (slug)
+http://localhost:3000/api/v1/products?category=outerwear
+
+show
+http://localhost:3000/api/v1/products/francois-overcoat-black  */
