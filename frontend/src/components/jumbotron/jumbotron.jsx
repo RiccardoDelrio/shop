@@ -49,17 +49,16 @@ const Jumbotron = () => {
     };
 
     return (
-        <div className="main-container">
+        <div className="">
 
             <div className="jumbotron row  ">
                 {/* Desktop Gallery */}
-                <div className="gallery-slider col d-none d-sm-block">
+                <div className="gallery-slider col d-none d-lg-block">
                     <div className="gallery-slider__wrapper">
                         {slidesData.map((slide) => (
                             <div
                                 key={slide.id}
                                 className={`gallery-slider__slide ${slide.id === activeSlide ? "active" : ""}`}
-                                onClick={() => handleSlideClick(slide.id)}
                             >
                                 <div className="gallery-slider__image">
                                     <img
@@ -79,12 +78,11 @@ const Jumbotron = () => {
                 </div>
 
                 {/* Mobile Slider */}
-                <div className="mobile-slider d-sm-none ">
-                    <img
-                        src={slidesData[activeSlide - 1].imgNext}
-                        alt={slidesData[activeSlide - 1].alt}
-                        className="mobile-slider__image"
-                    />
+                <div className="mobile-jumbo d-lg-none  ">
+                    <img src="./img/jumbo-mobile.jpeg" />
+                    <h1 className='text-center'>Boolean</h1>
+
+
                 </div>
             </div>
         </div >

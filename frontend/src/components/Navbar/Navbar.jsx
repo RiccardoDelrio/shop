@@ -15,7 +15,7 @@ const Navbar = () => {
             {/* Right nav */}
             <div className={styles.rightnav}>
                 <div className={styles.logo}>
-                    Logo
+                    <img src="./img/logo.svg" alt="" />
                 </div>
 
                 <ul className={`${styles.ul} ${isMenuOpen ? styles.menuOpen : ''}`}>
