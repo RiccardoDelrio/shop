@@ -52,6 +52,15 @@
     width: 100%;
     max-height: 250px;
     overflow-y: auto;
+    scrollbar-width: none;
+    /* For Firefox */
+    -ms-overflow-style: none;
+    /* For Internet Explorer and Edge */
+}
+
+.cartContent::-webkit-scrollbar {
+    display: none;
+    /* For Chrome, Safari, and Opera */
 }
 
 .emptyCart {
