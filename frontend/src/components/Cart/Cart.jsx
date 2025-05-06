@@ -4,60 +4,60 @@ import { Link } from 'react-router'
 import { useGlobal } from '../../contexts/GlobalContext'
 
 const Cart = () => {
-    const { products } = useGlobal()
-    console.log(products);
+    const { products, cartItems, setCartItems, groupedProducts } = useGlobal()
+    console.log(groupedProducts);
 
     const [isOpen, setIsOpen] = useState(false)
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            name: "Vestito Elegante",
-            price: 129.99,
-            size: "M",
-            image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
-            quantity: 1
-        },
-        {
-            id: 2,
-            name: "Borsa in Pelle Nera",
-            price: 89.99,
-            size: "U",
-            image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
-            quantity: 1
-        },
-        {
-            id: 3,
-            name: "Scarpe con Tacco",
-            price: 149.99,
-            size: "38",
-            image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
-            quantity: 1
-        },
-        {
-            id: 4,
-            name: "Gonna Plissettata",
-            price: 79.99,
-            size: "S",
-            image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
-            quantity: 1
-        },
-        {
-            id: 5,
-            name: "Blazer Bianco",
-            price: 159.99,
-            size: "M",
-            image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
-            quantity: 1
-        },
-        {
-            id: 6,
-            name: "Orecchini Oro",
-            price: 45.99,
-            size: "U",
-            image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
-            quantity: 1
-        }
-    ])
+    /*   const [cartItems, setCartItems] = useState([
+          {
+              id: 1,
+              name: "Vestito Elegante",
+              price: 129.99,
+              size: "M",
+              image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
+              quantity: 1
+          },
+          {
+              id: 2,
+              name: "Borsa in Pelle Nera",
+              price: 89.99,
+              size: "U",
+              image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
+              quantity: 1
+          },
+          {
+              id: 3,
+              name: "Scarpe con Tacco",
+              price: 149.99,
+              size: "38",
+              image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
+              quantity: 1
+          },
+          {
+              id: 4,
+              name: "Gonna Plissettata",
+              price: 79.99,
+              size: "S",
+              image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
+              quantity: 1
+          },
+          {
+              id: 5,
+              name: "Blazer Bianco",
+              price: 159.99,
+              size: "M",
+              image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
+              quantity: 1
+          },
+          {
+              id: 6,
+              name: "Orecchini Oro",
+              price: 45.99,
+              size: "U",
+              image: "https://webshopwoman.com/cdn/shop/files/FullSizeRender_825be2e0-6f6c-4759-a926-234a4699b5e3.jpg?v=1726052800&width=720",
+              quantity: 1
+          }
+      ]) */
 
     const toggleCart = () => {
         setIsOpen(!isOpen)
