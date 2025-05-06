@@ -1,0 +1,37 @@
+.col_category {
+    height: 400px;
+
+}
+
+.col_category .card {
+    height: 100%;
+    display: flex;
+    min-width: 250px;
+
+
+}
+
+.col_category .card img {
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+
+}
+
+.col_category h1 {
+    font-size: 2.5rem;
+    background: none;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(135deg,
+            rgb(252, 230, 134) 15%,
+            /* Brown */
+            rgb(255, 215, 0) 60%);
+    /* Gold */
+
+}
+
+.col_category .card-img-overlay {
+    background-color: rgba(0, 0, 0, 0.5)
+}

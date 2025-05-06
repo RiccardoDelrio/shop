@@ -1,5 +1,7 @@
 @import "bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
 
 * {
     font-family: 'Jost', sans-serif;
@@ -11,18 +13,18 @@
     width: 100%;
     max-width: 1640px;
     margin: auto;
-    padding: 20px;
+    padding: 0 20px;
 }
 
 @media (min-width: 768px) {
     .main-container {
-        padding: 40px;
+        padding: 0 40px;
     }
 }
 
 @media (min-width: 1024px) {
     .main-container {
-        padding: 50px;
+        padding: 0 50px;
     }
 }
 
@@ -60,4 +62,16 @@ body {
 
 li {
     list-style: none;
+}
+
+.home_title {
+    font-size: 3rem;
+    background: none;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-family: "Allura", cursive;
+    text-align: center;
+    margin-top: 150px;
+
+    margin-bottom: 20px;
 }
