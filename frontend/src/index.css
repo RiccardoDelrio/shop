@@ -65,13 +65,13 @@ li {
 }
 
 .home_title {
-    font-size: 3rem;
+    font-size: 5rem;
     background: none;
     background-clip: text;
     -webkit-background-clip: text;
     font-family: "Allura", cursive;
     text-align: center;
     margin-top: 150px;
-
+    color: white;
     margin-bottom: 20px;
 }

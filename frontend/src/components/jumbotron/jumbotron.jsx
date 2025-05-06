@@ -44,17 +44,12 @@ const Jumbotron = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const handleSlideClick = (id) => {
-        setActiveSlide(id);
-    };
-
     return (
         <div className="">
-
-            <div className="jumbotron row  ">
+            <div className="jumbotron row d-none d-lg-flex ">
                 {/* Desktop Gallery */}
-                <div className="gallery-slider col d-none d-lg-block">
-                    <div className="gallery-slider__wrapper">
+                <div className="gallery-slider col  ">
+                    <div className="gallery-slider__wrapper ">
                         {slidesData.map((slide) => (
                             <div
                                 key={slide.id}
@@ -78,14 +73,12 @@ const Jumbotron = () => {
                 </div>
 
                 {/* Mobile Slider */}
-                <div className="mobile-jumbo d-lg-none  ">
-                    <img src="./img/jumbo-mobile.jpeg" />
-                    <h1 className='text-center'>Boolean</h1>
-
-
-                </div>
             </div>
-        </div >
+            <div className="mobile-jumbo  d-lg-none">
+                <img src="./img/jumbo-mobile.jpeg" alt="Mobile Jumbotron" />
+                <h1 className="text-center">Boolan</h1>
+            </div>
+        </div>
     );
 };
 

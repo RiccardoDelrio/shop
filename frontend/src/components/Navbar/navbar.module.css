@@ -108,7 +108,7 @@ ul {
         position: relative;
     }
 
-    h1 {
+    .header_title {
         display: none;
     }
 

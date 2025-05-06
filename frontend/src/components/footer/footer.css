@@ -1,49 +1,48 @@
+/* Classe personalizzata per nascondere elementi */
 @media (min-width: 768px) {
-    .d-none {
+    .custom-hidden {
         display: block !important;
     }
 }
 
 .info-box {
-
     /* Ombra */
     border: 1px solid #dee2e6;
     /* Bordo sottile */
     border-radius: 8px;
     /* Angoli arrotondati */
+
+    h5 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
 }
 
-.info-box h5 {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
+.social-links {
+    a {
+        &.facebook {
+            color: #3b5998;
 
+            &:hover {
+                color: #2d4373;
+            }
+        }
 
+        &.twitter {
+            color: #1da1f2;
 
-/* Colore specifico per Facebook */
-.social-links a.facebook {
-    color: #3b5998;
-}
+            &:hover {
+                color: #0d8ddb;
+            }
+        }
 
-.social-links a.facebook:hover {
-    color: #2d4373;
-}
+        &.instagram {
+            color: #e4405f;
 
-/* Colore specifico per Twitter */
-.social-links a.twitter {
-    color: #1da1f2;
-}
-
-.social-links a.twitter:hover {
-    color: #0d8ddb;
-}
-
-/* Colore specifico per Instagram */
-.social-links a.instagram {
-    color: #e4405f;
-}
-
-.social-links a.instagram:hover {
-    color: #bc2a8d;
+            &:hover {
+                color: #bc2a8d;
+            }
+        }
+    }
 }

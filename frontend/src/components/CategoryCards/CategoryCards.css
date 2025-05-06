@@ -1,6 +1,6 @@
 .col_category {
     height: 400px;
-
+    padding: 0;
 }
 
 .col_category .card {
@@ -19,7 +19,7 @@
 }
 
 .col_category h1 {
-    font-size: 2.5rem;
+    font-size: 3.4rem;
     background: none;
     background-clip: text;
     -webkit-background-clip: text;
@@ -29,6 +29,7 @@
             /* Brown */
             rgb(255, 215, 0) 60%);
     /* Gold */
+
 
 }
 

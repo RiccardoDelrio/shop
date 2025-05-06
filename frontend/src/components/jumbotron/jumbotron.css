@@ -95,7 +95,6 @@
     position: relative;
 
     h1 {
-
         font-family: "Allura", cursive;
         font-weight: 400;
         font-style: normal;
@@ -113,7 +112,7 @@
         font-size: 12rem;
         background-size: 300%;
         animation: shimmer-color 4s linear infinite;
-        animation: fadeIn 1s ease-in-out;
+        animation: fadeIn 1s ease-in-out forwards;
 
     }
 }
@@ -148,4 +147,5 @@
     object-fit: cover;
     object-position: center;
     aspect-ratio: 16 / 9;
+
 }
