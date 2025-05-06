@@ -19,7 +19,7 @@ const Navbar = () => {
                 </div>
 
                 <ul className={`${styles.ul} ${isMenuOpen ? styles.menuOpen : ''}`}>
-                    {['Home', 'Prodotti', 'Contatti'].map(navlink => (
+                    {['Home', 'Trench', 'Pantaloni', 'Scarpe', 'Catalogo', 'Contatti'].map(navlink => (
                         <li key={navlink} className={styles.navlink}>{navlink}</li>
                     ))}
                 </ul>
