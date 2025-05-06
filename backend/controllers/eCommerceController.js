@@ -6,6 +6,7 @@ function index(req, res) {
     let sql = `
         SELECT 
             products.id,
+            products.group_id,
             products.name,
             products.description,
             products.price,
