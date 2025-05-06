@@ -9,7 +9,7 @@ const SearchBar = () => {
             {!isOpen ? (
                 <i className='fa-solid fa-magnifying-glass'></i>
             ) : (
-                <input className={styles.searchOpen} type="search" name="search" id="search" placeholder='Cerca...' />
+                <input className="form-control ps-3 rounded-pill" type="search" placeholder="Cerca..." aria-label="Search" />
             )}
 
 

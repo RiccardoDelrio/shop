@@ -65,9 +65,7 @@ ul {
     }
 
     /* Hide the mobile menu on desktop */
-    .ul {
-        display: none !important;
-    }
+
 
     /* Show regular navigation on desktop */
     ul {
@@ -115,5 +113,11 @@ ul {
     .navlink {
         font-size: 1.4rem;
         /* Slightly larger font */
+    }
+
+    .leftnav {
+        flex-grow: 1;
+        justify-content: end;
+        padding-left: 1.5rem;
     }
 }

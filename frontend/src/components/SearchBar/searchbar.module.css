@@ -19,5 +19,19 @@
 @media screen and (max-width : 768px) {
     .searchOpen {
         padding: .2rem 1rem .2rem .5rem;
+        width: 100%;
+
+    }
+
+    .searchOpen::placeholder {
+        display: block;
+
+    }
+
+    .search {
+        display: flex;
+        flex-grow: 1;
+        justify-content: end;
+        align-items: center;
     }
 }
