@@ -5,8 +5,8 @@ import Footer from '../components/footer/footer'
 function DefaultLayout() {
     return (
         <>
+            <Navbar />
             <div className="main-container">
-                <Navbar />
                 <Outlet />
                 < Footer />
 

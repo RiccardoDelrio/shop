@@ -11,6 +11,7 @@ const Navbar = () => {
     }
 
     return (
+
         <div className={styles.navbar}>
             {/* Right nav */}
             <div className={styles.rightnav}>
