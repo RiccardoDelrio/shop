@@ -34,7 +34,6 @@ const slidesData = [
     },
 ];
 
-
 const Jumbotron = () => {
     const [activeSlide, setActiveSlide] = useState(1);
 
@@ -50,42 +49,45 @@ const Jumbotron = () => {
     };
 
     return (
-        <div className="jumbotron main-container">
-            <div className="gallery-slider d-none d-sm-block">
-                <div className="gallery-slider__wrapper">
-                    {slidesData.map((slide) => (
-                        <div
-                            key={slide.id}
-                            className={`gallery-slider__slide ${slide.id === activeSlide ? "active" : ""}`}
-/*                             onClick={() => handleSlideClick(slide.id)}
- */                        >
-                            <div className="gallery-slider__image">
-                                <img
-                                    className="gallery-slider__img-prev"
-                                    src={slide.imgPrev}
-                                    alt={slide.alt}
-                                />
-                                <img
-                                    className="gallery-slider__img-next"
-                                    src={slide.imgNext}
-                                    alt={slide.alt}
-                                />
+        <div className="main-container">
+
+            <div className="jumbotron row  ">
+                {/* Desktop Gallery */}
+                <div className="gallery-slider col d-none d-sm-block">
+                    <div className="gallery-slider__wrapper">
+                        {slidesData.map((slide) => (
+                            <div
+                                key={slide.id}
+                                className={`gallery-slider__slide ${slide.id === activeSlide ? "active" : ""}`}
+                                onClick={() => handleSlideClick(slide.id)}
+                            >
+                                <div className="gallery-slider__image">
+                                    <img
+                                        className="gallery-slider__img-prev"
+                                        src={slide.imgPrev}
+                                        alt={slide.alt}
+                                    />
+                                    <img
+                                        className="gallery-slider__img-next"
+                                        src={slide.imgNext}
+                                        alt={slide.alt}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                </div>
+
+                {/* Mobile Slider */}
+                <div className="mobile-slider d-sm-none ">
+                    <img
+                        src={slidesData[activeSlide - 1].imgNext}
+                        alt={slidesData[activeSlide - 1].alt}
+                        className="mobile-slider__image"
+                    />
                 </div>
             </div>
-
-            <div className="mobile-slider d-sm-none">
-                <img
-                    src={slidesData[activeSlide - 1].imgNext}
-                    alt={slidesData[activeSlide - 1].alt}
-                    className="mobile-slider__image"
-                />
-            </div>
-
-
-        </div>
+        </div >
     );
 };
 

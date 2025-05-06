@@ -9,6 +9,18 @@
     padding: 20px;
 }
 
+@media (min-width: 768px) {
+    .main-container {
+        padding: 40px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .main-container {
+        padding: 50px;
+    }
+}
+
 body {
     color: white;
     background: linear-gradient(135deg,
