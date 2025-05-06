@@ -29,13 +29,18 @@ function GlobalProvider({ children }) {
         fetchIndexMacroArea('bottom', setBottom)
         fetchIndexMacroArea('accessories', setAccessories)
     }, [])
-    const groupedProducts = products.reduce((groups, product) => {
+    /*   const groupedProducts = products.reduce((groups, product) => {
+          const group = groups[product.group_id] || [];
+          group.push(product);
+          groups[product.group_id] = group;
+          return groups;
+      }, {}); */
+    const groupedProducts = Object.values(products.reduce((groups, product) => {
         const group = groups[product.group_id] || [];
         group.push(product);
         groups[product.group_id] = group;
         return groups;
-    }, {});
-
+    }, {}));
 
     return (
         <GlobalContext.Provider
