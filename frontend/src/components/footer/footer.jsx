@@ -18,13 +18,13 @@ export default function Footer() {
                                     <h5 className="text-center">Informazioni</h5>
                                     <ul className="nav flex-column text-center info-list">
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">La nostra storia</NavLink>
+                                            < NavLink to="/story-site" className="nav-link p-0 footer-nav-link ">La nostra storia</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Privacy & Policy</NavLink>
+                                            < NavLink to="/privacy-policy" className="nav-link p-0 footer-nav-link ">Privacy & Policy</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Contataci</NavLink>
+                                            < NavLink to="/contacts" className="nav-link p-0 footer-nav-link ">Contataci</NavLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -54,7 +54,7 @@ export default function Footer() {
                         <div className="col-12  col-md-7 d-flex  justify-content-center justify-content-md-end">
                             <div className="info-box p-4 border rounded text-center">
                                 <h5>Contattaci</h5>
-                                <p className="mb-1"><strong>Telefono:</strong> +394567890</p>
+                                <p className="mb-1"><strong>Telefono:</strong>+39 345 678 9012</p>
                                 <p className="mb-1"><strong>Email:</strong> info@Boolean.com</p>
                                 <p className="mb-1"><strong>P.IVA:</strong> IT12345678901</p>
                                 <div className="social-links mt-3">
