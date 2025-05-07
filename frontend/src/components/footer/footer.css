@@ -38,6 +38,8 @@
 
 .social-links {
     a {
+        color: inherit;
+
         &.facebook {
             color: #3b5998;
 
@@ -62,4 +64,9 @@
             }
         }
     }
+}
+
+/* Rimuove il colore azzurro dai link visitati */
+.footer-nav-link:visited {
+    color: inherit;
 }
