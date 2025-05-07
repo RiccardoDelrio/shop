@@ -8,8 +8,9 @@ Tenete a mente che ciò che ci comunicate dovrà essere mantenuto fino alla fine
 
 La scelta della categoria influenzerà sia l’aspetto visivo che la struttura del database, quindi assicuratevi di comprendere a fondo le peculiarità della vostra scelta.  
 
-### Domande utili per definire la vostra idea:
-- Qual è il sentiment che desiderate trasmettere?  
+## Domande utili per definire la vostra idea
+
+- Qual è il sentiment che desiderate trasmettere?
 - Chi è il cliente tipo che volete intercettare?  
 - A quale mercato vi rivolgete?  
 
@@ -24,11 +25,19 @@ Ci incontreremo nella classroom, team per team.
 Ci sarà una sala d’attesa e vi faremo entrare non appena finiremo con il team precedente, quindi meglio rispettare i tempi 😉.  
 
 Il giorno del SAL, vedremo insieme il diagramma ER del database.  
-**Entro domani pomeriggio** vi chiediamo di inviarci uno screenshot del diagramma stesso.  
+**Entro domani pomeriggio** vi chiediamo di inviarci uno screenshot del diagramma stesso.
+
+## Secondo SAL
+
+Entro secondo sal:
+
+- completare la backend
+- finire home page
 
 ---
 
-## Consigli per la progettazione del diagramma ER:
+## Consigli per la progettazione del diagramma ER
+
 - Usate nomi in inglese.  
 - Scrivete tutto in minuscolo.  
 - Assicuratevi che i nomi delle tabelle e delle colonne descrivano chiaramente il contenuto.  
