@@ -1,5 +1,7 @@
 const connection = require('../database/db')
 
+
+// index
 function index(req, res) {
     const sql = `
         SELECT 
@@ -19,27 +21,7 @@ function index(req, res) {
     });
 }
 
-function getRandomProducts(req, res) {
-    const sql = `
-        SELECT 
-        products.id,
-            products.slug,
-            products.name,
-            products.description,
-            products.price,
-            products.image
-        FROM products
-        ORDER BY RAND()
-        LIMIT 10
-    `;
-
-    connection.query(sql, (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-
-        res.json(results);
-    });
-}
-
+// show
 function show(req, res) {
     const { slug } = req.params;
     const sql = `
@@ -72,6 +54,7 @@ function show(req, res) {
     });
 }
 
+// index filter functions
 function getProductsByMacroarea(req, res) {
     const { slug } = req.params;
     const sql = `
@@ -115,10 +98,49 @@ function getProductsByCategory(req, res) {
     });
 }
 
+// Create new email for the newsletter list
+function submitEmail(req, res) {
+    const { email } = req.body;
+
+    const sql = `
+        INSERT INTO email_newsletter (email)
+        VALUES (?)
+    `;
+
+    connection.query(sql, [email], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        res.status(201).json({ message: 'e-mail added successfully!', reviewId: results.insertId });
+    });
+}
+
+// get random products
+function getRandomProducts(req, res) {
+    const sql = `
+        SELECT 
+        products.id,
+            products.slug,
+            products.name,
+            products.description,
+            products.price,
+            products.image
+        FROM products
+        ORDER BY RAND()
+        LIMIT 10
+    `;
+
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        res.json(results);
+    });
+}
+
 module.exports = {
     index,
     show,
-    getRandomProducts, // Export the new function
     getProductsByCategory,
     getProductsByMacroarea,
+    submitEmail,
+    getRandomProducts,
 };

@@ -17,4 +17,7 @@ router.get('/macroarea/:slug', eCommerceController.getProductsByMacroarea);
 // Route to fetch products by category
 router.get('/category/:slug', eCommerceController.getProductsByCategory);
 
+// Route to submit emails
+router.post('/email', eCommerceController.submitEmail)
+
 module.exports = router;

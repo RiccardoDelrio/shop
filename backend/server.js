@@ -25,24 +25,27 @@ app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
 
-/* index
+/* 
+
+// index
 http://localhost:3000/api/v1/products
 
-index w/ macro_area (ONLY top, bottom or accessories)
+// index filter w/ macro_area (upper-body, lower-body, dress, accessori)
 http://localhost:3000/api/v1/products?macro_area=top
 
-index w/ random products
-http://localhost:3000/api/v1/products/random
-
-index w/ category (slug)
+// index filter w/ category (slug) (orecchini, bracciali, collane, giacche, cappotti, maglie, maglioni, pantaloni, gonne, vestitini)
 http://localhost:3000/api/v1/products?category=outerwear
 
-index w/ group_id
-http://localhost:3000/api/v1/products?group_id=2
 
-show
-http://localhost:3000/api/v1/products/francois-overcoat-black
+// show w/ slug
+http://localhost:3000/api/v1/products/cappotto-lana
 
 
+// create email (POST ONLY!)
+http://localhost:3000/api/v1/products/email
+
+
+// 10 random products
+http://localhost:3000/api/v1/products/random
 
 */
