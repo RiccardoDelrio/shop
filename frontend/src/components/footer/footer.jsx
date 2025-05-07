@@ -9,22 +9,22 @@ export default function Footer() {
             <footer className="">
                 <div className="main-container">
                     <hr />
-                    <div className="row justify-content-between align-items-center">
+                    <div className="row justify-content-between align-items-center mb-3">
                         {/* Contenitore per le due sezioni di sinistra */}
                         <div className="col-12  col-md-5 mb-4  ">
                             <div className="row">
                                 {/* Prima sezione */}
                                 <div className="col-6">
                                     <h5 className="text-center">Information</h5>
-                                    <ul className="nav flex-column text-center">
+                                    <ul className="nav flex-column text-center info-list">
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Home</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 ">About us</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">About</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 ">Privacy & Policy</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Services</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 ">Contact Us</NavLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -32,15 +32,18 @@ export default function Footer() {
                                 {/* Seconda sezione */}
                                 <div className="col-6 ">
                                     <h5 className="text-center">Products</h5>
-                                    <ul className="nav flex-column">
+                                    <ul className="nav flex-column text-center info-list">
                                         <li className="nav-item mb-2">
 
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Contact</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 ">Discount</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Email</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 ">Catalog</NavLink>
+                                        </li>
+                                        <li className="nav-item mb-2">
+                                            < NavLink to="/" className="nav-link p-0 ">Size Table</NavLink>
                                         </li>
                                     </ul>
                                 </div>
