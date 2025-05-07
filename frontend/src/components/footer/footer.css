@@ -10,7 +10,6 @@
     border: 1px solid #dee2e6;
     /* Bordo sottile */
     border-radius: 8px;
-    /* Angoli arrotondati */
 
     h5 {
         margin-bottom: 1rem;
@@ -19,8 +18,28 @@
     }
 }
 
+.info-list {
+
+    li {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+
+        a {
+            color: white;
+
+            &:hover {
+                text-decoration: underline;
+                color: gold;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
 .social-links {
     a {
+        color: inherit;
+
         &.facebook {
             color: #3b5998;
 
@@ -45,4 +64,9 @@
             }
         }
     }
+}
+
+/* Rimuove il colore azzurro dai link visitati */
+.footer-nav-link:visited {
+    color: inherit;
 }

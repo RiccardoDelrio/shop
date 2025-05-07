@@ -9,38 +9,41 @@ export default function Footer() {
             <footer className="">
                 <div className="main-container">
                     <hr />
-                    <div className="row justify-content-between align-items-center">
+                    <div className="row justify-content-between align-items-center mb-3">
                         {/* Contenitore per le due sezioni di sinistra */}
                         <div className="col-12  col-md-5 mb-4  ">
                             <div className="row">
                                 {/* Prima sezione */}
                                 <div className="col-6">
-                                    <h5 className="text-center">Information</h5>
-                                    <ul className="nav flex-column text-center">
+                                    <h5 className="text-center">Informazioni</h5>
+                                    <ul className="nav flex-column text-center info-list">
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Home</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">La nostra storia</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">About</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Privacy & Policy</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Services</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Contataci</NavLink>
                                         </li>
                                     </ul>
                                 </div>
 
                                 {/* Seconda sezione */}
                                 <div className="col-6 ">
-                                    <h5 className="text-center">Products</h5>
-                                    <ul className="nav flex-column">
+                                    <h5 className="text-center">Prodotti</h5>
+                                    <ul className="nav flex-column text-center info-list">
                                         <li className="nav-item mb-2">
 
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Contact</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Sconti</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 text-muted">Email</NavLink>
+                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Catalogo</NavLink>
+                                        </li>
+                                        <li className="nav-item mb-2">
+                                            < NavLink to="/size-table" className="nav-link p-0 footer-nav-link ">Guida alle taglie</NavLink>
                                         </li>
                                     </ul>
                                 </div>
@@ -50,8 +53,8 @@ export default function Footer() {
                         {/* Contenitore per il quadrato sulla destra */}
                         <div className="col-12  col-md-7 d-flex  justify-content-center justify-content-md-end">
                             <div className="info-box p-4 border rounded text-center">
-                                <h5>Contact Us</h5>
-                                <p className="mb-1"><strong>Phone:</strong> +394567890</p>
+                                <h5>Contattaci</h5>
+                                <p className="mb-1"><strong>Telefono:</strong> +394567890</p>
                                 <p className="mb-1"><strong>Email:</strong> info@Boolean.com</p>
                                 <p className="mb-1"><strong>P.IVA:</strong> IT12345678901</p>
                                 <div className="social-links mt-3">

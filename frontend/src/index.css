@@ -75,3 +75,23 @@ li {
     color: white;
     margin-bottom: 20px;
 }
+
+/* Stile tabella taglie */
+.table-container {
+    background-color: transparent;
+}
+
+.table-color td,
+.table-color th {
+    color: white !important;
+    background-color: transparent !important;
+}
+
+.table-color td:nth-child(3),
+.table-color th:nth-child(3) {
+    background-color: transparent;
+}
+
+table {
+    border: 2px solid rgba(255, 217, 0, 0.699) !important;
+}
