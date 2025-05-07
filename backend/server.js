@@ -31,10 +31,10 @@ app.listen(PORT, () => {
 http://localhost:3000/api/v1/products
 
 // index filter w/ macro_area (upper-body, lower-body, dress, accessori)
-http://localhost:3000/api/v1/products?macro_area=top
+http://localhost:3000/api/v1/products?macro_area=upper-body
 
 // index filter w/ category (slug) (orecchini, bracciali, collane, giacche, cappotti, maglie, maglioni, pantaloni, gonne, vestitini)
-http://localhost:3000/api/v1/products?category=outerwear
+http://localhost:3000/api/v1/products?category=orecchini
 
 
 // show w/ slug
