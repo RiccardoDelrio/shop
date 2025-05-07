@@ -16,7 +16,7 @@ const Navbar = () => {
             {/* Right nav */}
             <div className="rightnav">
                 <div className="logo">
-                    <img src="./img/logo.svg" alt="" />
+                    <img src="/img/logo.svg" alt="" />
                     <h1 className="header_title">Boolean</h1>
                 </div>
 
