@@ -55,12 +55,6 @@ export default function PrivacyPolicy() {
                         <p>
                             I nostri servizi non sono destinati a utenti di età inferiore ai 16 anni e non raccogliamo intenzionalmente dati da minori.
                         </p>
-
-                        <h5 className="mt-4 fw-bold">8. Cookie</h5>
-                        <p>
-                            Utilizziamo cookie tecnici per il corretto funzionamento del sito e cookie di terze parti (es. Google Analytics).
-                            Maggiori dettagli sono disponibili nella nostra <a href="/cookie-policy" className="text-decoration-underline text-light">Cookie Policy</a>.
-                        </p>
                     </div>
                 </div>
             </section>
