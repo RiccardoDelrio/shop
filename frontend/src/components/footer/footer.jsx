@@ -43,7 +43,7 @@ export default function Footer() {
                                             < NavLink to="/" className="nav-link p-0 ">Catalog</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 ">Size Table</NavLink>
+                                            < NavLink to="/size-table" className="nav-link p-0 ">Size Table</NavLink>
                                         </li>
                                     </ul>
                                 </div>
