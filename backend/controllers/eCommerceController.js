@@ -1,17 +1,18 @@
-const connection = require('../database/db')
-
+const connection = require('../database/db');
 
 // index
 function index(req, res) {
     const sql = `
         SELECT 
-        products.id,
+            products.id,
             products.slug,
             products.name,
             products.description,
             products.price,
-            products.image
+            JSON_ARRAYAGG(product_images.image_url) AS images
         FROM products
+        LEFT JOIN product_images ON products.id = product_images.product_id
+        GROUP BY products.id
     `;
 
     connection.query(sql, (err, results) => {
@@ -26,12 +27,12 @@ function show(req, res) {
     const { slug } = req.params;
     const sql = `
         SELECT 
-        products.id,
+            products.id,
             products.slug,
             products.name,
             products.description,
             products.price,
-            products.image,
+            JSON_ARRAYAGG(product_images.image_url) AS images,
             JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'id', product_variations.id,
@@ -41,6 +42,7 @@ function show(req, res) {
                 )
             ) AS variations
         FROM products
+        LEFT JOIN product_images ON products.id = product_images.product_id
         LEFT JOIN product_variations ON products.id = product_variations.product_id
         WHERE products.slug = ?
         GROUP BY products.id
@@ -64,11 +66,13 @@ function getProductsByMacroarea(req, res) {
             products.name,
             products.description,
             products.price,
-            products.image
+            JSON_ARRAYAGG(product_images.image_url) AS images
         FROM products
         JOIN categories ON products.category_id = categories.id
         JOIN macroareas ON categories.macroarea_id = macroareas.id
+        LEFT JOIN product_images ON products.id = product_images.product_id
         WHERE macroareas.slug = ?
+        GROUP BY products.id
     `;
 
     connection.query(sql, [slug], (err, results) => {
@@ -86,10 +90,12 @@ function getProductsByCategory(req, res) {
             products.name,
             products.description,
             products.price,
-            products.image
+            JSON_ARRAYAGG(product_images.image_url) AS images
         FROM products
         JOIN categories ON products.category_id = categories.id
+        LEFT JOIN product_images ON products.id = product_images.product_id
         WHERE categories.slug = ?
+        GROUP BY products.id
     `;
 
     connection.query(sql, [slug], (err, results) => {
@@ -118,13 +124,15 @@ function submitEmail(req, res) {
 function getRandomProducts(req, res) {
     const sql = `
         SELECT 
-        products.id,
+            products.id,
             products.slug,
             products.name,
             products.description,
             products.price,
-            products.image
+            JSON_ARRAYAGG(product_images.image_url) AS images
         FROM products
+        LEFT JOIN product_images ON products.id = product_images.product_id
+        GROUP BY products.id
         ORDER BY RAND()
         LIMIT 10
     `;
