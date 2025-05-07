@@ -59,6 +59,12 @@ function show(req, res) {
 // index filter functions
 function getProductsByMacroarea(req, res) {
     const { slug } = req.params;
+
+    // Validate the slug parameter
+    if (!slug || typeof slug !== 'string') {
+        return res.status(400).json({ error: 'Invalid macroarea slug provided' });
+    }
+
     const sql = `
         SELECT 
             products.id,
@@ -77,12 +83,20 @@ function getProductsByMacroarea(req, res) {
 
     connection.query(sql, [slug], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(404).json({ error: `No products found for macroarea: ${slug}` });
+
         res.json(results);
     });
 }
 
 function getProductsByCategory(req, res) {
     const { slug } = req.params;
+
+    // Validate the slug parameter
+    if (!slug || typeof slug !== 'string') {
+        return res.status(400).json({ error: `No products found for macroarea: ${slug}. Please check the macroarea slug and try again.` });
+    }
+
     const sql = `
         SELECT 
             products.id,
@@ -100,6 +114,8 @@ function getProductsByCategory(req, res) {
 
     connection.query(sql, [slug], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(404).json({ error: `No products found for category: ${slug}. Please check the category slug and try again.` });
+
         res.json(results);
     });
 }
@@ -144,6 +160,21 @@ function getRandomProducts(req, res) {
     });
 }
 
+function getCategories(req, res) {
+    const sql = `
+        SELECT 
+            categories.id,
+            categories.name,
+            categories.slug
+        FROM categories
+    `;
+
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+}
+
 module.exports = {
     index,
     show,
@@ -151,4 +182,5 @@ module.exports = {
     getProductsByMacroarea,
     submitEmail,
     getRandomProducts,
+    getCategories,
 };
