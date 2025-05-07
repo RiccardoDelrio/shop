@@ -18,10 +18,10 @@ export default function Footer() {
                                     <h5 className="text-center">Informazioni</h5>
                                     <ul className="nav flex-column text-center info-list">
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">La nostra storia</NavLink>
+                                            < NavLink to="/story-site" className="nav-link p-0 footer-nav-link ">La nostra storia</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Privacy & Policy</NavLink>
+                                            < NavLink to="/privacy-policy" className="nav-link p-0 footer-nav-link ">Privacy & Policy</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
                                             < NavLink to="/" className="nav-link p-0 footer-nav-link ">Contataci</NavLink>

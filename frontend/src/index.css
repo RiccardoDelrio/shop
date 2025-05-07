@@ -76,6 +76,24 @@ li {
     margin-bottom: 20px;
 }
 
+/* Stile pagina storia-sito */
+.line-story {
+    width: 100px;
+    border-top: 2px solid;
+    margin: auto;
+}
+
+.block-text {
+    width: 900px;
+    margin: auto;
+}
+
+/* Stile pagin policy */
+.policy {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 /* Stile tabella taglie */
 .table-container {
     background-color: transparent;
