@@ -17,4 +17,7 @@ router.get('/macroarea/:slug', eCommerceController.getProductsByMacroarea);
 // Route to fetch products by category
 router.get('/category/:slug', eCommerceController.getProductsByCategory);
 
+// Route to fetch all categories
+router.get('/categories', eCommerceController.getCategories);
+
 module.exports = router;

@@ -115,10 +115,24 @@ function getProductsByCategory(req, res) {
     });
 }
 
+function getCategories(req, res) {
+    const sql = `
+        SELECT 
+            categories.name,
+        FROM categories
+    `;
+
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+}
+
 module.exports = {
     index,
     show,
     getRandomProducts, // Export the new function
     getProductsByCategory,
     getProductsByMacroarea,
+    getCategories, // Esportare la nuova funzione
 };

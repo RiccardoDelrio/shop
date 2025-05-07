@@ -5,7 +5,7 @@ import { useGlobal } from '../../contexts/GlobalContext'
 
 const Cart = () => {
     const { products, cartItems, setCartItems, groupedProducts, bottom, randomProducts } = useGlobal()
-    console.log(randomProducts);
+    console.log(products);
 
     const [isOpen, setIsOpen] = useState(false)
     /*   const [cartItems, setCartItems] = useState([
