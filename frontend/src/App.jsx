@@ -18,11 +18,8 @@ function App() {
             <Route path="/" element={<Home />} />
 
             <Route path="/catalogo" element={<Catalogo />} />
-<<<<<<< HEAD
             <Route path='/products/:slug' element={<MacroAreaPage />} />
-=======
             <Route path="/size-table" element={<SizeTable />} />
->>>>>>> page/size-table
 
           </Route>
         </Routes>
