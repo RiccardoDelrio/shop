@@ -163,7 +163,9 @@ function getRandomProducts(req, res) {
 function getCategories(req, res) {
     const sql = `
         SELECT 
+            categories.id,
             categories.name,
+            categories.slug
         FROM categories
     `;
 
@@ -178,4 +180,7 @@ module.exports = {
     show,
     getProductsByCategory,
     getProductsByMacroarea,
+    submitEmail,
+    getRandomProducts,
+    getCategories,
 };

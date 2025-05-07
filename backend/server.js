@@ -38,6 +38,9 @@ app.use(serverError);
 // index
 http://localhost:3000/api/v1/products
 
+// get all the categories
+http://localhost:3000/api/v1/products/categories
+
 // index filter w/ macro_area (upper-body, lower-body, dress, accessori)
 http://localhost:3000/api/v1/products/macroarea/upper-body
 
