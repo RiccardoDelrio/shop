@@ -38,7 +38,7 @@ http://localhost:3000/api/v1/products/category/orecchini
 
 
 // show w/ slug
-http://localhost:3000/api/v1/products/cappotto-lana
+http://localhost:3000/api/v1/products/cappotto-lana-pregiata
 
 
 // create email (POST ONLY!)
