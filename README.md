@@ -3,7 +3,7 @@
 Ciao ragazzi,  
 abbiamo creato i canali Slack per ogni team e caricato il brief del progetto nella cartella di Drive.  
 
-Vi chiediamo gentilmente di comunicarci, **entro la fine del pomeriggio**, la categoria merceologica del vostro eCommerce e la lista delle funzionalità extra che desiderate sviluppare.  
+[x] Vi chiediamo gentilmente di comunicarci, **entro la fine del pomeriggio**, la categoria merceologica del vostro eCommerce e la lista delle funzionalità extra che desiderate sviluppare.  
 Tenete a mente che ciò che ci comunicate dovrà essere mantenuto fino alla fine del progetto.  
 
 La scelta della categoria influenzerà sia l’aspetto visivo che la struttura del database, quindi assicuratevi di comprendere a fondo le peculiarità della vostra scelta.  
@@ -18,7 +18,7 @@ La scelta della categoria influenzerà sia l’aspetto visivo che la struttura d
 
 ## Primo SAL
 
-Il primo SAL è programmato per **mercoledì prossimo (07/05/2025, dopodomani)**.  
+[x] Il primo SAL è programmato per **mercoledì prossimo (07/05/2025, dopodomani)**.  
 In allegato troverete gli orari per ogni team.  
 
 Ci incontreremo nella classroom, team per team.  
@@ -31,8 +31,8 @@ Il giorno del SAL, vedremo insieme il diagramma ER del database.
 
 Entro secondo sal:
 
-- completare la backend
-- finire home page
+[x] completare la backend
+[] finire la home page
 
 ---
 
