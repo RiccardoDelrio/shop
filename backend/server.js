@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 3000;
 const eCommerceRouter = require('./routers/eCommerceRouter')
 const notFound = require('./middlewares/notFound')
 const serverError = require('./middlewares/serverError')
+const validateQuery = require('./middlewares/validateQuery');
 
 const cors = require("cors");
 app.use(cors({ origin: process.env.FRONT_URL || 'http://localhost:5173' }));
@@ -16,14 +17,21 @@ app.get('/', (req, res) => {
     res.send('Hello motherfuckers!');
 });
 
-app.use('/api/v1/products', eCommerceRouter)
+// Apply query validation globally
+app.use(validateQuery);
 
-app.use(notFound);
-app.use(serverError);
+app.use('/api/v1/products', eCommerceRouter)
 
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
+
+
+// Catch-all for undefined routes
+app.use(notFound);
+
+// Error handling middleware
+app.use(serverError);
 
 /* 
 
