@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
 
 import DefaultLayout from "./layout/defaultLayout";
+import MacroAreaPage from './pages/MacroAreaPage';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
 
             <Route path="/catalogo" element={<Catalogo />} />
+            <Route path='/products/:slug' element={<MacroAreaPage />} />
 
           </Route>
         </Routes>

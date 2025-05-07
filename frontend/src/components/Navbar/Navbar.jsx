@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './navbar.css'; // Modificato per utilizzare il file CSS normale
 import SearchBar from '../SearchBar/SearchBar';
 import Cart from '../Cart/Cart';
+import { Link } from 'react-router';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,9 +21,12 @@ const Navbar = () => {
                 </div>
 
                 <ul className={`ul ${isMenuOpen ? 'menuOpen' : ''}`}>
-                    {['Home', 'Trench', 'Pantaloni', 'Scarpe', 'Catalogo', 'Contatti'].map(navlink => (
-                        <li key={navlink} className="navlink">{navlink}</li>
-                    ))}
+                    <li className="navlink"><Link to={'/'}>Home</Link></li>
+                    <li className="navlink"><Link to={'/'}>Upper Body</Link></li>
+                    <li className="navlink"><Link to={'/'}>Lower Body</Link></li>
+                    <li className="navlink"><Link to={'/'}>Accessories</Link></li>
+                    <li className="navlink"><Link to={'/catalogo'}>Catalog</Link></li>
+
                 </ul>
             </div>
             {/* Left nav */}

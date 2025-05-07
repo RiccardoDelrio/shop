@@ -3,28 +3,31 @@ import { createContext, useContext, useEffect, useState } from "react";
 const GlobalContext = createContext()
 
 function GlobalProvider({ children }) {
-    const [products, setProducts] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
+/*     const [products, setProducts] = useState([]);
+ */    const [cartItems, setCartItems] = useState([]);
     const [top, setTop] = useState([]);
     const [bottom, setBottom] = useState([]);
     const [accessories, setAccessories] = useState([]);
     const [randomProducts, setRandomProducts] = useState([]); // State for random products
+    const [category, setCategory] = useState('')
+    const [visualizedProducts, setVisualizedProducts] = useState([])
 
     // Fetch all products
-    function fetchIndex() {
-        fetch('http://localhost:3000/api/v1/products')
-            .then(res => res.json())
-            .then(data => {
-                setProducts(data);
-            });
-    }
+    /*     function fetchIndex() {
+            fetch('http://localhost:3000/api/v1/products')
+                .then(res => res.json())
+                .then(data => {
+                    setProducts(data);
+                });
+        } */
 
     // Fetch products by macro area
-    function fetchIndexMacroArea(macroArea, setResults) {
-        fetch(`http://localhost:3000/api/v1/products?macro_area=${macroArea}`)
+    function fetchIndexMacroArea(macroArea, callback) {
+        fetch(`http://localhost:3000/api/v1/products/macroarea/${macroArea}`)
             .then(res => res.json())
             .then(data => {
-                setResults(data);
+                callback(data)
+
             });
     }
 
@@ -38,34 +41,41 @@ function GlobalProvider({ children }) {
     }
 
     // Fetch products by category
-    function fetchProductsByCategory(categorySlug, setResults) {
+    function fetchProductsByCategory(categorySlug) {
         fetch(`http://localhost:3000/api/v1/products?category=${categorySlug}`)
             .then(res => res.json())
             .then(data => {
-                setResults(data); // Save filtered products to the provided setter
+                setCategory(data); // Save filtered products to the provided setter
             });
     }
-
-    useEffect(() => {
-        fetchIndex();
-        fetchIndexMacroArea('top', setTop);
-        fetchIndexMacroArea('bottom', setBottom);
-        fetchIndexMacroArea('accessories', setAccessories);
-        fetchRandomProducts(); // Fetch random products on load
-    }, []);
+    /* 
+        useEffect(() => {
+            fetchIndex();
+            fetchIndexMacroArea('top', setTop);
+            fetchIndexMacroArea('bottom', setBottom);
+            fetchIndexMacroArea('accessories', setAccessories);
+            fetchRandomProducts(); // Fetch random products on load
+        }, []); */
 
 
     return (
         <GlobalContext.Provider
             value={{
-                products,
+
                 top,
+                setTop,
                 bottom,
+                setBottom,
                 accessories,
+                setAccessories,
                 cartItems,
                 setCartItems,
-                randomProducts, // Expose random products
-                fetchProductsByCategory, // Expose category filter function
+                randomProducts,
+                category, // Expose random products
+                visualizedProducts,
+                setVisualizedProducts,
+                fetchProductsByCategory,
+                fetchIndexMacroArea, // Expose category filter function
             }}
         >
             {children}

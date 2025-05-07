@@ -11,6 +11,11 @@
     background: #000;
     flex-wrap: nowrap;
 
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
     @media (min-width: 768px) {
         padding: 1.2rem 40px;
 

@@ -1,9 +1,10 @@
 import React from "react";
 import "./CategoryCards.css";
 
-const CategoryCards = ({ image, title }) => {
+const CategoryCards = ({ image, title, onClick }) => {
+
     return (
-        <div className="col col_category p-1 ">
+        <div onClick={onClick} className="col col_category p-1 ">
 
             <div className="card border-0  ">
                 <img src={image} className="card-img" alt={title} />
