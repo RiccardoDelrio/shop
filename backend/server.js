@@ -31,6 +31,9 @@ http://localhost:3000/api/v1/products
 index w/ macro_area (ONLY top, bottom or accessories)
 http://localhost:3000/api/v1/products?macro_area=top
 
+index w/ random products
+http://localhost:3000/api/v1/products/random
+
 index w/ category (slug)
 http://localhost:3000/api/v1/products?category=outerwear
 
@@ -38,4 +41,8 @@ index w/ group_id
 http://localhost:3000/api/v1/products?group_id=2
 
 show
-http://localhost:3000/api/v1/products/francois-overcoat-black  */
+http://localhost:3000/api/v1/products/francois-overcoat-black
+
+
+
+*/

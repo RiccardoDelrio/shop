@@ -1,13 +1,13 @@
 import { useGlobal } from "../contexts/GlobalContext"; // Corretto il percorso
 
 export default function Catalogo() {
-    const { groupedProducts } = useGlobal();
+    const { } = useGlobal();
 
     return (
         <>
             <div className="main">
-                <div className="row row-cols-1 row-cols-lg-3 pt-5 mt-5 gap-lg-2 gap-sm-3">
-                    {groupedProducts.map((products) => {
+                {/*                <div className="row row-cols-1 row-cols-lg-3 pt-5 mt-5 gap-lg-2 gap-sm-3">
+                    {.map((products) => {
                         const product = products[0]; // Prendi solo il primo oggetto di ogni array
                         return (
                             <div className="col col_category" key={product.id}>
@@ -26,8 +26,8 @@ export default function Catalogo() {
                                 </div>
                             </div>
                         );
-                    })}
                 </div>
+                    })} */}
             </div>
         </>
     );

@@ -4,8 +4,8 @@ import { Link } from 'react-router'
 import { useGlobal } from '../../contexts/GlobalContext'
 
 const Cart = () => {
-    const { products, cartItems, setCartItems, groupedProducts, bottom } = useGlobal()
-    console.log(groupedProducts);
+    const { products, cartItems, setCartItems, groupedProducts, bottom, randomProducts } = useGlobal()
+    console.log(randomProducts);
 
     const [isOpen, setIsOpen] = useState(false)
     /*   const [cartItems, setCartItems] = useState([

@@ -1,49 +1,39 @@
 const connection = require('../database/db')
 
 function index(req, res) {
-    const { macro_area, category, group_id } = req.query;
-
-    let sql = `
+    const sql = `
         SELECT 
-            products.id,
-            products.group_id,
+        products.id,
+            products.slug,
             products.name,
             products.description,
             products.price,
-            products.color,
-            products.size,
-            products.discount,
-            products.stock,
-            products.image,
-            categories.name AS category_name,
-            categories.macro_area
+            products.image
         FROM products
-        INNER JOIN categories ON products.category_id = categories.id
     `;
 
-    const conditions = [];
-    const params = [];
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
 
-    // Add filters dynamically
-    if (macro_area) {
-        conditions.push('categories.macro_area = ?');
-        params.push(macro_area);
-    }
-    if (category) {
-        conditions.push('categories.slug = ?');
-        params.push(category);
-    }
+        res.json(results);
+    });
+}
 
-    if (group_id) { // Add group_id filter
-        conditions.push('products.group_id = ?');
-        params.push(group_id);
-    }
+function getRandomProducts(req, res) {
+    const sql = `
+        SELECT 
+        products.id,
+            products.slug,
+            products.name,
+            products.description,
+            products.price,
+            products.image
+        FROM products
+        ORDER BY RAND()
+        LIMIT 10
+    `;
 
-    if (conditions.length > 0) {
-        sql += ` WHERE ${conditions.join(' AND ')}`;
-    }
-
-    connection.query(sql, params, (err, results) => {
+    connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
 
         res.json(results);
@@ -52,37 +42,83 @@ function index(req, res) {
 
 function show(req, res) {
     const { slug } = req.params;
-
     const sql = `
         SELECT 
-            products.id,
+        products.id,
+            products.slug,
             products.name,
             products.description,
             products.price,
-            products.color,
-            products.size,
-            products.discount,
-            products.stock,
             products.image,
-            categories.name AS category_name,
-            categories.macro_area
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', product_variations.id,
+                    'color', product_variations.color,
+                    'size', product_variations.size,
+                    'stock', product_variations.stock
+                )
+            ) AS variations
         FROM products
-        INNER JOIN categories ON products.category_id = categories.id
+        LEFT JOIN product_variations ON products.id = product_variations.product_id
         WHERE products.slug = ?
+        GROUP BY products.id
     `;
 
     connection.query(sql, [slug], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(404).json({ error: 'Product not found' });
 
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Product not found' });
-        }
+        res.json(results[0]);
+    });
+}
 
-        res.json(results[0]); // Return the first (and only) result
+function getProductsByMacroarea(req, res) {
+    const { slug } = req.params;
+    const sql = `
+        SELECT 
+            products.id,
+            products.slug,
+            products.name,
+            products.description,
+            products.price,
+            products.image
+        FROM products
+        JOIN categories ON products.category_id = categories.id
+        JOIN macroareas ON categories.macroarea_id = macroareas.id
+        WHERE macroareas.slug = ?
+    `;
+
+    connection.query(sql, [slug], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+}
+
+function getProductsByCategory(req, res) {
+    const { slug } = req.params;
+    const sql = `
+        SELECT 
+            products.id,
+            products.slug,
+            products.name,
+            products.description,
+            products.price,
+            products.image
+        FROM products
+        JOIN categories ON products.category_id = categories.id
+        WHERE categories.slug = ?
+    `;
+
+    connection.query(sql, [slug], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
     });
 }
 
 module.exports = {
     index,
     show,
+    getRandomProducts, // Export the new function
+    getProductsByCategory,
+    getProductsByMacroarea,
 };
