@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import "./ProductCards.css";
 
-const ProductCards = ({ name, description, price, image }) => {
+const ProductCards = ({ name, description, price, image, slug }) => {
     return (
 
         <div className="col card-container d-flex justify-content-center align-items-center">
@@ -13,7 +14,7 @@ const ProductCards = ({ name, description, price, image }) => {
                         <h5 className="card-title px-3 ">{name}</h5>
                         <p className="card-description">{description}</p>
                         <p className="card-price">€{price}</p>
-                        <div className="btn card-link">Dettagli</div>
+                        <Link to={`/product/${slug}`} className="btn card-link">Dettagli</Link>
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ function GlobalProvider({ children }) {
     const [randomProducts, setRandomProducts] = useState([]); // State for random products
     const [category, setCategory] = useState('')
     const [visualizedProducts, setVisualizedProducts] = useState([])
+    const [dress, setDress] = useState([]); // State for dress category
 
 
     // Fetch all products
@@ -77,6 +78,8 @@ function GlobalProvider({ children }) {
                 fetchIndexMacroArea,
                 fetchRandomProducts,
                 randomProducts, // Expose category filter function
+                dress,
+                setDress,
             }}
         >
             {children}

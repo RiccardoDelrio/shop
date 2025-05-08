@@ -5,6 +5,7 @@ import SizeTable from './pages/Size-table';
 import StorySite from './pages/Story-site';
 import PrivacyPolicy from './pages/Privacy-policy';
 import Contacts from './pages/Contacts';
+import ProductDetails from './pages/ProductDetails'; // Import the new ProductDetails page
 
 import DefaultLayout from "./layout/defaultLayout";
 import MacroAreaPage from './pages/MacroAreaPage';
@@ -27,7 +28,7 @@ function App() {
             <Route path="/story-site" element={<StorySite />} />
             < Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/contacts" element={<Contacts />} />
-
+            <Route path="/product/:slug" element={<ProductDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

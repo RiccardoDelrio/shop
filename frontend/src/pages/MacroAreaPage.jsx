@@ -204,8 +204,37 @@ const MacroAreaPage = () => {
     return (
         <div>
 
+            <div className="checkboxes">
+                <label className="checkbox">
+                    <input type="checkbox" name="accessori" onChange={handleCheck} checked={searchParams.getAll('macro_area').includes('accessori')} />
+                    Accessori
+                </label>
+                <label className="checkbox">
+                    <input type="checkbox" name="upper-body" onChange={handleCheck} checked={searchParams.getAll('macro_area').includes('upper-body')} />
+                    Upper Body
+                </label>
+                <label className="checkbox">
+                    <input type="checkbox" name="lower-body" onChange={handleCheck} checked={searchParams.getAll('macro_area').includes('lower-body')} />
+                    Lower Body
+                </label>
+            </div>
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+                {visualizedProducts.map((product) => {
+                    return (
+                        <ProductCards
+                            key={product.id}
+                            name={product.name}
+                            description={product.description}
+                            price={product.price}
+                            image={product.images?.[0] || "/img/default.jpg"}
+                            slug={product.slug}
+                        />
+                    );
+                })}
+            </div>
         </div>
-    )
+    );
 }
 
-export default MacroAreaPage
+export default MacroAreaPage;

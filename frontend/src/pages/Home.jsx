@@ -15,7 +15,9 @@ export default function Home() {
         setTop,
         visualizedProducts,
         setVisualizedProducts,
-        randomProducts
+        randomProducts,
+        dress,
+        setDress
     } = useGlobal()
     console.log(randomProducts);
     const handleCategoryClick = (macroArea, setMacroArea, title) => {
@@ -42,7 +44,7 @@ export default function Home() {
                 <h1 className="home_title">
                     Discover timeless elegance: where style meets the art of high fashion.
                 </h1>
-                <div className="row row-cols-1 row-cols-lg-3 pt-5 mt-5">
+                <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 pt-5 mt-5">
                     <Link to={`/products/accessori`}>
                         <CategoryCards
                             onClick={() => handleCategoryClick(accessories, setAccessories, 'accessori')}
@@ -64,6 +66,13 @@ export default function Home() {
                             image="./img/trousers.jpg"
                         />
                     </Link>
+                    <Link to={`/products/dress`}>
+                        <CategoryCards
+                            onClick={() => handleCategoryClick(dress, setDress, 'dress')}
+                            title="Dress"
+                            image="./img/dress.jpg"
+                        />
+                    </Link>
                 </div>
                 <h1 className="home_title ">Discover our collection</h1>
                 <h1 className="home_title fs-1 p-0 m-0">Explore our curated selection of high-end fashion pieces.</h1>
@@ -75,7 +84,9 @@ export default function Home() {
                             name={product.name}
                             description={product.description}
                             price={product.price}
-                            image={product.images?.[0] || "/img/default.jpg"} // Usa un'immagine di default se non disponibile
+                            image={product.images?.[0] || "/img/default.jpg"}
+                            slug={product.slug}
+
                         />
                     ))}
                 </Slider>
