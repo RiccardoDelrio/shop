@@ -8,6 +8,11 @@ router.get('/', eCommerceController.index);
 // Route to fetch all categories
 router.get('/categories', eCommerceController.getCategories);
 
+
+// Route to fetch 10 random products
+router.get('/random', eCommerceController.getRandomProducts);
+
+
 // Route to fetch products by macroarea
 router.get('/macroarea/:slug', eCommerceController.getProductsByMacroarea);
 
@@ -22,8 +27,11 @@ router.get('/:slug', eCommerceController.show);
 // Route to submit email for the newsletter
 router.post('/email', eCommerceController.submitEmail);
 
-
-// Route to fetch 10 random products
-router.get('/random', eCommerceController.getRandomProducts);
+// Order routes
+router.post('/orders', eCommerceController.createOrder);
+router.get('/orders/:id', eCommerceController.getOrder);
+router.post('/orders/track', eCommerceController.trackOrder);
+router.get('/orders/email/:email', eCommerceController.getOrdersByEmail);
+router.patch('/orders/:id/status', eCommerceController.updateOrderStatus);
 
 module.exports = router;
