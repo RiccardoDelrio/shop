@@ -1,0 +1,72 @@
+.slider-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.slider-content {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.slider-content>* {
+    flex: 0 0 auto;
+    width: 250px;
+    /* Larghezza fissa per ogni card */
+    transition: transform 0.3s ease-in-out;
+}
+
+.slider-content>*:hover {
+    transform: scale(1.05);
+    /* Effetto hover per le card */
+}
+
+.slider-content::-webkit-scrollbar {
+    display: none;
+    /* Nasconde la scrollbar */
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.slider-button.left {
+    left: 10px;
+}
+
+.slider-button.right {
+    right: 10px;
+}
+
+.slider-button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.slider-empty {
+    text-align: center;
+    font-size: 1.2rem;
+    color: gray;
+    padding: 2rem;
+}

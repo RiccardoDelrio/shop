@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useLocation, useParams, useSearchParams } from 'react-router'
 import { useGlobal } from '../contexts/GlobalContext'
+import ProductCards from "../components/ProductCard/ProductCard";
 
 const MacroAreaPage = () => {
     // Hook per gestire i parametri della query string
@@ -202,30 +203,7 @@ const MacroAreaPage = () => {
     // Render dei checkbox per selezionare le macro aree da visualizzare
     return (
         <div>
-            <label className='text-white' htmlFor="upper-body">Upper-body</label>
-            <input
-                onChange={handleCheck}
-                checked={searchParams.getAll('macro_area').includes('upper-body')}
-                type="checkbox"
-                name="upper-body"
-                id="upper-body"
-            />
-            <label className='text-white' htmlFor="lower-body">lower-body</label>
-            <input
-                onChange={handleCheck}
-                checked={searchParams.getAll('macro_area').includes('lower-body')}
-                type="checkbox"
-                name="lower-body"
-                id="lower-body"
-            />
-            <label className='text-white' htmlFor="accessori">accessori</label>
-            <input
-                onChange={handleCheck}
-                checked={searchParams.getAll('macro_area').includes('accessori')}
-                type="checkbox"
-                name="accessori"
-                id="accessori"
-            />
+
         </div>
     )
 }

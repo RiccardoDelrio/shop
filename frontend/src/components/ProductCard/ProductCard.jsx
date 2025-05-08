@@ -1,26 +1,20 @@
 import React from "react";
 import "./ProductCards.css";
 
-const ProductCards = ({ image, name, description, price }) => {
+const ProductCards = ({ name, description, price, image }) => {
     return (
-        <div className="col card_products">
 
-            <div className="card">
-                <img
-                    className="card_background"
-                    src="./img/prova.jpg"
-                    alt={name}
-                    width="1920"
-                    height="2193"
-                />
-                <div className="card_content flow w-100">
-                    <div className="card_content--container flow">
-                        <h2 className="card_title">{name}</h2>
-                        <p className="card_description ">
-                            {description}
-                        </p>
+        <div className="col card-container d-flex justify-content-center align-items-center">
+            <div className="card custom-card">
+
+                <img src="/img/prova.jpg" alt={name} className="card-img" />
+                <div className="card-hover">
+                    <div className="card-hover-content ">
+                        <h5 className="card-title px-3 ">{name}</h5>
+                        <p className="card-description">{description}</p>
+                        <p className="card-price">€{price}</p>
+                        <div className="btn card-link">Dettagli</div>
                     </div>
-                    <button className="btn card_button">Dettagli</button>
                 </div>
             </div>
         </div>
