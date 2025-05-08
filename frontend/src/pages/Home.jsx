@@ -2,6 +2,8 @@ import Jumbotron from "../components/Jumbotron/jumbotron";
 import CategoryCards from "../components/CategoryCards/CategoryCards";
 import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router";
+import ProductCards from "../components/ProductCard/ProductCard";
+import Slider from "../components/Slider/Slider";
 export default function Home() {
     const {
         fetchIndexMacroArea,
@@ -12,9 +14,10 @@ export default function Home() {
         top,
         setTop,
         visualizedProducts,
-        setVisualizedProducts
+        setVisualizedProducts,
+        randomProducts
     } = useGlobal()
-
+    console.log(randomProducts);
     const handleCategoryClick = (macroArea, setMacroArea, title) => {
         // Always update visualizedProducts with current data
         if (macroArea.length > 0) {
@@ -62,6 +65,21 @@ export default function Home() {
                         />
                     </Link>
                 </div>
+                <h1 className="home_title ">Discover our collection</h1>
+                <h1 className="home_title fs-1 p-0 m-0">Explore our curated selection of high-end fashion pieces.</h1>
+
+                <Slider>
+                    {randomProducts.map((product) => (
+                        <ProductCards
+                            key={product.id}
+                            name={product.name}
+                            description={product.description}
+                            price={product.price}
+                            image={product.images?.[0] || "/img/default.jpg"} // Usa un'immagine di default se non disponibile
+                        />
+                    ))}
+                </Slider>
+
 
             </div>
         </div>

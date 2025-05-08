@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
 import { useGlobal } from '../contexts/GlobalContext'
+import ProductCards from "../components/ProductCard/ProductCard";
 
 const MacroAreaPage = () => {
     const { slug } = useParams()
@@ -57,6 +58,16 @@ const MacroAreaPage = () => {
 
     return (
         <div>
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3  row-cols-lg-4  row-gap-4  ">
+                {visualizedProducts.map((product) => (
+                    <ProductCards
+                        name={product.name}
+                        description={product.description}
+                        price={product.price}
+                    ></ProductCards>
+
+                ))}
+            </div>
 
         </div>
     )

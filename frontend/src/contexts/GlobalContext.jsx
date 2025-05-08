@@ -12,6 +12,7 @@ function GlobalProvider({ children }) {
     const [category, setCategory] = useState('')
     const [visualizedProducts, setVisualizedProducts] = useState([])
 
+
     // Fetch all products
     /*     function fetchIndex() {
             fetch('http://localhost:3000/api/v1/products')
@@ -48,14 +49,11 @@ function GlobalProvider({ children }) {
                 setCategory(data); // Save filtered products to the provided setter
             });
     }
-    /* 
-        useEffect(() => {
-            fetchIndex();
-            fetchIndexMacroArea('top', setTop);
-            fetchIndexMacroArea('bottom', setBottom);
-            fetchIndexMacroArea('accessories', setAccessories);
-            fetchRandomProducts(); // Fetch random products on load
-        }, []); */
+
+    useEffect(() => {
+
+        fetchRandomProducts(); // Fetch random products on load
+    }, []);
 
 
     return (
