@@ -2,8 +2,6 @@ import Jumbotron from "../components/Jumbotron/jumbotron";
 import CategoryCards from "../components/CategoryCards/CategoryCards";
 import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router";
-import ProductCards from "../components/ProductCard/ProductCard";
-import Slider from "../components/Slider/Slider";
 export default function Home() {
     const {
         fetchIndexMacroArea,

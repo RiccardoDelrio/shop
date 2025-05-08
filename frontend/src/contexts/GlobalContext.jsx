@@ -38,6 +38,7 @@ function GlobalProvider({ children }) {
             .then(res => res.json())
             .then(data => {
                 setRandomProducts(data); // Save random products to state
+                return data
             });
     }
 
@@ -73,7 +74,9 @@ function GlobalProvider({ children }) {
                 visualizedProducts,
                 setVisualizedProducts,
                 fetchProductsByCategory,
-                fetchIndexMacroArea, // Expose category filter function
+                fetchIndexMacroArea,
+                fetchRandomProducts,
+                randomProducts, // Expose category filter function
             }}
         >
             {children}
