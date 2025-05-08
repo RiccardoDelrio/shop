@@ -27,4 +27,11 @@ router.get('/:slug', eCommerceController.show);
 // Route to submit email for the newsletter
 router.post('/email', eCommerceController.submitEmail);
 
+// Order routes
+router.post('/orders', eCommerceController.createOrder);
+router.get('/orders/:id', eCommerceController.getOrder);
+router.post('/orders/track', eCommerceController.trackOrder);
+router.get('/orders/email/:email', eCommerceController.getOrdersByEmail);
+router.patch('/orders/:id/status', eCommerceController.updateOrderStatus);
+
 module.exports = router;
