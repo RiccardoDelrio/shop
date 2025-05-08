@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<Home />} />
 
             <Route path="/catalogo" element={<Catalogo />} />
-            <Route path='/products/:slug' element={<MacroAreaPage />} />
+            <Route path='/products' element={<MacroAreaPage />} />
             <Route path="/size-table" element={<SizeTable />} />
             <Route path="/story-site" element={<StorySite />} />
             < Route path="/privacy-policy" element={<PrivacyPolicy />} />

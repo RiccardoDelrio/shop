@@ -1,9 +1,26 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useLocation, useParams, useSearchParams } from 'react-router'
 import { useGlobal } from '../contexts/GlobalContext'
 
 const MacroAreaPage = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+    const location = useLocation()
+    const params = new URLSearchParams();
+
+    const setMultipleParams = () => {
+        setSearchParams(params)
+
+    }
+    useEffect(() => {
+        setMultipleParams()
+        fetchData()
+    }, [])
+    console.log(searchParams.getAll('macro_area'));
+    console.log('params', params);
+
+    /* Params */
     const { slug } = useParams()
+    /* Global context */
     const {
         fetchIndexMacroArea,
         accessories,
@@ -15,6 +32,8 @@ const MacroAreaPage = () => {
         visualizedProducts,
         setVisualizedProducts
     } = useGlobal()
+
+    /* Find this area */
 
     const areas = [{
         state: accessories,
@@ -33,31 +52,90 @@ const MacroAreaPage = () => {
 
     }]
 
-    const thisArea = areas.find(area => area.name === slug)
+    const thisArea = areas.find(area => area.name === slug) || null
 
     console.log(thisArea);
 
+    const foundedArea = areas.filter(area => searchParams.getAll('macro_area').includes(area.name))
+    console.log('FindArea', foundedArea);
 
+
+    /*     function fetchData() {
+            if (visualizedProducts.length < 1) {
+                fetchIndexMacroArea(thisArea.name, (data) => {
+                    thisArea.setState(data)
+                    setVisualizedProducts(data)
+                })
+    
+            }
+        } */
     function fetchData() {
         if (visualizedProducts.length < 1) {
-            fetchIndexMacroArea(thisArea.name, (data) => {
-                thisArea.setState(data)
-                setVisualizedProducts(data)
+            let allProducts = [];
+            let completedFetches = 0
+            foundedArea.forEach(area => {
+                fetchIndexMacroArea(area.name, (data) => {
+                    area.setState(data)
+                    allProducts = [...allProducts, ...data]
+                    completedFetches++
+                    if (completedFetches === foundedArea.length) {
+                        setVisualizedProducts(allProducts)
+                    }
+                })
             })
-
         }
     }
-    useEffect(() => {
-        fetchData()
-    }, [slug])
+    /*     useEffect(() => {
+            if (thisArea) {
+    
+                fetchData()
+            }
+        }, [slug]) */
 
 
 
-    console.log(visualizedProducts);
+    console.log('Prodotti visualizzati', visualizedProducts);
+    function handleCheck(e) {
+        const current = new URLSearchParams(searchParams);
+        const name = e.target.name;
+
+        if (searchParams.getAll('macro_area').includes(name)) {
+            // Rimuovi il parametro
+            current.delete('macro_area', name);
+        } else {
+            // Aggiungi il parametro
+            current.append('macro_area', name);
+        }
+
+        setSearchParams(current);
+    }
 
     return (
         <div>
-
+            <label className='text-white' htmlFor="upper-body">Upper-body</label>
+            <input
+                onChange={handleCheck}
+                checked={searchParams.getAll('macro_area').includes('upper-body')}
+                type="checkbox"
+                name="upper-body"
+                id="upper-body"
+            />
+            <label className='text-white' htmlFor="lower-body">lower-body</label>
+            <input
+                onChange={handleCheck}
+                checked={searchParams.getAll('macro_area').includes('lower-body')}
+                type="checkbox"
+                name="lower-body"
+                id="lower-body"
+            />
+            <label className='text-white' htmlFor="accessori">accessori</label>
+            <input
+                onChange={handleCheck}
+                checked={searchParams.getAll('macro_area').includes('accessori')}
+                type="checkbox"
+                name="accessori"
+                id="accessori"
+            />
         </div>
     )
 }
