@@ -1,117 +1,225 @@
-# List of all routes from the Backend
+# Boolean High Fashion E-commerce API Documentation
 
-## INDEX-STYLE ROUTES
+This document provides comprehensive information about all available API endpoints for the Boolean haute couture e-commerce platform.
 
-### index
+## Base URL
 
-> **GET** <http://localhost:3000/api/v1/products>
+All API requests should be made to: `http://localhost:3000/api/v1/`
 
-### fetch all the categories
+## Macroarea and Category Routes
 
-> **GET** <http://localhost:3000/api/v1/products/categories>
+### Get All Macroareas
 
-### index filter with macroarea
+```plaintext
+http://localhost:3000/api/v1/macroareas
+```
 
-ONLY valid inputs: upper-body, lower-body, dress, accessori
+Returns a list of all macroareas (product departments) in the system along with their associated categories.
 
-> **GET** <http://localhost:3000/api/v1/products/macroarea/:slug>
+### Get Categories by Macroarea
 
-### index filter with category (slug)
+```plaintext
+http://localhost:3000/api/v1/macroareas/{slug}/categories
+```
 
-ONLY valid inputs: orecchini, bracciali, collane, giacche, cappotti, maglie, maglioni, pantaloni, gonne, vestitini
+Returns all categories belonging to the specified macroarea.
 
-> **GET** <http://localhost:3000/api/v1/products/category/:slug>
+**Valid macroarea endpoints:**
 
-### fetch 10 random products
+```plaintext
+http://localhost:3000/api/v1/macroareas/upper-body/categories
+http://localhost:3000/api/v1/macroareas/lower-body/categories
+http://localhost:3000/api/v1/macroareas/dress/categories
+http://localhost:3000/api/v1/macroareas/accessori/categories
+```
 
-**GET** <http://localhost:3000/api/v1/products/random>
+### Get Products by Macroarea
 
-## SHOW ROUTE with slug
+```plaintext
+http://localhost:3000/api/v1/macroareas/{slug}/products
+```
 
-> **GET** <http://localhost:3000/api/v1/products/:slug>
+Returns all products belonging to all categories under the specified macroarea.
 
-## CREATE EMAIL ROUTE FOR THE NEWSLETTER (POST ONLY!)
+**Valid macroarea endpoints:**
 
-**!!!! NEEDS FRONTEND VALIDATION !!!**
+```plaintext
+http://localhost:3000/api/v1/macroareas/upper-body/products
+http://localhost:3000/api/v1/macroareas/lower-body/products
+http://localhost:3000/api/v1/macroareas/dress/products
+http://localhost:3000/api/v1/macroareas/accessori/products
+```
 
-> ***POST*** <http://localhost:3000/api/v1/products/email>
+### Get All Categories
 
-EXAMPLE BODY:  
+```plaintext
+http://localhost:3000/api/v1/macroareas/categories
+```
 
-    {  
-        "email": "any.email@goes.here"  
-    }  
+Returns a flattened list of all product categories in the system with their associated macroarea information.
 
-**!!!! NEEDS FRONTEND VALIDATION !!!**
+### Get Products by Category
 
-## ORDER ROUTES
+```plaintext
+http://localhost:3000/api/v1/macroareas/categories/{slug}
+```
 
-### CREATE AN ORDER
+Returns all products belonging to a specific category.
 
-**!!!! NEEDS FRONTEND VALIDATION !!!**
+**Example category endpoints:**
 
-> ***POST*** <http://localhost:3000/api/v1/products/orders>
+```plaintext
+http://localhost:3000/api/v1/macroareas/categories/cappotti
+http://localhost:3000/api/v1/macroareas/categories/giacche
+http://localhost:3000/api/v1/macroareas/categories/maglie
+http://localhost:3000/api/v1/macroareas/categories/maglioni
+http://localhost:3000/api/v1/macroareas/categories/pantaloni
+http://localhost:3000/api/v1/macroareas/categories/gonne
+http://localhost:3000/api/v1/macroareas/categories/vestitini
+http://localhost:3000/api/v1/macroareas/categories/orecchini
+http://localhost:3000/api/v1/macroareas/categories/bracciali
+http://localhost:3000/api/v1/macroareas/categories/collane
+```
 
-EXAMPLE BODY:
+## Product Routes
 
-        {  
-            "customer_info": {  
-                "first_name": "Elizabeth",  
-                "last_name": "Swann",  
-                "email": "elizabeth@blackpearl.com",  
-                "phone": "555-123-4567",  
-                "address": "23 Pearl Street",  
-                "city": "Port Royal",  
-                "state": "Caribbean",  
-                "postal_code": "12345",  
-                "country": "Jamaica"  
-            },  
-            "items": [  
-                {  
-                    "product_id": 1,  
-                    "product_variation_id": 4,  
-                    "quantity": 1,  
-                    "price": 1200.00  
-                },  
-                {  
-                    "product_id": 2,  
-                    "product_variation_id": null,  
-                    "quantity": 2,  
-                    "price": 150.00  
-                }  
-            ],  
-                "delivery": 15.00,  
-                "total": 1500.00,  
-                "discount": 50.00  
-        }  
+### Get All Products
 
-**!!!! NEEDS FRONTEND VALIDATION !!!**
+```plaintext
+http://localhost:3000/api/v1/products
+```
 
-### DISPLAY ALL DETAILS OF ONE ORDER WITH ORDER ID (admin-side)
+Returns a list of all products in the system.
 
-> **GET** <http://localhost:3000/api/v1/products/orders/:id>
+### Get Product by ID
 
-### DISPLAY SUMMARY OF THE ORDER BY USING MAIL AND ORDER_ID (client-side)
+```plaintext
+http://localhost:3000/api/v1/products/{id}
+```
 
-> ***POST*** <http://localhost:3000/api/v1/products/orders/track>
+Returns detailed information about a specific product.
 
-EXAMPLE BODY:
+### Get Random Products
 
-        {  
-            "email": "elizabeth@blackpearl.com",  
-            "order_id": 1  
-        }  
-    
-### RETRIEVE ALL ORDERS ASSOCIATED WITH THE SAME EMAIL
+```plaintext
+http://localhost:3000/api/v1/products/random
+```
 
-> **GET** <http://localhost:3000/api/v1/products/orders/email/:email>
+Returns a selection of random products, useful for the homepage.
 
-### UPDATE STATUS OF THE ORDER (admin-side) (Pending, Processing, Completed OR Cancelled)
+### Search Products
 
-> ***PATCH*** <http://localhost:3000/api/v1/products/orders/:id/status>
+```plaintext
+http://localhost:3000/api/v1/products/search?q={searchTerm}
+```
 
-EXAMPLE BODY:
+Search products by name or description.
 
-        {  
-            "status": "Processing"  
-        }  
+## Product Image Routes
+
+### Get All Images for a Product
+
+```plaintext
+http://localhost:3000/api/v1/products/images/{productId}
+```
+
+Returns all images associated with a specific product.
+
+## Order Management Routes
+
+### Create a New Order
+
+```plaintext
+http://localhost:3000/api/v1/orders
+```
+
+Create a new order in the system.
+
+**Request body:**
+
+```json
+{
+  "user_id": 1,
+  "items": [
+    {
+      "product_id": 5,
+      "product_variation_id": 12,
+      "quantity": 2
+    }
+  ]
+}
+```
+
+### Get Order by ID
+
+```plaintext
+http://localhost:3000/api/v1/orders/{id}
+```
+
+Retrieve information about a specific order.
+
+### Update Order Status
+
+```plaintext
+http://localhost:3000/api/v1/orders/{id}/status
+```
+
+Update the status of an order.
+
+**Request body:**
+
+```json
+{
+  "status": "Processing"
+}
+```
+
+**Valid status values:**
+
+- `Pending`
+- `Processing`
+- `Completed`
+- `Cancelled`
+
+### Track Order
+
+```plaintext
+http://localhost:3000/api/v1/orders/track
+```
+
+Track an order using email and order ID.
+
+**Request body:**
+
+```json
+{
+  "email": "customer@example.com",
+  "order_id": 1
+}
+```
+
+### Get Orders by Email
+
+```plaintext
+http://localhost:3000/api/v1/orders/email/{email}
+```
+
+Get all orders associated with a specific email address.
+
+## Newsletter Routes
+
+### Subscribe to Newsletter
+
+```plaintext
+http://localhost:3000/api/v1/newsletter/subscribe
+```
+
+Subscribe an email address to the newsletter.
+
+**Request body:**
+
+```json
+{
+  "email": "customer@example.com"
+}
+```

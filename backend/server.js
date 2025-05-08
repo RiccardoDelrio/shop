@@ -10,22 +10,23 @@ const cors = require("cors");
 app.use(cors({ origin: process.env.FRONT_URL || 'http://localhost:5173' }));
 
 app.use(express.static('public'));
-
 app.use(express.json());
 
+// Home page route
 app.get('/', (req, res) => {
-    res.send('Hello motherfuckers!');
+    res.send('Boolean Shop API - Welcome to our e-commerce API');
 });
 
 // Apply query validation globally
 app.use(validateQuery);
 
-app.use('/api/v1/products', eCommerceRouter)
+// API Routes
+app.use('/api/v1', eCommerceRouter);
 
 app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`);
+    console.log(`API available at http://localhost:${PORT}/api/v1`);
 })
-
 
 // Catch-all for undefined routes
 app.use(notFound);
@@ -33,96 +34,29 @@ app.use(notFound);
 // Error handling middleware
 app.use(serverError);
 
-/* 
-
-// index
-GET http://localhost:3000/api/v1/products
-
-// get all the categories
-GET http://localhost:3000/api/v1/products/categories
-
-// index filter w/ macro_area (upper-body, lower-body, dress, accessori)
-GET http://localhost:3000/api/v1/products/macroarea/upper-body
-
-// index filter w/ category (slug) (orecchini, bracciali, collane, giacche, cappotti, maglie, maglioni, pantaloni, gonne, vestitini)
-GET http://localhost:3000/api/v1/products/category/orecchini
-
-
-// show w/ slug
-GET http://localhost:3000/api/v1/products/cappotto-lana-pregiata
-
-
-// create email (POST ONLY!)
-POST http://localhost:3000/api/v1/products/email
-
-    EXAMPLE BODY:
-    {
-        "email": "any.email@goes.here"
-    }
-        !!!! NEEDS FRONTEND VALIDATION 
-
-
-// 10 random products
-GET http://localhost:3000/api/v1/products/random
-
-
-// orders routes
-    // CREATE AN ORDER
-        POST http://localhost:3000/api/v1/products/orders
-
-        EXAMPLE BODY:
-        {
-        "customer_info": {
-            "first_name": "Elizabeth",
-            "last_name": "Swann",
-            "email": "elizabeth@blackpearl.com",
-            "phone": "555-123-4567",
-            "address": "23 Pearl Street",
-            "city": "Port Royal",
-            "state": "Caribbean",
-            "postal_code": "12345",
-            "country": "Jamaica"
-        },
-        "items": [
-            {
-            "product_id": 1,
-            "product_variation_id": 4,
-            "quantity": 1,
-            "price": 1200.00
-            },
-            {
-            "product_id": 2,
-            "product_variation_id": null,
-            "quantity": 2,
-            "price": 150.00
-            }
-        ],
-        "delivery": 15.00,
-        "total": 1500.00,
-        "discount": 50.00
-        }
-
-    // DISPLAY ALL DETAILS OF ONE ORDER WITH ORDER ID (admin-side)
-        GET http://localhost:3000/api/v1/products/orders/:id
-
-    // DISPLAY SUMMARY OF THE ORDER BY USING MAIL AND ORDER_ID (client-side)
-        POST http://localhost:3000/api/v1/products/orders/track
-        
-        EXAMPLE BODY:
-        {
-            "email": "elizabeth@blackpearl.com",
-            "order_id": 1
-        }
-    
-    // RETRIEVE ALL ORDERS ASSOCIATED WITH THE SAME EMAIL
-        GET http://localhost:3000/api/v1/products/orders/email/:email
-
-    // UPDATE STATUS OF THE ORDER (admin-side) (Pending, Processing, Completed, Cancelled)
-        PATCH http://localhost:3000/api/v1/products/orders/:id/status
-
-        EXAMPLE BODY:
-        {
-            "status": "Processing"  
-        }
-
-*/
+/**
+ * API ENDPOINT REFERENCE
+ * 
+ * MACROAREAS
+ * GET /api/v1/macroareas         - All macroareas with categories
+ * GET /api/v1/macroareas/{slug}/categories - Categories by macroarea
+ * GET /api/v1/macroareas/{slug}/products - Products by macroarea
+ * GET /api/v1/macroareas/categories - All categories
+ * GET /api/v1/macroareas/categories/{slug} - Products by category
+ *
+ * PRODUCTS
+ * GET /api/v1/products           - All products
+ * GET /api/v1/products/{id}      - Product details
+ * GET /api/v1/products/random    - Random products
+ * GET /api/v1/products/search    - Search products
+ * 
+ * ORDERS
+ * POST /api/v1/orders            - Create order
+ * GET /api/v1/orders/{id}        - Order details
+ * PATCH /api/v1/orders/{id}/status - Update status
+ * POST /api/v1/orders/track      - Track order
+ * GET /api/v1/orders/email/{email} - Orders by email
+ * 
+ * NEWSLETTER
+ * POST /api/v1/newsletter/subscribe - Subscribe
+ */

@@ -1,0 +1,635 @@
+{
+    "info": {
+        "_postman_id": "b8a7b28c-4c26-4c3b-8b77-c9e3aef94fb2",
+        "name": "Boolean E-commerce API Collection",
+        "description": "API collection for the Boolean high fashion e-commerce platform.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Macroarea and Category Routes",
+            "item": [
+                {
+                    "name": "Get All Macroareas",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas"
+                            ]
+                        },
+                        "description": "Returns a list of all macroareas (product departments) in the system along with their associated categories."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Categories by Macroarea (Upper Body)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/upper-body/categories",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "upper-body",
+                                "categories"
+                            ]
+                        },
+                        "description": "Returns all categories belonging to the upper-body macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Categories by Macroarea (Lower Body)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/lower-body/categories",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "lower-body",
+                                "categories"
+                            ]
+                        },
+                        "description": "Returns all categories belonging to the lower-body macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Categories by Macroarea (Dress)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/dress/categories",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "dress",
+                                "categories"
+                            ]
+                        },
+                        "description": "Returns all categories belonging to the dress macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Categories by Macroarea (Accessori)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/accessori/categories",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "accessori",
+                                "categories"
+                            ]
+                        },
+                        "description": "Returns all categories belonging to the accessori macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Macroarea (Upper Body)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/upper-body/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "upper-body",
+                                "products"
+                            ]
+                        },
+                        "description": "Returns all products belonging to all categories under the upper-body macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Macroarea (Lower Body)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/lower-body/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "lower-body",
+                                "products"
+                            ]
+                        },
+                        "description": "Returns all products belonging to all categories under the lower-body macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Macroarea (Dress)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/dress/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "dress",
+                                "products"
+                            ]
+                        },
+                        "description": "Returns all products belonging to all categories under the dress macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Macroarea (Accessori)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/accessori/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "accessori",
+                                "products"
+                            ]
+                        },
+                        "description": "Returns all products belonging to all categories under the accessori macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Categories",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/categories",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "categories"
+                            ]
+                        },
+                        "description": "Returns a flattened list of all product categories in the system with their associated macroarea information."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Category (Cappotti)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/categories/cappotti",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "categories",
+                                "cappotti"
+                            ]
+                        },
+                        "description": "Returns all products belonging to the cappotti (coats) category."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Category (Giacche)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/categories/giacche",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "categories",
+                                "giacche"
+                            ]
+                        },
+                        "description": "Returns all products belonging to the giacche (jackets) category."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Category (Maglie)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/macroareas/categories/maglie",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "macroareas",
+                                "categories",
+                                "maglie"
+                            ]
+                        },
+                        "description": "Returns all products belonging to the maglie (shirts) category."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Product Routes",
+            "item": [
+                {
+                    "name": "Get All Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products"
+                            ]
+                        },
+                        "description": "Returns a list of all products in the system."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "1"
+                            ]
+                        },
+                        "description": "Returns detailed information about a specific product."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Random Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/random",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "random"
+                            ]
+                        },
+                        "description": "Returns a selection of random products, useful for the homepage."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/search?q=dress",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "q",
+                                    "value": "dress"
+                                }
+                            ]
+                        },
+                        "description": "Search products by name or description."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Images for a Product",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/images/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "images",
+                                "1"
+                            ]
+                        },
+                        "description": "Returns all images associated with a specific product."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Newsletter Routes",
+            "item": [
+                {
+                    "name": "Subscribe to Newsletter",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/newsletter/subscribe",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "newsletter",
+                                "subscribe"
+                            ]
+                        },
+                        "description": "Subscribe an email address to the newsletter."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Order Management Routes",
+            "item": [
+                {
+                    "name": "Create a New Order",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"user_id\": 1,\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"product_variation_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/orders",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders"
+                            ]
+                        },
+                        "description": "Create a new order in the system."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Order by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/orders/1",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "1"
+                            ]
+                        },
+                        "description": "Retrieve information about a specific order."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Order Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"Processing\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/orders/1/status",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "1",
+                                "status"
+                            ]
+                        },
+                        "description": "Update the status of an order. Valid statuses are: 'Pending', 'Processing', 'Completed', 'Cancelled'."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Track Order",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"order_id\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/orders/track",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "track"
+                            ]
+                        },
+                        "description": "Track order status using email and order ID."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Orders by Email",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/orders/email/customer@example.com",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "orders",
+                                "email",
+                                "customer@example.com"
+                            ]
+                        },
+                        "description": "Get all orders associated with a specific email address."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
