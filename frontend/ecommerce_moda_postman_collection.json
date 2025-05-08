@@ -480,6 +480,30 @@
                         "description": "Subscribe an email address to the newsletter."
                     },
                     "response": []
+                },
+                {
+                    "name": "Unsubscribe from Newsletter",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/newsletter/unsubscribe/customer@example.com",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "newsletter",
+                                "unsubscribe",
+                                "customer@example.com"
+                            ]
+                        },
+                        "description": "Unsubscribe an email address from the newsletter."
+                    },
+                    "response": []
                 }
             ]
         },
