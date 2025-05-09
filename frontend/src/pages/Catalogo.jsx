@@ -2,6 +2,7 @@ import { useGlobal } from "../contexts/GlobalContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductCards from "../components/ProductCard/ProductCard";
+import ProductCardListView from "../components/ProductCarListView/ProductCarListView";
 
 export default function Catalogo() {
     const { fetchMacroareas } = useGlobal(); // Removed as it is unused
@@ -79,7 +80,7 @@ export default function Catalogo() {
                         </select>
                     </div>
                     <button className="btn btn-outline-light" onClick={toggleView}>
-                        <i className={`bi ${isGridView ? 'bi-list' : 'bi-grid-3x3-gap'}`}></i>
+                        <i className={`bi ${isGridView ? 'bi-grid-3x3-gap' : 'bi-list'}`}></i>
                     </button>
                 </div>
             </div>
@@ -96,16 +97,26 @@ export default function Catalogo() {
                                 </div>
                             </div>
                         ) : (
-                            <div className={`row ${isGridView ? 'row-cols-1 row-cols-md-2 row-cols-xl-3' : 'row-cols-1'} g-4`}>
+                            <div className={`row row-cols-1 row-cols-md-2 row-cols-xl-3  g-4`}>
                                 {products.map((product) => (
-                                    <ProductCards
+
+                                    isGridView ? (<ProductCards
                                         key={product.id}
                                         name={product.name}
                                         description={product.description}
                                         price={product.price}
                                         image={product.images?.[0]?.url || "/img/default.jpg"}
                                         slug={product.slug}
-                                    />
+                                    />) : (<ProductCardListView
+                                        key={`List-${product.id}`}
+                                        name={product.name}
+                                        description={product.description}
+                                        price={product.price}
+                                        image={product.images?.[0]?.url || "/img/default.jpg"}
+                                        slug={product.slug}
+
+                                    />)
+
                                 ))}
                             </div>
                         )}
