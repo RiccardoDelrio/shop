@@ -21,7 +21,6 @@ function App() {
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Home />} />
-
             <Route path="/catalogo" element={<Catalogo />} />
             <Route path='/products' element={<MacroAreaPage />} />
             <Route path="/size-table" element={<SizeTable />} />
