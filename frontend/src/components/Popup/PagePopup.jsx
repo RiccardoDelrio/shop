@@ -94,7 +94,7 @@ export default function WelcomePopup() {
                                     />
                                     <label htmlFor="emailInput">Email</label>
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">
+                                <button type="submit" className="btn button w-100">
                                     Iscriviti
                                 </button>
                             </form>
