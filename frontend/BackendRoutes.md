@@ -21,7 +21,7 @@ Returns all categories for a given macroarea (by slug).
 ### Get Products by Macroarea
 
 `GET /macroareas/:slug/products`
-Returns all products for a given macroarea (by slug).
+Returns all products for a given macroarea (by slug). This is the only way to get all products for a macroarea.
 
 ## Category Routes
 
@@ -32,8 +32,8 @@ Returns a flat list of all categories (with macroarea info).
 
 ### Get Products by Category
 
-`GET /categories/:slug/products`
-Returns all products for a given category (by slug).
+`GET /categories/:slug`
+Returns all products for a given category (by slug). Category routes do not return macroarea products directly.
 
 ## Product Routes
 
@@ -52,6 +52,11 @@ Returns details for a product (by slug).
 `GET /products/random`
 Returns a random selection of products.
 
+### Get Discounted Products
+
+`GET /products/discounted`
+Returns all products that have a discount.
+
 ### Search Products
 
 `GET /products/search?q=...`
@@ -68,16 +73,32 @@ Create a new order.
 
 ```json
 {
-  "user_id": 1,
+  "customer_info": {
+    "first_name": "Mario",
+    "last_name": "Rossi",
+    "email": "customer@example.com",
+    "phone": "123456789",
+    "address": "Via Roma 1",
+    "city": "Milano",
+    "state": "MI",
+    "postal_code": "20100",
+    "country": "Italy"
+  },
   "items": [
     {
       "product_id": 5,
       "product_variation_id": 12,
-      "quantity": 2
+      "quantity": 2,
+      "price": 100
     }
-  ]
+  ],
+  "delivery": 10,
+  "total": 200,
+  "discount": 0
 }
 ```
+
+**Note:** `customer_info.email` is required.
 
 ### Get Order by ID
 

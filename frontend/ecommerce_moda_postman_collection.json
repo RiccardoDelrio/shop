@@ -75,7 +75,7 @@
                                 "products"
                             ]
                         },
-                        "description": "Returns all products for the specified macroarea (by slug)."
+                        "description": "Returns all products for the specified macroarea (by slug). This is the only endpoint to get all products for a macroarea."
                     },
                     "response": []
                 }
@@ -112,7 +112,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/categories/cappotti/products",
+                            "raw": "http://localhost:3000/api/v1/categories/cappotti",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -122,11 +122,10 @@
                                 "api",
                                 "v1",
                                 "categories",
-                                "cappotti",
-                                "products"
+                                "cappotti"
                             ]
                         },
-                        "description": "Returns all products for the specified category (by slug)."
+                        "description": "Returns all products for the specified category (by slug). Category routes do not return macroarea products."
                     },
                     "response": []
                 }
@@ -163,7 +162,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/francois-overcoat-beige",
+                            "raw": "http://localhost:3000/api/v1/products/giacca-pelle",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -173,7 +172,7 @@
                                 "api",
                                 "v1",
                                 "products",
-                                "francois-overcoat-beige"
+                                "giacca-pelle"
                             ]
                         },
                         "description": "Returns details for a product (by slug)."
@@ -231,6 +230,29 @@
                         "description": "Search products by name or description."
                     },
                     "response": []
+                },
+                {
+                    "name": "Get Discounted Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/discounted",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "discounted"
+                            ]
+                        },
+                        "description": "Returns all products that have a discount. Example response: [{...product fields...}]"
+                    },
+                    "response": []
                 }
             ]
         },
@@ -249,7 +271,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"user_id\": 1,\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"product_variation_id\": 12,\n      \"quantity\": 2\n    }\n  ]\n}"
+                            "raw": "{\n  \"customer_info\": {\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Rossi\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"123456789\",\n    \"address\": \"Via Roma 1\",\n    \"city\": \"Milano\",\n    \"state\": \"MI\",\n    \"postal_code\": \"20100\",\n    \"country\": \"Italy\"\n  },\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"product_variation_id\": 12,\n      \"quantity\": 2,\n      \"price\": 100\n    }\n  ],\n  \"delivery\": 10,\n  \"total\": 200,\n  \"discount\": 0\n}"
                         },
                         "url": {
                             "raw": "http://localhost:3000/api/v1/orders",
@@ -264,7 +286,7 @@
                                 "orders"
                             ]
                         },
-                        "description": "Create a new order."
+                        "description": "Create a new order. Requires customer_info.email. If email is missing, returns: {\n  \"error\": \"Customer email is required for orders\"\n}"
                     },
                     "response": []
                 },

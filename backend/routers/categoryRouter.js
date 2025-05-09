@@ -3,9 +3,9 @@ const router = express.Router();
 const CategoryController = require('../controllers/CategoryController');
 
 // Get all categories (flattened list)
-router.get('/categories', CategoryController.getAllCategories);
+router.get('/', CategoryController.getAllCategories);
 
-// Get products by category
-router.get('/categories/:slug', CategoryController.getProductsByCategory);
+// Get products by category (by slug)
+router.get('/:slug', CategoryController.getProductsByCategory);
 
 module.exports = router;

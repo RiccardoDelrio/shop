@@ -1,18 +1,15 @@
 const connection = require('../database/db');
 
-// Get all categories
+// Get all categories (flat list)
 function getAllCategories(req, res) {
     const sql = `
         SELECT 
-            categories.id,
-            categories.name,
-            categories.slug,
-            categories.description,
-            categories.macroarea_id,
-            macroareas.name as macroarea_name,
-            macroareas.slug as macroarea_slug
+            id,
+            name,
+            slug,
+            description,
+            macroarea_id
         FROM categories
-        JOIN macroareas ON categories.macroarea_id = macroareas.id
     `;
 
     connection.query(sql, (err, results) => {
@@ -55,6 +52,8 @@ function getAllMacroareas(req, res) {
                 } catch (e) {
                     macroarea.categories = [];
                 }
+            } else if (Array.isArray(macroarea.categories)) {
+                // Already an array, do nothing
             } else if (!macroarea.categories) {
                 macroarea.categories = [];
             }
@@ -112,9 +111,15 @@ function getProductsByMacroarea(req, res) {
 
         // Parse the JSON string to an actual array for each product
         results.forEach(product => {
-            if (product.images) {
-                product.images = JSON.parse(product.images);
-            } else {
+            if (typeof product.images === 'string') {
+                try {
+                    product.images = JSON.parse(product.images);
+                } catch (e) {
+                    product.images = [];
+                }
+            } else if (Array.isArray(product.images)) {
+                // Already an array, do nothing
+            } else if (!product.images) {
                 product.images = [];
             }
         });
@@ -123,7 +128,7 @@ function getProductsByMacroarea(req, res) {
     });
 }
 
-// Get products by category
+// Get products by category (by slug)
 function getProductsByCategory(req, res) {
     const { slug } = req.params;
 
@@ -171,9 +176,15 @@ function getProductsByCategory(req, res) {
 
         // Parse the JSON string to an actual array for each product
         results.forEach(product => {
-            if (product.images) {
-                product.images = JSON.parse(product.images);
-            } else {
+            if (typeof product.images === 'string') {
+                try {
+                    product.images = JSON.parse(product.images);
+                } catch (e) {
+                    product.images = [];
+                }
+            } else if (Array.isArray(product.images)) {
+                // Already an array, do nothing
+            } else if (!product.images) {
                 product.images = [];
             }
         });

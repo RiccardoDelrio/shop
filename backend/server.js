@@ -44,7 +44,7 @@ app.use(serverError);
  *
  * CATEGORIES
  * GET /api/v1/categories                  - All categories (flat list)
- * GET /api/v1/categories/:slug/products   - All products for a category (by slug)
+ * GET /api/v1/categories/:slug            - All products for a category (by slug)
  *
  * PRODUCTS
  * GET /api/v1/products                    - All products
