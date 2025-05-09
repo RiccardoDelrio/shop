@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from './cart.module.css'
+import './cart.css'
 import { Link } from 'react-router'
 import { useGlobal } from '../../contexts/GlobalContext'
 
@@ -62,77 +62,82 @@ const Cart = () => {
     const toggleCart = () => {
         setIsOpen(!isOpen)
     }
+    const handleRemoveItems = (index) => {
 
-    const handleQuantity = (id, action) => {
-        setCartItems(prev => prev.map(item => {
-            if (item.id === id) {
-                return {
-                    ...item,
-                    quantity: action === 'add' ? item.quantity + 1 : Math.max(1, item.quantity - 1)
-                }
-            }
-            return item
-        }))
+        setCartItems(cartItems.filter((item, idx) => idx !== index))
     }
+
+    /*   const handleQuantity = (id, action) => {
+          setCartItems(prev => prev.map(item => {
+              if (item.id === id) {
+                  return {
+                      ...item,
+                      quantity: action === 'add' ? item.quantity + 1 : Math.max(1, item.quantity - 1)
+                  }
+              }
+              return item
+          }))
+      } */
 
     function calculateTotal(items) {
         return items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
     }
 
     return (
-        <div className={styles.cartContainer}>
-            <div className={styles.cart} onClick={toggleCart}>
+        <div className='cartContainer'>
+            {cartItems.length > 0 && (<div className='circle'></div>)}
+            <div className='cart' onClick={toggleCart}>
                 <i className='fa-solid fa-cart-shopping'></i>
             </div>
 
             {isOpen && (
-                <div className={styles.cartPopup}>
-                    <div className={styles.cartHeader}>
+                <div className='cartPopup'>
+                    <div className='cartHeader'>
                         <h3>Il tuo carrello</h3>
                         <button onClick={toggleCart}>
                             <i className="fa-solid fa-xmark"></i>
                         </button>
                     </div>
 
-                    <div className={`${styles.cartContent} ${cartItems.length > 0 ? '' : 'align-items-center'}`}>
+                    <div className={`cartContent ${cartItems.length > 0 ? '' : 'align-items-center'}`}>
                         {cartItems.length > 0 ? (
-                            <div className={styles.cartItems}>
+                            <div className='cartItems'>
                                 {cartItems.map((item, index) => (
-                                    <div key={index} className={styles.cartItem}>
+                                    <div key={index} className='cartItem'>
                                         <div>
-                                            <img className={styles.itemImage} src={item.image} alt={item.name} />
+                                            <img className='itemImage' src={item.image} alt={item.name} />
                                         </div>
-                                        <div className={styles.cartItemContent}>
+                                        <div className='cartItemContent'>
                                             <div>{item.name}</div>
-                                            <div className={styles.cartInfo}>
+                                            <div className='cartInfo'>
                                                 <div>{item.price} €</div>
                                                 <div className='d-flex align-items-center gap-2 h6'>
                                                     <i
-                                                        onClick={() => handleQuantity(item.id, 'remove')}
-                                                        className={`fa-solid fa-minus ${styles.cartIcon}`}
+                                                        /* onClick={() => handleQuantity(item.id, 'remove')} */
+                                                        className={`fa-solid fa-minus cartIcon`}
                                                     ></i>
-                                                    {item.quantity}
+                                                    {/* {item.quantity} */} 1
                                                     <i
-                                                        onClick={() => handleQuantity(item.id, 'add')}
-                                                        className={`fa-solid fa-plus ${styles.cartIcon}`}
+                                                        /* onClick={() => handleQuantity(item.id, 'add')} */
+                                                        className={`fa-solid fa-plus cartIcon`}
                                                     ></i>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div><i className='fa-solid fa-xmark'></i></div>
+                                        <div onClick={() => handleRemoveItems(index)} ><i className='fa-solid fa-xmark'></i></div>
 
                                     </div>
                                 ))}
-                                <div className={styles.total}>
+                                <div className='total'>
                                     Totale : <span>{calculateTotal(cartItems)}€</span>
                                 </div>
                             </div>
                         ) : (
-                            <p className={styles.emptyCart}>Il carrello è vuoto</p>
+                            <p className='emptyCart'>Il carrello è vuoto</p>
                         )}
                     </div>
 
-                    <div className={styles.cartFooter}>
+                    <div className='cartFooter'>
                         <Link to="/carello">Vai al carrello <span><i className='fa-solid fa-arrow-right'></i></span></Link>
                     </div>
                 </div>

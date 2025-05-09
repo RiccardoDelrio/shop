@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css";
+import { useGlobal } from "../contexts/GlobalContext";
 
 const ProductDetails = () => {
     const { slug } = useParams();
+    const { cartItems, setCartItems } = useGlobal()
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
+
+    const handleAddCart = (thisProduct) => {
+        setCartItems([...cartItems, thisProduct])
+    }
+    console.log(cartItems);
+
+
+
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/v1/products/${slug}`)
@@ -85,6 +95,7 @@ const ProductDetails = () => {
                     )}
                 </div>
                 <button
+                    onClick={() => handleAddCart(product)}
                     className="buy--btn"
                     disabled={!selectedVariation || selectedVariation.stock === 0}
                 >
@@ -93,7 +104,7 @@ const ProductDetails = () => {
                             'ADD TO CART'}
                 </button>
             </div>
-        </section>
+        </section >
     );
 };
 
