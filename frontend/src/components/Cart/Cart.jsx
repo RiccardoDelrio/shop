@@ -133,7 +133,7 @@ const Cart = () => {
                     </div>
 
                     <div className={styles.cartFooter}>
-                        <Link>Vai al carrello <span><i className='fa-solid fa-arrow-right'></i></span></Link>
+                        <Link to="/carello">Vai al carrello <span><i className='fa-solid fa-arrow-right'></i></span></Link>
                     </div>
                 </div>
             )}
