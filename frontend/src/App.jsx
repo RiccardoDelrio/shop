@@ -23,6 +23,7 @@ function App() {
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/catalogo" element={<Catalogo />} />
+            <Route path="/catalogo/:categorySlug" element={<Catalogo />} />
             <Route path="/macroarea/:slug" element={<MacroAreaPage />} />
             <Route path="/size-table" element={<SizeTable />} />
             <Route path="/story-site" element={<StorySite />} />

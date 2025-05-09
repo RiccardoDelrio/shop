@@ -1,5 +1,6 @@
 import { useGlobal } from "../contexts/GlobalContext";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductCards from "../components/ProductCard/ProductCard";
 
 export default function Catalogo() {
@@ -9,48 +10,47 @@ export default function Catalogo() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(true);
     const [isGridView, setIsGridView] = useState(true);
+    const navigate = useNavigate();
+    const { categorySlug } = useParams();
 
     // Fetch iniziale dei prodotti
     useEffect(() => {
-        fetchProducts();
+        fetchProducts(categorySlug);
         fetchCategories();
-    }, []);
+        if (categorySlug) {
+            setSelectedCategory(categorySlug);
+        }
+    }, [categorySlug]);
 
     // Fetch dei prodotti con filtri
-    const fetchProducts = async (categorySlug = '') => {
+    const fetchProducts = (categorySlug = '') => {
         setLoading(true);
-        try {
-            const url = categorySlug
-                ? `http://localhost:3000/api/v1/categories/${categorySlug}`
-                : 'http://localhost:3000/api/v1/products';
-            const response = await fetch(url);
-            const data = await response.json();
-            setProducts(data);
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-        setLoading(false);
+        const url = categorySlug
+            ? `http://localhost:3000/api/v1/categories/${categorySlug}`
+            : 'http://localhost:3000/api/v1/products';
+        fetch(url)
+            .then(response => response.json())
+            .then(data => setProducts(data))
+            .catch(error => console.error('Error fetching products:', error))
+            .finally(() => setLoading(false));
     };
 
     // Fetch delle categorie
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/api/v1/categories');
-            const data = await response.json();
-            setCategories(data);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
+    const fetchCategories = () => {
+        fetch('http://localhost:3000/api/v1/categories')
+            .then(response => response.json())
+            .then(data => setCategories(data))
+            .catch(error => console.error('Error fetching categories:', error));
     };
 
     // Gestione cambio categoria
     const handleCategoryChange = (e) => {
-        const categorySlug = e.target.value;
-        setSelectedCategory(categorySlug);
-        if (categorySlug) {
-            fetchProducts(categorySlug);
+        const newCategorySlug = e.target.value;
+        setSelectedCategory(newCategorySlug);
+        if (newCategorySlug) {
+            navigate(`/catalogo/${newCategorySlug}`);
         } else {
-            fetchProducts();
+            navigate('/catalogo');
         }
     };
 

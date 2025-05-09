@@ -122,22 +122,49 @@ table {
     display: flex;
     flex-direction: column;
 
+
 }
 
 .catalogo-header {
     padding: 1rem;
-    background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 100;
+
 }
+
+/* Stili per la pagina di ricerca */
+.catalogo-header {
+    background: rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+}
+
+.catalogo-header form {
+    margin: 0;
+}
+
+
+
+.catalogo-header .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
 
 .catalogo-content {
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
-    overflow: auto;
+    /* Nasconde la scrollbar in Firefox */
+    scrollbar-width: none;
+    /* Nasconde la scrollbar in Internet Explorer e Edge */
+    -ms-overflow-style: none;
+}
+
+/* Nasconde la scrollbar in Chrome, Safari e Opera */
+.catalogo-content::-webkit-scrollbar {
+    display: none;
 }
 
 .col-filtri {
@@ -146,7 +173,7 @@ table {
     left: 0;
     top: 0;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+
     z-index: 99;
     padding: 1rem;
     transform: translateX(-100%);
@@ -162,11 +189,7 @@ table {
     width: 100%;
 }
 
-.filtri {
-    background: linear-gradient(135deg, rgba(255, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
-    backdrop-filter: blur(10px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
+
 
 @media (min-width: 992px) {
     .col-filtri {
