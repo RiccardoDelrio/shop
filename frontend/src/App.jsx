@@ -6,6 +6,7 @@ import StorySite from './pages/Story-site';
 import PrivacyPolicy from './pages/Privacy-policy';
 import Contacts from './pages/Contacts';
 import ProductDetails from './pages/ProductDetails'; // Import the new ProductDetails page
+import Carello from './pages/PageCarello';
 
 import DefaultLayout from "./layout/defaultLayout";
 import MacroAreaPage from './pages/MacroAreaPage';
