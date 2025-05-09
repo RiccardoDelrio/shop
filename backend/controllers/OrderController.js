@@ -192,7 +192,7 @@ function updateOrderStatus(req, res) {
         if (err) return res.status(500).json({ error: err.message });
         if (results.affectedRows === 0) return res.status(404).json({ error: 'Order not found' });
 
-        res.json({ message: 'Order status updated successfully' });
+        res.json({ message: `Order status updated successfully to ${status}` });
     });
 }
 

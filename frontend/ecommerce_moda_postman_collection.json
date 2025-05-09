@@ -162,7 +162,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/giacca-pelle",
+                            "raw": "http://localhost:3000/api/v1/products/lunara",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -172,7 +172,7 @@
                                 "api",
                                 "v1",
                                 "products",
-                                "giacca-pelle"
+                                "lunara"
                             ]
                         },
                         "description": "Returns details for a product (by slug)."
@@ -250,7 +250,7 @@
                                 "discounted"
                             ]
                         },
-                        "description": "Returns all products that have a discount. Example response: [{...product fields...}]"
+                        "description": "Returns all products that have a discount."
                     },
                     "response": []
                 }
@@ -358,7 +358,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"order_id\": 1\n}"
+                            "raw": "{\n  \"email\": \"mario.rossi@example.com\",\n  \"order_id\": 1\n}"
                         },
                         "url": {
                             "raw": "http://localhost:3000/api/v1/orders/track",

@@ -8,9 +8,9 @@ function submitEmail(req, res) {
     if (!email || !validateEmail(email)) {
         return res.status(400).json({ error: 'Valid email address is required' });
     }
-
+    
     const sql = `
-        INSERT INTO email_newsletter (email)
+        INSERT INTO Email_Newsletter (email)
         VALUES (?)
     `;
 
@@ -34,7 +34,7 @@ function submitEmail(req, res) {
 function getAllSubscribers(req, res) {
     const sql = `
         SELECT email, created_at
-        FROM email_newsletter
+        FROM Email_Newsletter
         ORDER BY created_at DESC
     `;
 
@@ -46,10 +46,8 @@ function getAllSubscribers(req, res) {
 
 // Delete email from newsletter list (unsubscribe)
 function unsubscribeEmail(req, res) {
-    const { email } = req.params;
-
-    const sql = `
-        DELETE FROM email_newsletter
+    const { email } = req.params; const sql = `
+        DELETE FROM Email_Newsletter
         WHERE email = ?
     `;
 

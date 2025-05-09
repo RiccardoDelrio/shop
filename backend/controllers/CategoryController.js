@@ -9,7 +9,7 @@ function getAllCategories(req, res) {
             slug,
             description,
             macroarea_id
-        FROM categories
+        FROM Categories
     `;
 
     connection.query(sql, (err, results) => {
@@ -22,10 +22,10 @@ function getAllCategories(req, res) {
 function getAllMacroareas(req, res) {
     const sql = `
         SELECT 
-            macroareas.id,
-            macroareas.name,
-            macroareas.slug,
-            macroareas.description,
+            Macroareas.id,
+            Macroareas.name,
+            Macroareas.slug,
+            Macroareas.description,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -35,10 +35,10 @@ function getAllMacroareas(req, res) {
                         'description', c.description
                     )
                 )
-                FROM categories c
-                WHERE c.macroarea_id = macroareas.id
+                FROM Categories c
+                WHERE c.macroarea_id = Macroareas.id
             ) AS categories
-        FROM macroareas
+        FROM Macroareas
     `;
 
     connection.query(sql, (err, results) => {
@@ -78,6 +78,7 @@ function getProductsByMacroarea(req, res) {
             products.slug,
             products.name,
             products.description,
+            products.long_description,
             products.price,
             products.discount,
             categories.id AS category_id,
@@ -143,6 +144,7 @@ function getProductsByCategory(req, res) {
             products.slug,
             products.name,
             products.description,
+            products.long_description,
             products.price,
             products.discount,
             categories.id AS category_id,

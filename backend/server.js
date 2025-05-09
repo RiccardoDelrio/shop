@@ -50,6 +50,7 @@ app.use(serverError);
  * GET /api/v1/products                    - All products
  * GET /api/v1/products/:slug              - Product details (by slug)
  * GET /api/v1/products/random             - Random products
+ * GET /api/v1/products/discounted         - All discounted products
  * GET /api/v1/products/search?q=...       - Search products
  *
  * ORDERS

@@ -4,22 +4,23 @@ const connection = require('../database/db');
 function getAllProducts(req, res) {
     const sql = `
         SELECT 
-            products.id,
-            products.slug,
-            products.name,
-            products.description,
-            products.price,
-            products.discount,
+            p.id,
+            p.slug,
+            p.name,
+            p.description,
+            p.long_description,
+            p.price,
+            p.discount,
             JSON_ARRAYAGG(
                 JSON_OBJECT(
-                    'url', product_images.image_url,
-                    'view_type', product_images.view_type,
-                    'is_primary', product_images.is_primary
+                    'url', pi.image_url,
+                    'view_type', pi.view_type,
+                    'is_primary', pi.is_primary
                 )
             ) AS images
-        FROM products
-        LEFT JOIN product_images ON products.id = product_images.product_id
-        GROUP BY products.id
+        FROM Products p
+        LEFT JOIN Product_Images pi ON p.id = pi.product_id
+        GROUP BY p.id
     `;
 
     connection.query(sql, (err, results) => {
@@ -38,6 +39,7 @@ function getProductBySlug(req, res) {
             p.slug,
             p.name,
             p.description,
+            p.long_description,
             p.price,
             p.discount,
             (
@@ -49,7 +51,7 @@ function getProductBySlug(req, res) {
                         'product_variation_id', pi.product_variation_id
                     )
                 )
-                FROM product_images pi 
+                FROM Product_Images pi 
                 WHERE pi.product_id = p.id
             ) AS images,
             JSON_ARRAYAGG(
@@ -57,12 +59,11 @@ function getProductBySlug(req, res) {
                     'id', pv.id,
                     'color', pv.color,
                     'size', pv.size,
-                    'stock', pv.stock,
-                    'additional_price', pv.additional_price
+                    'stock', pv.stock
                 )
             ) AS variations
-        FROM products p
-        LEFT JOIN product_variations pv ON p.id = pv.product_id
+        FROM Products p
+        LEFT JOIN Product_Variations pv ON p.id = pv.product_id
         WHERE p.slug = ?
         GROUP BY p.id
     `;
@@ -79,12 +80,13 @@ function getProductBySlug(req, res) {
 function getRandomProducts(req, res) {
     const sql = `
         SELECT 
-            products.id,
-            products.slug,
-            products.name,
-            products.description,
-            products.price,
-            products.discount,
+            p.id,
+            p.slug,
+            p.name,
+            p.description,
+            p.long_description,
+            p.price,
+            p.discount,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -94,11 +96,11 @@ function getRandomProducts(req, res) {
                         'product_variation_id', pi.product_variation_id
                     )
                 )
-                FROM product_images pi 
-                WHERE pi.product_id = products.id
+                FROM Product_Images pi 
+                WHERE pi.product_id = p.id
             ) AS images
-        FROM products
-        GROUP BY products.id
+        FROM Products p
+        GROUP BY p.id
         ORDER BY RAND()
         LIMIT 10
     `;
@@ -114,12 +116,13 @@ function getRandomProducts(req, res) {
 function getDiscountedProducts(req, res) {
     const sql = `
         SELECT 
-            products.id,
-            products.slug,
-            products.name,
-            products.description,
-            products.price,
-            products.discount,
+            p.id,
+            p.slug,
+            p.name,
+            p.description,
+            p.long_description,
+            p.price,
+            p.discount,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -129,12 +132,12 @@ function getDiscountedProducts(req, res) {
                         'product_variation_id', pi.product_variation_id
                     )
                 )
-                FROM product_images pi 
-                WHERE pi.product_id = products.id
+                FROM Product_Images pi 
+                WHERE pi.product_id = p.id
             ) AS images
-        FROM products
-        WHERE products.discount > 0
-        GROUP BY products.id
+        FROM Products p
+        WHERE p.discount > 0
+        GROUP BY p.id
     `;
 
     connection.query(sql, (err, results) => {
@@ -145,9 +148,52 @@ function getDiscountedProducts(req, res) {
     });
 }
 
+// Search products
+async function searchProducts(req, res) {
+    try {
+        const { q } = req.query;
+
+        if (!q) {
+            return res.status(400).json({ success: false, message: 'Search query parameter (q) is required' });
+        }
+
+        const query = `
+            SELECT p.*, c.name as category_name, c.slug as category_slug, m.name as macroarea_name, m.slug as macroarea_slug
+            FROM Products p
+            JOIN Categories c ON p.category_id = c.id
+            JOIN Macroareas m ON c.macroarea_id = m.id
+            WHERE p.name LIKE ? OR p.description LIKE ?
+            ORDER BY p.name ASC
+        `;
+
+        connection.query(query, [`%${q}%`, `%${q}%`], (err, products) => {
+            if (err) {
+                console.error('Error searching products:', err);
+                return res.status(500).json({
+                    success: false,
+                    message: 'Server error while searching products'
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                count: products.length,
+                data: products
+            });
+        });
+    } catch (error) {
+        console.error('Error searching products:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server error while searching products'
+        });
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProductBySlug,
     getRandomProducts,
-    getDiscountedProducts
+    getDiscountedProducts,
+    searchProducts
 };

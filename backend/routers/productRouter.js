@@ -12,6 +12,9 @@ router.get('/random', ProductController.getRandomProducts);
 // Get discounted products
 router.get('/discounted', ProductController.getDiscountedProducts);
 
+// Search products
+router.get('/search', ProductController.searchProducts);
+
 // Get color-specific images for a product
 router.get('/product-images/:productId', ImageController.getProductColorImages);
 
