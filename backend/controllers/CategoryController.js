@@ -49,9 +49,13 @@ function getAllMacroareas(req, res) {
 
         // Parse the JSON string to an actual array for each macroarea
         results.forEach(macroarea => {
-            if (macroarea.categories) {
-                macroarea.categories = JSON.parse(macroarea.categories);
-            } else {
+            if (typeof macroarea.categories === 'string') {
+                try {
+                    macroarea.categories = JSON.parse(macroarea.categories);
+                } catch (e) {
+                    macroarea.categories = [];
+                }
+            } else if (!macroarea.categories) {
                 macroarea.categories = [];
             }
         });

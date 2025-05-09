@@ -6,134 +6,63 @@ This document provides comprehensive information about all available API endpoin
 
 All API requests should be made to: `http://localhost:3000/api/v1/`
 
-## Macroarea and Category Routes
+## Macroarea Routes
 
 ### Get All Macroareas
 
-```plaintext
-http://localhost:3000/api/v1/macroareas
-```
-
-Returns a list of all macroareas (product departments) in the system along with their associated categories.
+`GET /macroareas`
+Returns all macroareas with their categories.
 
 ### Get Categories by Macroarea
 
-```plaintext
-http://localhost:3000/api/v1/macroareas/{slug}/categories
-```
-
-Returns all categories belonging to the specified macroarea.
-
-**Valid macroarea endpoints:**
-
-```plaintext
-http://localhost:3000/api/v1/macroareas/upper-body/categories
-http://localhost:3000/api/v1/macroareas/lower-body/categories
-http://localhost:3000/api/v1/macroareas/dress/categories
-http://localhost:3000/api/v1/macroareas/accessori/categories
-```
+`GET /macroareas/:slug/categories`
+Returns all categories for a given macroarea (by slug).
 
 ### Get Products by Macroarea
 
-```plaintext
-http://localhost:3000/api/v1/macroareas/{slug}/products
-```
+`GET /macroareas/:slug/products`
+Returns all products for a given macroarea (by slug).
 
-Returns all products belonging to all categories under the specified macroarea.
-
-**Valid macroarea endpoints:**
-
-```plaintext
-http://localhost:3000/api/v1/macroareas/upper-body/products
-http://localhost:3000/api/v1/macroareas/lower-body/products
-http://localhost:3000/api/v1/macroareas/dress/products
-http://localhost:3000/api/v1/macroareas/accessori/products
-```
+## Category Routes
 
 ### Get All Categories
 
-```plaintext
-http://localhost:3000/api/v1/macroareas/categories
-```
-
-Returns a flattened list of all product categories in the system with their associated macroarea information.
+`GET /categories`
+Returns a flat list of all categories (with macroarea info).
 
 ### Get Products by Category
 
-```plaintext
-http://localhost:3000/api/v1/macroareas/categories/{slug}
-```
-
-Returns all products belonging to a specific category.
-
-**Example category endpoints:**
-
-```plaintext
-http://localhost:3000/api/v1/macroareas/categories/cappotti
-http://localhost:3000/api/v1/macroareas/categories/giacche
-http://localhost:3000/api/v1/macroareas/categories/maglie
-http://localhost:3000/api/v1/macroareas/categories/maglioni
-http://localhost:3000/api/v1/macroareas/categories/pantaloni
-http://localhost:3000/api/v1/macroareas/categories/gonne
-http://localhost:3000/api/v1/macroareas/categories/vestitini
-http://localhost:3000/api/v1/macroareas/categories/orecchini
-http://localhost:3000/api/v1/macroareas/categories/bracciali
-http://localhost:3000/api/v1/macroareas/categories/collane
-```
+`GET /categories/:slug/products`
+Returns all products for a given category (by slug).
 
 ## Product Routes
 
 ### Get All Products
 
-```plaintext
-http://localhost:3000/api/v1/products
-```
+`GET /products`
+Returns all products.
 
-Returns a list of all products in the system.
+### Get Product by Slug
 
-### Get Product by ID
-
-```plaintext
-http://localhost:3000/api/v1/products/{id}
-```
-
-Returns detailed information about a specific product.
+`GET /products/:slug`
+Returns details for a product (by slug).
 
 ### Get Random Products
 
-```plaintext
-http://localhost:3000/api/v1/products/random
-```
-
-Returns a selection of random products, useful for the homepage.
+`GET /products/random`
+Returns a random selection of products.
 
 ### Search Products
 
-```plaintext
-http://localhost:3000/api/v1/products/search?q={searchTerm}
-```
-
+`GET /products/search?q=...`
 Search products by name or description.
-
-## Product Image Routes
-
-### Get All Images for a Product
-
-```plaintext
-http://localhost:3000/api/v1/products/images/{productId}
-```
-
-Returns all images associated with a specific product.
 
 ## Order Management Routes
 
 ### Create a New Order
 
-```plaintext
-http://localhost:3000/api/v1/orders
-```
-
-Create a new order in the system.
+`POST /orders`
+Create a new order.
 
 **Request body:**
 
@@ -152,18 +81,12 @@ Create a new order in the system.
 
 ### Get Order by ID
 
-```plaintext
-http://localhost:3000/api/v1/orders/{id}
-```
-
+`GET /orders/:id`
 Retrieve information about a specific order.
 
 ### Update Order Status
 
-```plaintext
-http://localhost:3000/api/v1/orders/{id}/status
-```
-
+`PATCH /orders/:id/status`
 Update the status of an order.
 
 **Request body:**
@@ -183,10 +106,7 @@ Update the status of an order.
 
 ### Track Order
 
-```plaintext
-http://localhost:3000/api/v1/orders/track
-```
-
+`POST /orders/track`
 Track an order using email and order ID.
 
 **Request body:**
@@ -200,20 +120,14 @@ Track an order using email and order ID.
 
 ### Get Orders by Email
 
-```plaintext
-http://localhost:3000/api/v1/orders/email/{email}
-```
-
-Get all orders associated with a specific email address.
+`GET /orders/email/:email`
+Get all orders for a specific email address.
 
 ## Newsletter Routes
 
 ### Subscribe to Newsletter
 
-```plaintext
-http://localhost:3000/api/v1/newsletter/subscribe
-```
-
+`POST /newsletter/subscribe`
 Subscribe an email address to the newsletter.
 
 **Request body:**
@@ -223,3 +137,8 @@ Subscribe an email address to the newsletter.
   "email": "customer@example.com"
 }
 ```
+
+### Unsubscribe from Newsletter
+
+`DELETE /newsletter/unsubscribe/:email`
+Unsubscribe an email address from the newsletter.

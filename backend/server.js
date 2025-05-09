@@ -35,28 +35,31 @@ app.use(notFound);
 app.use(serverError);
 
 /**
- * API ENDPOINT REFERENCE
- * 
+ * API ENDPOINT REFERENCE (RESTful, slug-based)
+ *
  * MACROAREAS
- * GET /api/v1/macroareas         - All macroareas with categories
- * GET /api/v1/macroareas/{slug}/categories - Categories by macroarea
- * GET /api/v1/macroareas/{slug}/products - Products by macroarea
- * GET /api/v1/macroareas/categories - All categories
- * GET /api/v1/macroareas/categories/{slug} - Products by category
+ * GET /api/v1/macroareas                  - All macroareas with their categories
+ * GET /api/v1/macroareas/:slug/categories - Categories for a macroarea (by slug)
+ * GET /api/v1/macroareas/:slug/products   - All products for a macroarea (by slug)
+ *
+ * CATEGORIES
+ * GET /api/v1/categories                  - All categories (flat list)
+ * GET /api/v1/categories/:slug/products   - All products for a category (by slug)
  *
  * PRODUCTS
- * GET /api/v1/products           - All products
- * GET /api/v1/products/{id}      - Product details
- * GET /api/v1/products/random    - Random products
- * GET /api/v1/products/search    - Search products
- * 
+ * GET /api/v1/products                    - All products
+ * GET /api/v1/products/:slug              - Product details (by slug)
+ * GET /api/v1/products/random             - Random products
+ * GET /api/v1/products/search?q=...       - Search products
+ *
  * ORDERS
- * POST /api/v1/orders            - Create order
- * GET /api/v1/orders/{id}        - Order details
- * PATCH /api/v1/orders/{id}/status - Update status
- * POST /api/v1/orders/track      - Track order
- * GET /api/v1/orders/email/{email} - Orders by email
- * 
+ * POST /api/v1/orders                     - Create order
+ * GET /api/v1/orders/:id                  - Order details (by id)
+ * PATCH /api/v1/orders/:id/status         - Update order status
+ * POST /api/v1/orders/track               - Track order
+ * GET /api/v1/orders/email/:email         - Orders by email
+ *
  * NEWSLETTER
- * POST /api/v1/newsletter/subscribe - Subscribe
+ * POST /api/v1/newsletter/subscribe       - Subscribe
+ * DELETE /api/v1/newsletter/unsubscribe/:email - Unsubscribe
  */
