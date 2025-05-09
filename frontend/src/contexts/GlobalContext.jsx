@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const GlobalContext = createContext()
 
 function GlobalProvider({ children }) {
-/*     const [products, setProducts] = useState([]);
+    /*     const [products, setProducts] = useState([]);
  */    const [cartItems, setCartItems] = useState([]);
     const [top, setTop] = useState([]);
     const [bottom, setBottom] = useState([]);
@@ -12,7 +12,8 @@ function GlobalProvider({ children }) {
     const [category, setCategory] = useState('')
     const [visualizedProducts, setVisualizedProducts] = useState([])
     const [dress, setDress] = useState([]); // State for dress category
-
+    const [macroareas, setMacroareas] = useState([]);
+    const [categoryProducts, setCategoryProducts] = useState({});
 
     // Fetch all products
     /*     function fetchIndex() {
@@ -52,6 +53,20 @@ function GlobalProvider({ children }) {
             });
     }
 
+    function fetchMacroareas() {
+        fetch('http://localhost:3000/api/v1/macroareas')
+            .then(res => res.json())
+            .then(data => setMacroareas(data));
+    }
+
+    function fetchCategoryProducts(slug) {
+        fetch(`http://localhost:3000/api/v1/categories/${slug}`)
+            .then(res => res.json())
+            .then(data => {
+                setCategoryProducts(prev => ({ ...prev, [slug]: data }));
+            });
+    }
+
     useEffect(() => {
 
         fetchRandomProducts(); // Fetch random products on load
@@ -80,6 +95,10 @@ function GlobalProvider({ children }) {
                 randomProducts, // Expose category filter function
                 dress,
                 setDress,
+                macroareas,
+                categoryProducts,
+                fetchMacroareas,
+                fetchCategoryProducts,
             }}
         >
             {children}

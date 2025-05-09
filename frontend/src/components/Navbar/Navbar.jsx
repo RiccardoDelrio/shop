@@ -1,41 +1,20 @@
-import React, { useState } from 'react';
-import './navbar.css'; // Modificato per utilizzare il file CSS normale
+import React, { useState, useEffect } from 'react';
+import './navbar.css';
 import SearchBar from '../SearchBar/SearchBar';
 import Cart from '../Cart/Cart';
-import { Link, useNavigate } from 'react-router-dom'; // Aggiungi useNavigate
+import { Link } from 'react-router-dom';
 import { useGlobal } from '../../contexts/GlobalContext';
 
 const Navbar = () => {
-    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const {
-        fetchIndexMacroArea,
-        accessories,
-        setAccessories,
-        bottom,
-        setBottom,
-        top,
-        setTop,
-        visualizedProducts,
-        setVisualizedProducts
-    } = useGlobal();
+    const { macroareas, fetchMacroareas } = useGlobal();
+
+    useEffect(() => {
+        fetchMacroareas();
+    }, []);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
-    };
-
-    const handleCategoryClick = (macroArea, setMacroArea, title) => {
-        // Aggiorna i dati
-        if (macroArea.length > 0) {
-            setVisualizedProducts(macroArea);
-        } else {
-            fetchIndexMacroArea(title, (data) => {
-                setMacroArea(data);
-                setVisualizedProducts(data);
-            });
-        }
-        // Naviga alla pagina prodotti con il parametro
-        navigate(`/products?macro_area=${title}`);
     };
 
     return (
@@ -49,21 +28,11 @@ const Navbar = () => {
 
                 <ul className={`ul ${isMenuOpen ? 'menuOpen' : ''}`}>
                     <li className="navlink"><Link to="/">Home</Link></li>
-                    <li className="navlink">
-                        <span onClick={() => handleCategoryClick(top, setTop, 'upper-body')}>
-                            Upper Body
-                        </span>
-                    </li>
-                    <li className="navlink">
-                        <span onClick={() => handleCategoryClick(bottom, setBottom, 'lower-body')}>
-                            Lower Body
-                        </span>
-                    </li>
-                    <li className="navlink">
-                        <span onClick={() => handleCategoryClick(accessories, setAccessories, 'accessori')}>
-                            Accessories
-                        </span>
-                    </li>
+                    {macroareas.map(area => (
+                        <li key={area.id} className="navlink">
+                            <Link to={`/macroarea/${area.slug}`}>{area.name}</Link>
+                        </li>
+                    ))}
                     <li className="navlink"><Link to="/catalogo">Catalog</Link></li>
                 </ul>
             </div>

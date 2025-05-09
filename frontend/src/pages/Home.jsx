@@ -6,35 +6,10 @@ import Slider from "../components/Slider/Slider";
 import ProductCards from "../components/ProductCard/ProductCard";
 export default function Home() {
     const {
-        fetchIndexMacroArea,
-        accessories,
-        setAccessories,
-        bottom,
-        setBottom,
-        top,
-        setTop,
-        visualizedProducts,
-        setVisualizedProducts,
         randomProducts,
-        dress,
-        setDress
+
     } = useGlobal()
     console.log(randomProducts);
-    const handleCategoryClick = (macroArea, setMacroArea, title) => {
-        // Always update visualizedProducts with current data
-        if (macroArea.length > 0) {
-            setVisualizedProducts(macroArea);
-            return; // Exit early if we already have data
-        }
-
-        // Only fetch if we don't have data
-        fetchIndexMacroArea(title, (data) => {
-            setMacroArea(data);
-            setVisualizedProducts(data);
-        });
-    };
-    console.log({ 'accessories': accessories, 'top': top, 'bottom': bottom });
-    console.log('Prodotti visualizzati:', visualizedProducts);
 
 
     return (
@@ -42,40 +17,36 @@ export default function Home() {
             <div className="main">
                 <Jumbotron />
                 <h1 className="home_title">
-                    Discover timeless elegance: where style meets the art of high fashion.
+                    Scopri l'eleganza senza tempo: dove lo stile incontra l'arte dell'alta moda.
                 </h1>
                 <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 pt-5 mt-5">
-                    <Link to={`/products/accessori`}>
+                    <Link to={`/macroarea/accessori`}>
                         <CategoryCards
-                            onClick={() => handleCategoryClick(accessories, setAccessories, 'accessori')}
-                            title="Accessories"
+                            title="Accessori"
                             image="./img/accessories.jpg"
                         />
                     </Link>
-                    <Link to={`/products/upper-body`}>
+                    <Link to={`/macroarea/upper-body`}>
                         <CategoryCards
-                            onClick={() => handleCategoryClick(top, setTop, 'upper-body')}
-                            title="Upper Body"
+                            title="Parte Superiore"
                             image="./img/top.jpg"
                         />
                     </Link>
-                    <Link to={`/products/lower-body`}>
+                    <Link to={`/macroarea/lower-body`}>
                         <CategoryCards
-                            onClick={() => handleCategoryClick(bottom, setBottom, 'lower-body')}
-                            title="Lower Body"
+                            title="Parte Inferiore"
                             image="./img/trousers.jpg"
                         />
                     </Link>
-                    <Link to={`/products/dress`}>
+                    <Link to={`/macroarea/dress`}>
                         <CategoryCards
-                            onClick={() => handleCategoryClick(dress, setDress, 'dress')}
-                            title="Dress"
+                            title="Vestiti"
                             image="./img/dress.jpg"
                         />
                     </Link>
                 </div>
-                <h1 className="home_title ">Discover our collection</h1>
-                <h1 className="home_title fs-1 p-0 m-0">Explore our curated selection of high-end fashion pieces.</h1>
+                <h1 className="home_title ">Scopri la nostra collezione</h1>
+                <h1 className="home_title fs-1 p-0 m-0">Esplora la nostra selezione curata di capi di alta moda.</h1>
 
                 <Slider>
                     {randomProducts.map((product) => (
