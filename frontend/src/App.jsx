@@ -27,6 +27,7 @@ function App() {
             <Route path="/story-site" element={<StorySite />} />
             < Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/carello" element={<Carello />} />
             <Route path="/product/:slug" element={<ProductDetails />} />
           </Route>
         </Routes>
