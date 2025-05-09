@@ -4,6 +4,7 @@ import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router";
 import Slider from "../components/Slider/Slider";
 import ProductCards from "../components/ProductCard/ProductCard";
+import PagePopup from "../components/Popup/PagePopup";
 export default function Home() {
     const {
         randomProducts,
@@ -15,6 +16,7 @@ export default function Home() {
     return (
         <div className="">
             <div className="main">
+                < PagePopup />
                 <Jumbotron />
                 <h1 className="home_title">
                     Scopri l'eleganza senza tempo: dove lo stile incontra l'arte dell'alta moda.
