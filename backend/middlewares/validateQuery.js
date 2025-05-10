@@ -3,7 +3,7 @@ const validateQuery = (req, res, next) => {
         return next(); // Skip validation for the index route
     }
 
-    const allowedQueryParams = ['macroarea', 'category', 'q'];
+    const allowedQueryParams = ['macroarea', 'category', 'q', 'query'];
     const queryKeys = Object.keys(req.query);
 
     // Check for invalid query parameters

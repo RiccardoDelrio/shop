@@ -59,7 +59,7 @@ Returns all products that have a discount.
 
 ### Search Products
 
-`GET /products/search?q=...`
+`GET /products/search?query=...`
 Search products by name or description.
 
 ## Order Management Routes

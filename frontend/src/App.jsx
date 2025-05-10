@@ -5,11 +5,12 @@ import SizeTable from './pages/Size-table';
 import StorySite from './pages/Story-site';
 import PrivacyPolicy from './pages/Privacy-policy';
 import Contacts from './pages/Contacts';
-import ProductDetails from './pages/ProductDetails'; // Import the new ProductDetails page
+import ProductDetails from './pages/ProductDetails';
 import Carello from './pages/PageCarello';
-
 import DefaultLayout from "./layout/defaultLayout";
 import MacroAreaPage from './pages/MacroAreaPage';
+import SearchPage from './pages/SearchPage';
+
 
 
 
@@ -31,6 +32,8 @@ function App() {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/carello" element={<Carello />} />
             <Route path="/product/:slug" element={<ProductDetails />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/search/:query" element={<SearchPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
