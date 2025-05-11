@@ -63,14 +63,14 @@ export default function SearchPage() {
                                         name={product.name}
                                         description={product.description}
                                         price={product.price}
-                                        image={product.images?.[0]?.url || "/img/default.jpg"}
+                                        image={product.images?.[0] ?? null}
                                         slug={product.slug}
                                     />) : (<ProductCardListView
                                         key={`List-${product.id}`}
                                         name={product.name}
                                         description={product.description}
                                         price={product.price}
-                                        image={product.images?.[0]?.url || "/img/default.jpg"}
+                                        image={product.images?.[0] ?? null}
                                         slug={product.slug}
 
                                     />)

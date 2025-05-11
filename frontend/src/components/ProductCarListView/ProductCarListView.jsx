@@ -6,7 +6,10 @@ const ProductCardListView = ({ name, description, price, image, slug }) => {
     return (
         <div className="product-list-card">
             <div className="product-image">
-                <img src={"/img/prova.jpg"} alt={name} />
+                <img
+                    src={image?.url ? `/img/${image.url}` : "/img/default.jpg"}
+                    alt={name}
+                />
             </div>
             <div className="product-details">
                 <h4 className="product-name">{name}</h4>
