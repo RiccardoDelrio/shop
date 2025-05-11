@@ -5,7 +5,6 @@ import ProductCards from "../components/ProductCard/ProductCard";
 import ProductCardListView from "../components/ProductCarListView/ProductCarListView";
 
 export default function Catalogo() {
-    const { fetchMacroareas } = useGlobal(); // Removed as it is unused
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -97,7 +96,7 @@ export default function Catalogo() {
                                 </div>
                             </div>
                         ) : (
-                            <div className={`row row-cols-1 row-cols-md-2 row-cols-xl-3  g-4`}>
+                            <div className={`row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4  g-4`}>
                                 {products.map((product) => (
 
                                     isGridView ? (<ProductCards
@@ -105,14 +104,14 @@ export default function Catalogo() {
                                         name={product.name}
                                         description={product.description}
                                         price={product.price}
-                                        image={product.images?.[0]?.url || "/img/default.jpg"}
+                                        image={`http://localhost:3000/imgs/${product.images[0].url}`}
                                         slug={product.slug}
                                     />) : (<ProductCardListView
                                         key={`List-${product.id}`}
                                         name={product.name}
                                         description={product.description}
                                         price={product.price}
-                                        image={product.images?.[0]?.url || "/img/default.jpg"}
+                                        image={`http://localhost:3000/imgs/${product.images[0].url}`}
                                         slug={product.slug}
 
                                     />)

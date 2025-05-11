@@ -57,7 +57,7 @@ export default function Home() {
                             name={product.name}
                             description={product.description}
                             price={product.price}
-                            image={product.images?.[0] || "/img/default.jpg"}
+                            image={`http://localhost:3000/imgs/${product.images[0].url}`}
                             slug={product.slug}
 
                         />

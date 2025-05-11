@@ -5,9 +5,9 @@ import "./ProductCardListView.css";
 const ProductCardListView = ({ name, description, price, image, slug }) => {
     return (
         <div className="product-list-card">
-            <div className="product-image">
+            <div className="product-image ">
                 <img
-                    src={image?.url ? `/img/${image.url}` : "/img/default.jpg"}
+                    src={image}
                     alt={name}
                 />
             </div>

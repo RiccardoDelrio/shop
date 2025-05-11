@@ -8,9 +8,9 @@ const ProductCards = ({ name, description, price, image, slug }) => {
         <div className="col card-container d-flex justify-content-center align-items-center">
             <div className="card custom-card">
                 <img
-                    src={image?.url ? `http://localhost:3000/imgs/${image.url}` : "/img/prova.jpg"}
+                    src={image}
                     alt={name}
-                    className="card-img"
+                    className="card-imges"
                 />
                 <div className="card-hover">
                     <div className="card-hover-content ">
