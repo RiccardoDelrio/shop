@@ -4,7 +4,6 @@ const PORT = process.env.PORT || 3000;
 const eCommerceRouter = require('./routers/eCommerceRouter')
 const notFound = require('./middlewares/notFound')
 const serverError = require('./middlewares/serverError')
-const validateQuery = require('./middlewares/validateQuery');
 
 const cors = require("cors");
 app.use(cors({ origin: process.env.FRONT_URL || 'http://localhost:5173' }));
@@ -16,9 +15,6 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Boolean Shop API - Welcome to our e-commerce API');
 });
-
-// Apply query validation globally
-app.use(validateQuery);
 
 // API Routes
 app.use('/api/v1', eCommerceRouter);
