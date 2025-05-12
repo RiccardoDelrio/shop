@@ -11,7 +11,12 @@ const ProductDetails = () => {
     const [selectedVariation, setSelectedVariation] = useState(null);
 
     const handleAddCart = (thisProduct) => {
-        const existingProduct = cartItems.find(item => item.id === thisProduct.id)
+        const variationIndex = thisProduct.variations.indexOf(selectedVariation)
+        const rightVariation = thisProduct.variations[variationIndex]
+
+        const existingProduct = cartItems.find(item =>
+            item.id === thisProduct.id && item.variations.id === rightVariation.id
+        );
         const existingProductIndex = cartItems.indexOf(existingProduct)
         let updatedCart;
         if (existingProduct) {
@@ -19,7 +24,7 @@ const ProductDetails = () => {
             updatedCart[existingProductIndex].quantità += 1;
 
         } else {
-            updatedCart = [...cartItems, { ...thisProduct, quantità: 1 }]
+            updatedCart = [...cartItems, { ...thisProduct, quantità: 1, variations: rightVariation }]
         }
         setCartItems(updatedCart)
     }
@@ -43,6 +48,9 @@ const ProductDetails = () => {
     console.log(product);
 
     if (!product) return <div>Loading...</div>;
+
+
+
 
     return (
         <section className="product">
@@ -104,7 +112,7 @@ const ProductDetails = () => {
                     <p>{product.long_description}</p>
                     {selectedVariation && (
                         <div className="selected-variant">
-                            <p>Color: {selectedVariation.color}</p>
+                            <p className="m-0">Color: {selectedVariation.color}</p>
                             <div
                                 className="color-preview"
                                 style={{ backgroundColor: selectedVariation.color.toLowerCase() }}

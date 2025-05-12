@@ -46,9 +46,10 @@ const Cart = () => {
     }
 
 
+
     return (
         <div className='cartContainer'>
-            {cartItems.length > 0 && (<div className='circle'></div>)}
+            {cartItems.length > 0 && (<div className='circle'>{cartItems.length}</div>)}
             <div className='cart' onClick={toggleCart}>
                 <i className='fa-solid fa-cart-shopping'></i>
             </div>
@@ -75,15 +76,17 @@ const Cart = () => {
                                             <div className='cartInfo'>
                                                 <div>{item.price} €</div>
                                                 <div className='d-flex align-items-center gap-2 h6'>
-                                                    <i
+                                                    {item.quantità !== 1 && (<i
                                                         onClick={() => handleIncrement(item, 'minus')}
                                                         className={`fa-solid fa-minus cartIcon`}
-                                                    ></i>
+                                                    ></i>)}
+
                                                     {item.quantità}
-                                                    <i
+                                                    {item.quantità !== item.variations.stock && (<i
                                                         onClick={() => handleIncrement(item, 'add')}
                                                         className={`fa-solid fa-plus cartIcon`}
-                                                    ></i>
+                                                    ></i>)}
+
                                                 </div>
                                             </div>
                                         </div>

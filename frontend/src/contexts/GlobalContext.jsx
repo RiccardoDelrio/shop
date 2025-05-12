@@ -4,7 +4,7 @@ const GlobalContext = createContext()
 
 function GlobalProvider({ children }) {
     /*     const [products, setProducts] = useState([]);
- */    const [cartItems, setCartItems] = useState([]);
+ */ const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
     const [top, setTop] = useState([]);
     const [bottom, setBottom] = useState([]);
     const [accessories, setAccessories] = useState([]);
@@ -70,6 +70,10 @@ function GlobalProvider({ children }) {
         fetchRandomProducts(); // Fetch random products on load
         fetchDiscount()
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems))
+    }, [cartItems])
 
 
     return (
