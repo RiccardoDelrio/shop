@@ -106,6 +106,8 @@ export default function Catalogo() {
                                         price={product.price}
                                         image={`http://localhost:3000/imgs/${product.images[0].url}`}
                                         slug={product.slug}
+                                        {...(product.discount > 0 ? { discount: product.discount.slice(0, -3) } : {})} // Conditionally add the discount prop
+
                                     />) : (<ProductCardListView
                                         key={`List-${product.id}`}
                                         name={product.name}
