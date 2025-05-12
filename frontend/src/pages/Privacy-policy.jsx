@@ -4,9 +4,9 @@ export default function PrivacyPolicy() {
             <section className="container py-5">
                 <div className="policy" >
                     {/* Titolo */}
-                    <h2 className="text-center fw-semibold display-6 mb-3">Informativa sulla Privacy</h2>
+                    <h2 className="text-center fw-semibold display-6 mb-3">Privacy Policy</h2>
                     <p className="text-center fst-italic text-white mb-4">
-                        La trasparenza è parte della nostra eleganza. La seguente informativa descrive come trattiamo i tuoi dati con rispetto e responsabilità.
+                        Transparency is part of our elegance. The following policy describes how we handle your data with respect and responsibility.
                     </p>
 
                     {/* Paragrafi */}

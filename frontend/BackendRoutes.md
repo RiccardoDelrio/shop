@@ -6,22 +6,22 @@ This document provides comprehensive information about all available API endpoin
 
 All API requests should be made to: `http://localhost:3000/api/v1/`
 
-## Macroarea Routes
+## Wardrobe Section Routes
 
-### Get All Macroareas
+### Get All Wardrobe Sections
 
-`GET /macroareas`
-Returns all macroareas with their categories.
+`GET /wardrobe-sections`
+Returns all wardrobe sections with their categories.
 
-### Get Categories by Macroarea
+### Get Categories by Wardrobe Section
 
-`GET /macroareas/:slug/categories`
-Returns all categories for a given macroarea (by slug).
+`GET /wardrobe-sections/:slug/categories`
+Returns all categories for a given wardrobe section (by slug).
 
-### Get Products by Macroarea
+### Get Products by Wardrobe Section
 
-`GET /macroareas/:slug/products`
-Returns all products for a given macroarea (by slug). This is the only way to get all products for a macroarea.
+`GET /wardrobe-sections/:slug/products`
+Returns all products for a given wardrobe section (by slug). This is the only way to get all products for a wardrobe section.
 
 ## Category Routes
 

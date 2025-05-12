@@ -7,10 +7,10 @@ import { useGlobal } from '../../contexts/GlobalContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { macroareas, fetchMacroareas } = useGlobal();
+    const { wardrobeSections, fetchWardrobeSections } = useGlobal();
 
     useEffect(() => {
-        fetchMacroareas();
+        fetchWardrobeSections();
     }, []);
 
     const toggleMenu = () => {
@@ -28,9 +28,9 @@ const Navbar = () => {
 
                 <ul className={`ul ${isMenuOpen ? 'menuOpen' : ''}`}>
                     <li className="navlink"><Link to="/">Home</Link></li>
-                    {macroareas.map(area => (
-                        <li key={area.id} className="navlink">
-                            <Link to={`/macroarea/${area.slug}`}>{area.name}</Link>
+                    {wardrobeSections.map(section => (
+                        <li key={section.id} className="navlink">
+                            <Link to={`/wardrobe-section/${section.slug}`}>{section.name}</Link>
                         </li>
                     ))}
                     <li className="navlink"><Link to="/catalogo">Catalog</Link></li>

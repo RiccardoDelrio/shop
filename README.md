@@ -1,89 +1,85 @@
-# Comunicazioni e Indicazioni per il Progetto
+# Project Communications and Guidelines
 
-Ciao ragazzi,  
-abbiamo creato i canali Slack per ogni team e caricato il brief del progetto nella cartella di Drive.  
+Hello everyone,  
+We have created Slack channels for each team and uploaded the project brief to the Drive folder.  
 
-[x] Vi chiediamo gentilmente di comunicarci, **entro la fine del pomeriggio**, la categoria merceologica del vostro eCommerce e la lista delle funzionalità extra che desiderate sviluppare.  
-Tenete a mente che ciò che ci comunicate dovrà essere mantenuto fino alla fine del progetto.  
+[x] Please kindly communicate to us, **by the end of the afternoon**, your e-commerce product category and the list of extra features you wish to develop.  
+Keep in mind that what you communicate must be maintained until the end of the project.  
 
-La scelta della categoria influenzerà sia l’aspetto visivo che la struttura del database, quindi assicuratevi di comprendere a fondo le peculiarità della vostra scelta.  
+The choice of category will influence both the visual aspect and the database structure, so make sure you fully understand the peculiarities of your choice.  
 
-## Domande utili per definire la vostra idea
+## Useful Questions to Define Your Idea
 
-- Qual è il sentiment che desiderate trasmettere?
-- Chi è il cliente tipo che volete intercettare?  
-- A quale mercato vi rivolgete?  
-
----
-
-## Primo SAL
-
-[x] Il primo SAL è programmato per **mercoledì prossimo (07/05/2025, dopodomani)**.  
-In allegato troverete gli orari per ogni team.  
-
-Ci incontreremo nella classroom, team per team.  
-Ci sarà una sala d’attesa e vi faremo entrare non appena finiremo con il team precedente, quindi meglio rispettare i tempi 😉.  
-
-Il giorno del SAL, vedremo insieme il diagramma ER del database.  
-**Entro domani pomeriggio** vi chiediamo di inviarci uno screenshot del diagramma stesso.
-
-## Secondo SAL
-
-Entro secondo sal:
-
-[x] completare la backend
-[] finire la home page
+- What sentiment do you want to convey?
+- Who is your target customer?  
+- Which market are you targeting?  
 
 ---
 
-## Consigli per la progettazione del diagramma ER
+## First SAL
 
-- Usate nomi in inglese.  
-- Scrivete tutto in minuscolo.  
-- Assicuratevi che i nomi delle tabelle e delle colonne descrivano chiaramente il contenuto.  
-- Indicate i tipi di relazione.  
+[x] The first SAL is scheduled for **next Wednesday (07/05/2025, day after tomorrow)**.  
+Attached you'll find the schedules for each team.  
 
-Per creare il diagramma, vi consigliamo di usare [drawsql.app](https://drawsql.app).  
+We'll meet in the classroom, team by team.  
+There will be a waiting room and we'll let you in as soon as we finish with the previous team, so it's better to respect the timing 😉.  
 
----
+On SAL day, we'll review the database ER diagram together.  
+**By tomorrow afternoon** we ask you to send us a screenshot of the diagram.
 
-## Comunicazioni importanti
+## Second SAL
 
-📢 **In caso di eventuali assenze o ritardi ai SAL**, è importante che ci comunichiate queste informazioni in prima persona (laddove le circostanze lo consentano, ovviamente).  
-Assicuratevi di farlo sempre nel canale Slack del vostro team, ricordandovi di taggarci.  
+By second SAL:
 
-🚀 Lo abbiamo detto durante il kickoff, lo scriviamo anche qui:  
-Queste due settimane saranno tra le più formative dell’intero percorso.  
-Scoprirete quanto siete diventati autonomi e quanto le vostre capacità di analisi, valutazione e sviluppo siano cresciute.  
-
-**Programmare non significa scrivere codice, significa creare soluzioni… be creative!**  
-
-Se avete domande o dubbi, potete scriverci nel canale del vostro team, ricordandovi di taggarci.  
+[x] complete the backend
+[] finish the home page
 
 ---
 
-## Milestone Extra
+## Tips for ER Diagram Design
 
-1. **Doppia visualizzazione dei risultati di ricerca** (coefficiente: 1)  
-    - Possibilità di visualizzare i risultati di ricerca in griglia o in lista.  
+- Use English names.  
+- Write everything in lowercase.  
+- Ensure that table and column names clearly describe their content.  
+- Indicate the types of relationships.  
 
-2. **Spedizione gratuita** (coefficiente: 1)  
-    - Spedizione gratuita per ordini che superano una soglia minima di spesa.  
-
-3. **Prodotti in promozione** (coefficiente: 2)  
-    - Visualizzare i prodotti in promozione con prezzo originale e scontato.  
-    - Possibilità di filtrare i prodotti in promozione nella pagina di ricerca.  
-
-4. **Popup di benvenuto** (coefficiente: 3)  
-    - Mostrare un popup di benvenuto solamente durante la prima visita dell’utente.  
-    - Permettere di raccogliere l’email del visitatore.  
-    - Inviare un’email di ringraziamento.  
-
-5. **Gestione quantità** (coefficiente: 3)  
-    - Mostrare le quantità disponibili nella pagina di dettaglio.  
-    - Impedire che un prodotto esaurito possa essere aggiunto al carrello.  
-    - Impedire il proseguimento se un prodotto nel carrello diventa esaurito.  
+To create the diagram, we recommend using [drawsql.app](https://drawsql.app).  
 
 ---
 
-**Nota:** Le milestone commentate nel file originale sono state omesse per chiarezza.  
+## Important Communications
+
+📢 **In case of any absences or delays to SAL meetings**, it's important that you communicate this information personally (where circumstances allow, of course).  
+Make sure to do this in your team's Slack channel, remembering to tag us.  
+
+🚀 We said it during the kickoff, we'll write it here too:  
+These two weeks will be among the most formative of the entire journey.  
+You'll discover how autonomous you've become and how much your analysis, evaluation, and development skills have grown.  
+
+**Programming isn't about writing code, it's about creating solutions... be creative!**  
+
+If you have questions or doubts, you can write to us in your team's channel, remembering to tag us.  
+
+---
+
+## Extra Milestones
+
+1. **Dual Search Results View** (coefficient: 1)  
+    - Ability to view search results in grid or list format.  
+
+2. **Free Shipping** (coefficient: 1)  
+    - Free shipping for orders above a minimum spending threshold.  
+
+3. **Products on Sale** (coefficient: 2)  
+    - Display products on sale with original and discounted prices.  
+    - Ability to filter sale products on the search page.  
+
+4. **Welcome Popup** (coefficient: 3)  
+    - Show a welcome popup only during the user's first visit.  
+    - Allow collection of visitor's email.  
+    - Send a thank you email.  
+
+5. **Quantity Management** (coefficient: 3)  
+    - Show available quantities on the detail page.  
+    - Prevent out-of-stock products from being added to cart.  
+    - Prevent checkout if a cart item becomes out of stock.

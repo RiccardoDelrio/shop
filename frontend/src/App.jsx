@@ -8,7 +8,7 @@ import Contacts from './pages/Contacts';
 import ProductDetails from './pages/ProductDetails';
 import Carello from './pages/PageCarello';
 import DefaultLayout from "./layout/defaultLayout";
-import MacroAreaPage from './pages/MacroAreaPage';
+import WardrobeSectionPage from './pages/WardrobeSectionPage'; // renamed from MacroAreaPage
 import SearchPage from './pages/SearchPage';
 
 
@@ -25,7 +25,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/catalogo" element={<Navigate to="/search" replace />} />
 
-            <Route path="/macroarea/:slug" element={<MacroAreaPage />} />
+            <Route path="/wardrobe-section/:slug" element={<WardrobeSectionPage />} />
             <Route path="/size-table" element={<SizeTable />} />
             <Route path="/story-site" element={<StorySite />} />
             < Route path="/privacy-policy" element={<PrivacyPolicy />} />

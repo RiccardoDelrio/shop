@@ -4,32 +4,32 @@ import { useGlobal } from '../contexts/GlobalContext'
 import ProductCards from "../components/ProductCard/ProductCard"
 import Slider from "../components/Slider/Slider"
 
-export default function MacroAreaPage() {
+export default function WardrobeSectionPage() {
     const { slug } = useParams()
-    const { macroareas, categoryProducts, fetchMacroareas, fetchCategoryProducts } = useGlobal()
+    const { wardrobeSections, categoryProducts, fetchWardrobeSections, fetchCategoryProducts } = useGlobal()
 
     useEffect(() => {
-        fetchMacroareas()
+        fetchWardrobeSections()
     }, [])
 
-    const macroarea = macroareas.find(m => m.slug === slug)
+    const section = wardrobeSections.find(s => s.slug === slug)
 
     useEffect(() => {
-        if (macroarea) {
-            macroarea.categories.forEach(category => {
+        if (section) {
+            section.categories.forEach(category => {
                 if (!categoryProducts[category.slug]) {
                     fetchCategoryProducts(category.slug)
                 }
             })
         }
-    }, [macroarea])
+    }, [section])
 
-    if (!macroarea) return <div>Loading...</div>
+    if (!section) return <div>Loading...</div>
 
     return (
         <div className="container mt-5">
-            <h1 className="text-center mb-5">{macroarea.name}</h1>
-            {macroarea.categories.map(category => (
+            <h1 className="text-center mb-5">{section.name}</h1>
+            {section.categories.map(category => (
                 categoryProducts[category.slug]?.length > 0 && (
                     <div key={category.id} className="mb-5">
                         <h2 className="mb-4">{category.name}</h2>
@@ -42,8 +42,7 @@ export default function MacroAreaPage() {
                                     price={product.price}
                                     image={`http://localhost:3000/imgs/${product.images[0].url}`}
                                     slug={product.slug}
-                                    {...(product.discount > 0 ? { discount: product.discount.slice(0, -3) } : {})} // Conditionally add the discount prop
-
+                                    {...(product.discount > 0 ? { discount: product.discount.slice(0, -3) } : {})}
                                 />
                             ))}
                         </Slider>

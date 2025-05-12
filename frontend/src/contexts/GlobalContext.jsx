@@ -8,23 +8,13 @@ function GlobalProvider({ children }) {
     const [top, setTop] = useState([]);
     const [bottom, setBottom] = useState([]);
     const [accessories, setAccessories] = useState([]);
-    const [randomProducts, setRandomProducts] = useState([]); // State for random products
+    const [randomProducts, setRandomProducts] = useState([]);
     const [category, setCategory] = useState('')
     const [visualizedProducts, setVisualizedProducts] = useState([])
-    const [dress, setDress] = useState([]); // State for dress category
-    const [macroareas, setMacroareas] = useState([]);
+    const [wardrobeSections, setWardrobeSections] = useState([]); // this is the main state
     const [categoryProducts, setCategoryProducts] = useState({});
     const [discount, setDiscount] = useState([]); // State for discount products
 
-
-    function fetchIndexMacroArea(macroArea, callback) {
-        fetch(`http://localhost:3000/api/v1/products/macroarea/${macroArea}`)
-            .then(res => res.json())
-            .then(data => {
-                callback(data)
-
-            });
-    }
 
     // Fetch 10 random products
     function fetchRandomProducts() {
@@ -45,10 +35,10 @@ function GlobalProvider({ children }) {
             });
     }
 
-    function fetchMacroareas() {
-        fetch('http://localhost:3000/api/v1/macroareas')
+    function fetchWardrobeSections() {
+        fetch('http://localhost:3000/api/v1/wardrobe-sections')
             .then(res => res.json())
-            .then(data => setMacroareas(data));
+            .then(data => setWardrobeSections(data));
     }
 
     function fetchCategoryProducts(slug) {
@@ -93,14 +83,11 @@ function GlobalProvider({ children }) {
                 visualizedProducts,
                 setVisualizedProducts,
                 fetchProductsByCategory,
-                fetchIndexMacroArea,
                 fetchRandomProducts,
                 randomProducts, // Expose category filter function
-                dress,
-                setDress,
-                macroareas,
+                wardrobeSections,
                 categoryProducts,
-                fetchMacroareas,
+                fetchWardrobeSections,
                 fetchCategoryProducts,
                 discount
             }}
