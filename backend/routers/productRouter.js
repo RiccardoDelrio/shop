@@ -12,6 +12,9 @@ router.get('/random', ProductController.getRandomProducts);
 // Get discounted products
 router.get('/discounted', ProductController.getDiscountedProducts);
 
+// Get bestseller products
+router.get('/bestsellers', ProductController.getBestsellers);
+
 // Search products
 router.get('/search', ProductController.searchProducts);
 

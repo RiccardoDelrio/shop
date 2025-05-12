@@ -4,7 +4,7 @@ function dynamicFiltering(req, res) {
 
     // whitelist to avoid sql injections
     const ALLOWED_FILTERS = [
-        'category', 'macroarea', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock'
+        'category', 'Wardrobe_Section', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock'
     ];
 
     // check if the filters are in the whitelist 
@@ -28,7 +28,7 @@ function dynamicFiltering(req, res) {
   SELECT 
     p.id, p.slug, p.name, p.description, p.long_description, p.price, p.discount,
     c.id AS category_id, c.name AS category_name, c.slug AS category_slug,
-    m.id AS macroarea_id, m.name AS macroarea_name, m.slug AS macroarea_slug,
+    WS.id AS wardrobe_section_id, WS.name AS wardrobe_section_name, WS.slug AS wardrobe_section_slug,
     (
       SELECT JSON_ARRAYAGG(
         JSON_OBJECT(
@@ -38,7 +38,7 @@ function dynamicFiltering(req, res) {
           'product_variation_id', pi.product_variation_id
         )
       )
-      FROM Product_Images pi 
+      FROM product_images pi 
       WHERE pi.product_id = p.id
     ) AS images,
     JSON_ARRAYAGG(
@@ -49,10 +49,10 @@ function dynamicFiltering(req, res) {
         'stock', pv.stock
       )
     ) AS variations
-  FROM Products p
-  JOIN Categories c ON p.category_id = c.id
-  JOIN Macroareas m ON c.macroarea_id = m.id
-  LEFT JOIN Product_Variations pv ON p.id = pv.product_id
+  FROM products p
+  JOIN categories c ON p.category_id = c.id
+  JOIN Wardrobe_Section WS ON c.wardrobe_section_id = WS.id
+  LEFT JOIN product_variations pv ON p.id = pv.product_id
   WHERE 1=1
 `;
 
@@ -62,9 +62,9 @@ function dynamicFiltering(req, res) {
         sql += ' AND c.slug = ?';
         params.push(filters.category);
     }
-    if (filters.macroarea) {
-        sql += ' AND m.slug = ?';
-        params.push(filters.macroarea);
+    if (filters.Wardrobe_Section) {
+        sql += ' AND WS.slug = ?';
+        params.push(filters.Wardrobe_Section);
     }
     if (filters.color) {
         sql += ' AND pv.color = ?';

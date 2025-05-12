@@ -8,8 +8,8 @@ function getAllCategories(req, res) {
             name,
             slug,
             description,
-            macroarea_id
-        FROM Categories
+            wardrobe_section_id
+        FROM categories
     `;
 
     connection.query(sql, (err, results) => {
@@ -18,14 +18,14 @@ function getAllCategories(req, res) {
     });
 }
 
-// Get all macroareas with their categories
-function getAllMacroareas(req, res) {
+// Get all wardrobe sections with their categories
+function getAllWardrobeSections(req, res) {
     const sql = `
         SELECT 
-            Macroareas.id,
-            Macroareas.name,
-            Macroareas.slug,
-            Macroareas.description,
+            Wardrobe_Section.id,
+            Wardrobe_Section.name,
+            Wardrobe_Section.slug,
+            Wardrobe_Section.description,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -35,27 +35,27 @@ function getAllMacroareas(req, res) {
                         'description', c.description
                     )
                 )
-                FROM Categories c
-                WHERE c.macroarea_id = Macroareas.id
+                FROM categories c
+                WHERE c.wardrobe_section_id = Wardrobe_Section.id
             ) AS categories
-        FROM Macroareas
+        FROM Wardrobe_Section
     `;
 
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
 
-        // Parse the JSON string to an actual array for each macroarea
-        results.forEach(macroarea => {
-            if (typeof macroarea.categories === 'string') {
+        // Parse the JSON string to an actual array for each wardrobe section
+        results.forEach(section => {
+            if (typeof section.categories === 'string') {
                 try {
-                    macroarea.categories = JSON.parse(macroarea.categories);
+                    section.categories = JSON.parse(section.categories);
                 } catch (e) {
-                    macroarea.categories = [];
+                    section.categories = [];
                 }
-            } else if (Array.isArray(macroarea.categories)) {
+            } else if (Array.isArray(section.categories)) {
                 // Already an array, do nothing
-            } else if (!macroarea.categories) {
-                macroarea.categories = [];
+            } else if (!section.categories) {
+                section.categories = [];
             }
         });
 
@@ -63,13 +63,13 @@ function getAllMacroareas(req, res) {
     });
 }
 
-// Get products by macroarea
-function getProductsByMacroarea(req, res) {
+// Get products by wardrobe section
+function getProductsByWardrobeSection(req, res) {
     const { slug } = req.params;
 
     // Validate the slug parameter
     if (!slug || typeof slug !== 'string') {
-        return res.status(400).json({ error: 'Invalid macroarea slug provided' });
+        return res.status(400).json({ error: 'Invalid wardrobe section slug provided' });
     }
 
     const sql = `
@@ -84,9 +84,9 @@ function getProductsByMacroarea(req, res) {
             categories.id AS category_id,
             categories.name AS category_name,
             categories.slug AS category_slug,
-            macroareas.id AS macroarea_id,
-            macroareas.name AS macroarea_name,
-            macroareas.slug AS macroarea_slug,
+            Wardrobe_Section.id AS wardrobe_section_id,
+            Wardrobe_Section.name AS wardrobe_section_name,
+            Wardrobe_Section.slug AS wardrobe_section_slug,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -101,14 +101,14 @@ function getProductsByMacroarea(req, res) {
             ) AS images
         FROM products
         JOIN categories ON products.category_id = categories.id
-        JOIN macroareas ON categories.macroarea_id = macroareas.id
-        WHERE macroareas.slug = ?
+        JOIN Wardrobe_Section ON categories.wardrobe_section_id = Wardrobe_Section.id
+        WHERE Wardrobe_Section.slug = ?
         GROUP BY products.id
     `;
 
     connection.query(sql, [slug], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(404).json({ error: `No products found for macroarea: ${slug}` });
+        if (results.length === 0) return res.status(404).json({ error: `No products found for wardrobe section: ${slug}` });
 
         // Parse the JSON string to an actual array for each product
         results.forEach(product => {
@@ -150,9 +150,9 @@ function getProductsByCategory(req, res) {
             categories.id AS category_id,
             categories.name AS category_name,
             categories.slug AS category_slug,
-            macroareas.id AS macroarea_id,
-            macroareas.name AS macroarea_name,
-            macroareas.slug AS macroarea_slug,
+            Wardrobe_Section.id AS wardrobe_section_id,
+            Wardrobe_Section.name AS wardrobe_section_name,
+            Wardrobe_Section.slug AS wardrobe_section_slug,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -167,7 +167,7 @@ function getProductsByCategory(req, res) {
             ) AS images
         FROM products
         JOIN categories ON products.category_id = categories.id
-        JOIN macroareas ON categories.macroarea_id = macroareas.id
+        JOIN Wardrobe_Section ON categories.wardrobe_section_id = Wardrobe_Section.id
         WHERE categories.slug = ?
         GROUP BY products.id
     `;
@@ -195,13 +195,13 @@ function getProductsByCategory(req, res) {
     });
 }
 
-// Get categories by macroarea
-function getCategoriesByMacroarea(req, res) {
+// Get categories by wardrobe section
+function getCategoriesByWardrobeSection(req, res) {
     const { slug } = req.params;
 
     // Validate the slug parameter
     if (!slug || typeof slug !== 'string') {
-        return res.status(400).json({ error: 'Invalid macroarea slug provided' });
+        return res.status(400).json({ error: 'Invalid wardrobe section slug provided' });
     }
 
     const sql = `
@@ -210,17 +210,17 @@ function getCategoriesByMacroarea(req, res) {
             categories.name,
             categories.slug,
             categories.description,
-            macroareas.id AS macroarea_id,
-            macroareas.name AS macroarea_name,
-            macroareas.slug AS macroarea_slug
+            Wardrobe_Section.id AS wardrobe_section_id,
+            Wardrobe_Section.name AS wardrobe_section_name,
+            Wardrobe_Section.slug AS wardrobe_section_slug
         FROM categories
-        JOIN macroareas ON categories.macroarea_id = macroareas.id
-        WHERE macroareas.slug = ?
+        JOIN Wardrobe_Section ON categories.wardrobe_section_id = Wardrobe_Section.id
+        WHERE Wardrobe_Section.slug = ?
     `;
 
     connection.query(sql, [slug], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(404).json({ error: `No categories found for macroarea: ${slug}` });
+        if (results.length === 0) return res.status(404).json({ error: `No categories found for wardrobe section: ${slug}` });
 
         res.json(results);
     });
@@ -228,8 +228,8 @@ function getCategoriesByMacroarea(req, res) {
 
 module.exports = {
     getAllCategories,
-    getAllMacroareas,
-    getProductsByMacroarea,
+    getAllWardrobeSections,
+    getProductsByWardrobeSection,
     getProductsByCategory,
-    getCategoriesByMacroarea
+    getCategoriesByWardrobeSection
 };

@@ -58,6 +58,7 @@ function getProductBySlug(req, res) {
                 JSON_OBJECT(
                     'id', pv.id,
                     'color', pv.color,
+                    'color_hex', pv.color_hex,
                     'size', pv.size,
                     'stock', pv.stock
                 )
@@ -191,11 +192,27 @@ function searchProducts(req, res) {
     });
 }
 
+// Get bestseller products
+function getBestsellers(req, res) {
+    const sql = `
+        SELECT 
+            b.*,
+            (SELECT image_url FROM Product_Images WHERE product_id = b.product_id AND is_primary = TRUE LIMIT 1) AS primary_image
+        FROM Bestseller_Products b
+    `;
+
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        
+        res.json(results);
+    });
+}
 
 module.exports = {
     getAllProducts,
     getProductBySlug,
     getRandomProducts,
     getDiscountedProducts,
-    searchProducts
+    searchProducts,
+    getBestsellers
 };

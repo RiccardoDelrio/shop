@@ -33,15 +33,16 @@ app.use(serverError);
 /**
  * API ENDPOINT REFERENCE (RESTful, slug-based)
  *
- * MACROAREAS
- * GET /api/v1/macroareas                  - All macroareas with their categories
- * GET /api/v1/macroareas/:slug/categories - Categories for a macroarea (by slug)
+ * WARDROBE SECTIONS
+ * GET /api/v1/wardrobe-sections                  - All wardrobe sections with their categories
+ * GET /api/v1/wardrobe-sections/:slug/categories - Categories for a wardrobe section (by slug)
  *
  * CATEGORIES
  * GET /api/v1/categories                  - All categories (flat list)
  *
  * PRODUCTS (Dynamic Filtering)
- * GET /api/v1/products/filter             - DYNAMIC: Filter, search, and list products with any combination of query params (category, macroarea, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.)
+ * GET /api/v1/products/filter             - DYNAMIC: Filter, search, and list products with any combination of query params (category, wardrobe_section, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.)
+ * GET /api/v1/products/bestsellers        - Top 10 best-selling products (NEW)
  *
  * ORDERS
  * POST /api/v1/orders                     - Create order

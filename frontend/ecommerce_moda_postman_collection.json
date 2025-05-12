@@ -334,6 +334,29 @@
                         "description": "Show all in-stock discounted products sorted by price ascending."
                     },
                     "response": []
+                },
+                {
+                    "name": "Top 10 Best-Selling Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/bestsellers",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "bestsellers"
+                            ]
+                        },
+                        "description": "Retrieve the top 10 best-selling products."
+                    },
+                    "response": []
                 }
             ]
         },
