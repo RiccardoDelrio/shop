@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
 import SizeTable from './pages/Size-table';
@@ -23,8 +23,8 @@ function App() {
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/catalogo" element={<Catalogo />} />
-            <Route path="/catalogo/:categorySlug" element={<Catalogo />} />
+            <Route path="/catalogo" element={<Navigate to="/search" replace />} />
+
             <Route path="/macroarea/:slug" element={<MacroAreaPage />} />
             <Route path="/size-table" element={<SizeTable />} />
             <Route path="/story-site" element={<StorySite />} />

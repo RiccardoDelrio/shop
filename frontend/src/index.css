@@ -203,3 +203,40 @@ table {
 
 
 }
+
+.filter-sidebar {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 0px;
+}
+
+.filter-sidebar .form-label {
+    color: white;
+}
+
+.filter-sidebar .form-control,
+.filter-sidebar .form-select {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+}
+
+.filter-sidebar .form-control:focus,
+.filter-sidebar .form-select:focus {
+    background: rgb(255, 255, 255);
+    border-color: gold;
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+    color: white;
+}
+
+.filter-sidebar .form-check-label {
+    color: white;
+}
+
+.filter-sidebar .form-check-input:checked {
+    background-color: gold;
+    border-color: gold;
+}
