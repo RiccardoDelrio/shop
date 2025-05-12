@@ -19,36 +19,38 @@ export default function Home() {
                 < PagePopup />
                 <Jumbotron />
                 <h1 className="home_title">
-                    Scopri l'eleganza senza tempo: dove lo stile incontra l'arte dell'alta moda.
+                    Discover timeless elegance: where style meets the art of haute couture.
                 </h1>
                 <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 pt-5 mt-5">
-                    <Link to={`/macroarea/accessori`}>
+                    <Link to={`/wardrobe-section/accessories`}> {/* changed from /macroarea */}
                         <CategoryCards
-                            title="Accessori"
+                            title="Accessories"
                             image="./img/accessories.jpg"
                         />
                     </Link>
-                    <Link to={`/macroarea/upper-body`}>
+                    <Link to={`/wardrobe-section/tops-and-coats`}> {/* changed from /macroarea/upper-body */}
                         <CategoryCards
-                            title="Parte Superiore"
+                            title="Tops&coats"
                             image="./img/top.jpg"
                         />
                     </Link>
-                    <Link to={`/macroarea/lower-body`}>
+                    <Link to={`/wardrobe-section/skirts-and-trousers`}> {/* changed from /macroarea/lower-body */}
                         <CategoryCards
-                            title="Parte Inferiore"
+                            title="Skirts
+                            &
+                            trousers"
                             image="./img/trousers.jpg"
                         />
                     </Link>
-                    <Link to={`/macroarea/dress`}>
+                    <Link to={`/wardrobe-section/dresses`}> {/* changed from /macroarea/dress */}
                         <CategoryCards
-                            title="Vestiti"
+                            title="Dresses"
                             image="./img/dress.jpg"
                         />
                     </Link>
                 </div>
-                <h1 className="home_title ">Scopri la nostra collezione</h1>
-                <h1 className="home_title fs-1 p-0 m-0">Esplora la nostra selezione curata di capi di alta moda.</h1>
+                <h1 className="home_title ">Discover our collection</h1>
+                <h1 className="home_title fs-1 p-0 m-0">Explore our curated selection of haute couture pieces.</h1>
 
                 <Slider>
                     {randomProducts.map((product) => (
@@ -65,7 +67,7 @@ export default function Home() {
                     ))}
                 </Slider>
 
-                <h1 className="home_title ">Prodotti in sconto</h1>
+                <h1 className="home_title ">Discounted Products</h1>
 
                 <Slider>
                     {discount.map((product) => (

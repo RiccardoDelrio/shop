@@ -51,7 +51,6 @@ const ProductDetails = () => {
 
 
 
-
     return (
         <section className="product">
             <div className="product__photo">
@@ -115,7 +114,7 @@ const ProductDetails = () => {
                             <p className="m-0">Color: {selectedVariation.color}</p>
                             <div
                                 className="color-preview"
-                                style={{ backgroundColor: selectedVariation.color.toLowerCase() }}
+                                style={{ backgroundColor: selectedVariation.color_hex }}
                             />
                         </div>
                     )}

@@ -12,7 +12,7 @@ export default function SearchPage() {
     // Leggi i filtri direttamente da searchParams
     const filters = {
         category: searchParams.get('category') || '',
-        macroarea: searchParams.get('macroarea') || '',
+        wardrobeSection: searchParams.get('wardrobeSection') || '', // changed from macroarea
         search: searchParams.get('search') || '',
         minPrice: searchParams.get('minPrice') || '',
         maxPrice: searchParams.get('maxPrice') || '',
@@ -97,11 +97,11 @@ export default function SearchPage() {
 
     return (
         <div className="catalogo-container">
-            {/* Header fisso con controlli */}
+            {/* Fixed header with controls */}
             <div className="catalogo-header">
                 <div className="d-flex justify-content-between align-items-center">
                     <h2 className="catalogo-title">
-                        {filters.search ? `Risultati per: ${filters.search}` : 'Tutti i prodotti'}
+                        {filters.search ? `Results for: ${filters.search}` : 'All products'}
                     </h2>
                     <button className="btn btn-outline-light" onClick={toggleView}>
                         <i className={`bi ${isGridView ? 'bi-grid-3x3-gap' : 'bi-list'}`}></i>
@@ -109,54 +109,37 @@ export default function SearchPage() {
                 </div>
             </div>
 
-            {/* Contenuto principale scorrevole */}
+            {/* Main scrollable content */}
             <div className="catalogo-content">
                 <div className="row g-4">
-                    {/* Sidebar Filtri */}
+                    {/* Filters Sidebar */}
                     <div className="col-lg-3">
                         <div className="filter-sidebar p-3 rounded">
-                            <h4 className="mb-3">Filtri</h4>
+                            <h4 className="mb-3">Filters</h4>
 
                             <div className="mb-3">
-                                <label className="form-label">MacroArea</label>
-                                <select
-                                    type="text"
-                                    className="form-control text-black "
-                                    name="macroarea"
-                                    value={filters.macroarea}
-                                    onChange={handleFilterChange}
-                                >
-                                    <option value="">Tutti</option>
-                                    <option value="accessories">Accessories</option>
-                                    <option value="upper-body">Top and Coats</option>
-                                    <option value="lower-body">Skirts and Trousers</option>
-                                    <option value="dress">Dresses</option>
-                                </select>
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Categoria</label>
+                                <label className="form-label">Category</label>
                                 <select
                                     className="form-select text-black"
                                     name="category"
                                     value={filters.category}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">Tutte</option>
-                                    <option value="orecchini">Orecchini</option>
-                                    <option value="bracciali">Bracciali</option>
-                                    <option value="collane">Collane</option>
-                                    <option value="giacche">Giacche</option>
-                                    <option value="cappotti">Cappotti</option>
-                                    <option value="maglie">Maglie</option>
-                                    <option value="maglioni">Maglioni</option>
-                                    <option value="pantaloni">Pantaloni</option>
-                                    <option value="gonne">Gonne</option>
-                                    <option value="vestitini">Vestitini</option>
+                                    <option value="">All</option>
+                                    <option value="earrings">Earrings</option>
+                                    <option value="bracelets">Bracelets</option>
+                                    <option value="necklaces">Necklaces</option>
+                                    <option value="jackets">Jackets</option>
+                                    <option value="outerwear">Outerwear</option>
+                                    <option value="shirts">Shirts</option>
+                                    <option value="knits">Knitwear</option>
+                                    <option value="trousers">Trousers</option>
+                                    <option value="skirts">Skirts</option>
+                                    <option value="dresses">Dresses</option>
                                 </select>
                             </div>
                             <div className="mb-3">
-
-                                <label className="form-label">Prezzo Minimo</label>
+                                <label className="form-label">Minimum Price</label>
                                 <input
                                     type="number"
                                     className="form-control text-black"
@@ -167,7 +150,7 @@ export default function SearchPage() {
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">Prezzo Massimo</label>
+                                <label className="form-label">Maximum Price</label>
                                 <input
                                     type="number"
                                     className="form-control text-black"
@@ -178,29 +161,29 @@ export default function SearchPage() {
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">Colore</label>
+                                <label className="form-label">Color</label>
                                 <select
                                     className="form-select text-black"
                                     name="color"
                                     value={filters.color}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">Tutti</option>
-                                    <option value="black">Nero</option>
-                                    <option value="white">Bianco</option>
-                                    <option value="red">Rosso</option>
+                                    <option value="">All</option>
+                                    <option value="black">Black</option>
+                                    <option value="white">White</option>
+                                    <option value="red">Red</option>
                                 </select>
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">Taglia</label>
+                                <label className="form-label">Size</label>
                                 <select
                                     className="form-select text-black"
                                     name="size"
                                     value={filters.size}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">Tutte</option>
+                                    <option value="">All</option>
                                     <option value="S">S</option>
                                     <option value="M">M</option>
                                     <option value="L">L</option>
@@ -218,7 +201,7 @@ export default function SearchPage() {
                                     id="discounted"
                                 />
                                 <label className="form-check-label" htmlFor="discounted">
-                                    Solo Prodotti Scontati
+                                    Discounted Products Only
                                 </label>
                             </div>
 
@@ -232,13 +215,13 @@ export default function SearchPage() {
                                     id="inStock"
                                 />
                                 <label className="form-check-label" htmlFor="inStock">
-                                    Solo Disponibili
+                                    In Stock Only
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    {/* Griglia Prodotti */}
+                    {/* Products Grid */}
                     <div className="col-lg-9">
                         {loading ? (
                             <div className="text-center">
