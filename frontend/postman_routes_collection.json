@@ -7,15 +7,15 @@
     },
     "item": [
         {
-            "name": "Macroarea Routes",
+            "name": "Wardrobe Section Routes",
             "item": [
                 {
-                    "name": "Get All Macroareas",
+                    "name": "Get All Wardrobe Sections",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/macroareas",
+                            "raw": "http://localhost:3000/api/v1/wardrobe-sections",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -24,20 +24,20 @@
                             "path": [
                                 "api",
                                 "v1",
-                                "macroareas"
+                                "wardrobe-sections"
                             ]
                         },
-                        "description": "Returns all macroareas with their categories."
+                        "description": "Returns all wardrobe sections with their categories."
                     },
                     "response": []
                 },
                 {
-                    "name": "Get Categories by Macroarea",
+                    "name": "Get Categories by Wardrobe Section",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/macroareas/upper-body/categories",
+                            "raw": "http://localhost:3000/api/v1/wardrobe-sections/:slug/categories",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -46,12 +46,50 @@
                             "path": [
                                 "api",
                                 "v1",
-                                "macroareas",
-                                "upper-body",
+                                "wardrobe-sections",
+                                ":slug",
                                 "categories"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "tops-and-coats",
+                                    "description": "The slug of the wardrobe section to retrieve categories for"
+                                }
                             ]
                         },
-                        "description": "Returns all categories for the specified macroarea (by slug)."
+                        "description": "Returns all categories for the specified wardrobe section (by slug)."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Wardrobe Section",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wardrobe-sections/:slug/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wardrobe-sections",
+                                ":slug",
+                                "products"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "tops-and-coats",
+                                    "description": "The slug of the wardrobe section to retrieve products for"
+                                }
+                            ]
+                        },
+                        "description": "Returns all products for the specified wardrobe section (by slug)."
                     },
                     "response": []
                 }
@@ -81,12 +119,168 @@
                         "description": "Returns a flat list of all categories."
                     },
                     "response": []
+                },
+                {
+                    "name": "Get Products by Category",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/categories/:slug",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                ":slug"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "earrings",
+                                    "description": "The slug of the category to retrieve products for"
+                                }
+                            ]
+                        },
+                        "description": "Returns products for a specific category by its slug."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Product Routes",
+            "item": [
+                {
+                    "name": "Get All Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products"
+                            ]
+                        },
+                        "description": "Returns all products."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Random Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/random",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "random"
+                            ]
+                        },
+                        "description": "Returns a random selection of products."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Discounted Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/discounted",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "discounted"
+                            ]
+                        },
+                        "description": "Returns all discounted products."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Bestseller Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/bestsellers",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "bestsellers"
+                            ]
+                        },
+                        "description": "Retrieve the top 10 best-selling products."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product by Slug",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/:slug",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                ":slug"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "lunara",
+                                    "description": "The slug of the product to retrieve"
+                                }
+                            ]
+                        },
+                        "description": "Returns details of a specific product by its slug."
+                    },
+                    "response": []
                 }
             ]
         },
         {
             "name": "Dynamic Product Filtering (Examples)",
-            "description": "All requests in this folder are EXAMPLES. The /products/filter endpoint supports fully dynamic filtering: you can combine any supported filter as query parameters (category, macroarea, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.). Mix and match as needed! Filtering is dynamic and replaces all previous product listing/search endpoints.",
+            "description": "All requests in this folder are EXAMPLES. The /products/filter endpoint supports fully dynamic filtering: you can combine any supported filter as query parameters (category, wardrobe-section, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.). Mix and match as needed! Filtering is dynamic and replaces all previous product listing/search endpoints.",
             "item": [
                 {
                     "name": "Filter Products (Example)",
@@ -94,7 +288,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/filter?category=maglioni&discounted=true&sort=price_desc&limit=5",
+                            "raw": "http://localhost:3000/api/v1/products/filter?category=knits&discounted=true&sort=price_desc&limit=5",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -109,7 +303,7 @@
                             "query": [
                                 {
                                     "key": "category",
-                                    "value": "maglioni"
+                                    "value": "knits"
                                 },
                                 {
                                     "key": "discounted",
@@ -130,12 +324,12 @@
                     "response": []
                 },
                 {
-                    "name": "Filter Products by Macroarea and Color",
+                    "name": "Filter Products by Wardrobe Section and Color",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/filter?macroarea=upper-body&color=Crema",
+                            "raw": "http://localhost:3000/api/v1/products/filter?wardrobe-section=tops-and-coats&color=Cream",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -149,16 +343,16 @@
                             ],
                             "query": [
                                 {
-                                    "key": "macroarea",
-                                    "value": "upper-body"
+                                    "key": "wardrobe-section",
+                                    "value": "tops-and-coats"
                                 },
                                 {
                                     "key": "color",
-                                    "value": "Crema"
+                                    "value": "Cream"
                                 }
                             ]
                         },
-                        "description": "Filter products by macroarea and color."
+                        "description": "Filter products by wardrobe section and color."
                     },
                     "response": []
                 },
@@ -262,12 +456,12 @@
                     "response": []
                 },
                 {
-                    "name": "Filter by Size, Color, and Macroarea",
+                    "name": "Filter by Size, Color, and Wardrobe Section",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/filter?size=M&color=Crema&macroarea=upper-body",
+                            "raw": "http://localhost:3000/api/v1/products/filter?size=M&color=Cream&wardrobe-section=tops-and-coats",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -286,15 +480,15 @@
                                 },
                                 {
                                     "key": "color",
-                                    "value": "Crema"
+                                    "value": "Cream"
                                 },
                                 {
-                                    "key": "macroarea",
-                                    "value": "upper-body"
+                                    "key": "wardrobe-section",
+                                    "value": "tops-and-coats"
                                 }
                             ]
                         },
-                        "description": "Filter products by size, color, and macroarea."
+                        "description": "Filter products by size, color, and wardrobe section."
                     },
                     "response": []
                 },
@@ -361,179 +555,6 @@
             ]
         },
         {
-            "name": "Obsolete Product Routes",
-            "description": "All routes in this folder are now replaced by /products/filter. Use the dynamic filtering endpoint for all product listing, searching, and filtering needs.",
-            "item": [
-                {
-                    "name": "Get All Products (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/products",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "products"
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter instead. Returns all products."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Product by Slug (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/products/lunara",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "products",
-                                "lunara"
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter with slug filter if supported. Returns details for a product (by slug)."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Random Products (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/products/random",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "products",
-                                "random"
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter?sort=random&limit=x instead. Returns a random selection of products."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Discounted Products (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/products/discounted",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "products",
-                                "discounted"
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter?discounted=true instead. Returns all discounted products."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Search Products (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/products/search?q=dress",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "products",
-                                "search"
-                            ],
-                            "query": [
-                                {
-                                    "key": "q",
-                                    "value": "dress"
-                                }
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter?search=... instead. Search products by name or description."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Products by Macroarea (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/macroareas/upper-body/products",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "macroareas",
-                                "upper-body",
-                                "products"
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter?macroarea=upper-body instead. Returns all products for a macroarea."
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Products by Category (Obsolete)",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/categories/cappotti",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "categories",
-                                "cappotti"
-                            ]
-                        },
-                        "description": "OBSOLETE: Use /products/filter?category=cappotti instead. Returns all products for a category."
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
             "name": "Order Management Routes",
             "item": [
                 {
@@ -573,7 +594,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/orders/1",
+                            "raw": "http://localhost:3000/api/v1/orders/:id",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -583,7 +604,14 @@
                                 "api",
                                 "v1",
                                 "orders",
-                                "1"
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the order to retrieve"
+                                }
                             ]
                         },
                         "description": "Retrieve information about a specific order."
@@ -605,7 +633,7 @@
                             "raw": "{\n  \"status\": \"Processing\"\n}"
                         },
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/orders/1/status",
+                            "raw": "http://localhost:3000/api/v1/orders/:id/status",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -615,8 +643,15 @@
                                 "api",
                                 "v1",
                                 "orders",
-                                "1",
+                                ":id",
                                 "status"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the order to update"
+                                }
                             ]
                         },
                         "description": "Update the status of an order. Valid statuses: Pending, Processing, Completed, Cancelled."
@@ -661,7 +696,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/orders/email/customer@example.com",
+                            "raw": "http://localhost:3000/api/v1/orders/email/:email",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -672,7 +707,14 @@
                                 "v1",
                                 "orders",
                                 "email",
-                                "customer@example.com"
+                                ":email"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "email",
+                                    "value": "customer@example.com",
+                                    "description": "The email address to retrieve orders for"
+                                }
                             ]
                         },
                         "description": "Get all orders for a specific email address."
@@ -722,7 +764,7 @@
                         "method": "DELETE",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/newsletter/unsubscribe/customer@example.com",
+                            "raw": "http://localhost:3000/api/v1/newsletter/unsubscribe/:email",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -733,12 +775,121 @@
                                 "v1",
                                 "newsletter",
                                 "unsubscribe",
-                                "customer@example.com"
+                                ":email"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "email",
+                                    "value": "customer@example.com",
+                                    "description": "The email address to unsubscribe from the newsletter"
+                                }
                             ]
                         },
                         "description": "Unsubscribe an email address from the newsletter."
                     },
                     "response": []
+                }
+            ]
+        },
+        {
+            "name": "Outdated Routes",
+            "description": "These routes have been replaced by the /products/filter endpoint for dynamic filtering.",
+            "item": [
+                {
+                    "name": "Get All Products (Outdated)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products"
+                            ]
+                        },
+                        "description": "Replaced by /products/filter. Use dynamic filtering instead."
+                    }
+                },
+                {
+                    "name": "Get Random Products (Outdated)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/random",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "random"
+                            ]
+                        },
+                        "description": "Replaced by /products/filter with sort=random&limit=x. Use dynamic filtering instead."
+                    }
+                },
+                {
+                    "name": "Get Discounted Products (Outdated)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/discounted",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "discounted"
+                            ]
+                        },
+                        "description": "Replaced by /products/filter with discounted=true. Use dynamic filtering instead."
+                    }
+                },
+                {
+                    "name": "Search Products (Outdated)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/search",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "search"
+                            ]
+                        },
+                        "description": "Replaced by /products/filter with search=... Use dynamic filtering instead."
+                    }
+                },
+                {
+                    "name": "Get Products by Wardrobe Section (Outdated)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wardrobe-sections/:slug/products",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wardrobe-sections",
+                                ":slug",
+                                "products"
+                            ]
+                        },
+                        "description": "Replaced by /products/filter with wardrobe-section=:slug."
+                    }
+                },
+                {
+                    "name": "Get Products by Category (Outdated)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/categories/:slug",
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                ":slug"
+                            ]
+                        },
+                        "description": "Replaced by /products/filter with category=:slug."
+                    }
                 }
             ]
         }

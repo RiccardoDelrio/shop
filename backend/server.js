@@ -36,22 +36,30 @@ app.use(serverError);
  * WARDROBE SECTIONS
  * GET /api/v1/wardrobe-sections                  - All wardrobe sections with their categories
  * GET /api/v1/wardrobe-sections/:slug/categories - Categories for a wardrobe section (by slug)
+ * GET /api/v1/wardrobe-sections/:slug/products   - Products for a wardrobe section (by slug)
  *
  * CATEGORIES
  * GET /api/v1/categories                  - All categories (flat list)
+ * GET /api/v1/categories/:slug            - Products for a specific category (by slug)
  *
  * PRODUCTS (Dynamic Filtering)
  * GET /api/v1/products/filter             - DYNAMIC: Filter, search, and list products with any combination of query params (category, wardrobe_section, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.)
- * GET /api/v1/products/bestsellers        - Top 10 best-selling products (NEW)
+ * 
+ * PRODUCTS (Static)
+ * GET /api/v1/products/bestsellers        - Top 10 best-selling products
+ * GET /api/v1/products/random             - Random selection of products
+ * GET /api/v1/products/discounted         - All discounted products
+ * 
+ * GET /api/v1/products/:slug              - Details of a specific product (by slug)
  *
  * ORDERS
  * POST /api/v1/orders                     - Create order
  * GET /api/v1/orders/:id                  - Order details (by id)
  * PATCH /api/v1/orders/:id/status         - Update order status
  * POST /api/v1/orders/track               - Track order
- * GET /api/v1/orders/email/:email         - Orders by email
+ * GET /api/v1/orders/email/:email         - Get all orders for a specific email address
  *
  * NEWSLETTER
- * POST /api/v1/newsletter/subscribe       - Subscribe
- * DELETE /api/v1/newsletter/unsubscribe/:email - Unsubscribe
+ * POST /api/v1/newsletter/subscribe       - Subscribe to the newsletter
+ * DELETE /api/v1/newsletter/unsubscribe/:email - Unsubscribe from the newsletter
  */
