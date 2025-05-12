@@ -54,30 +54,6 @@
                         "description": "Returns all categories for the specified macroarea (by slug)."
                     },
                     "response": []
-                },
-                {
-                    "name": "Get Products by Macroarea",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/macroareas/upper-body/products",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "macroareas",
-                                "upper-body",
-                                "products"
-                            ]
-                        },
-                        "description": "Returns all products for the specified macroarea (by slug). This is the only endpoint to get all products for a macroarea."
-                    },
-                    "response": []
                 }
             ]
         },
@@ -105,14 +81,20 @@
                         "description": "Returns a flat list of all categories."
                     },
                     "response": []
-                },
+                }
+            ]
+        },
+        {
+            "name": "Dynamic Product Filtering (Examples)",
+            "description": "All requests in this folder are EXAMPLES. The /products/filter endpoint supports fully dynamic filtering: you can combine any supported filter as query parameters (category, macroarea, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.). Mix and match as needed! Filtering is dynamic and replaces all previous product listing/search endpoints.",
+            "item": [
                 {
-                    "name": "Get Products by Category",
+                    "name": "Filter Products (Example)",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/categories/cappotti",
+                            "raw": "http://localhost:3000/api/v1/products/filter?category=maglioni&discounted=true&sort=price_desc&limit=5",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -121,21 +103,246 @@
                             "path": [
                                 "api",
                                 "v1",
-                                "categories",
-                                "cappotti"
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "category",
+                                    "value": "maglioni"
+                                },
+                                {
+                                    "key": "discounted",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "price_desc"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "5"
+                                }
                             ]
                         },
-                        "description": "Returns all products for the specified category (by slug). Category routes do not return macroarea products."
+                        "description": "Filter products dynamically by category, discount, sort, and limit. You can add any supported filter as a query parameter."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Filter Products by Macroarea and Color",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?macroarea=upper-body&color=Crema",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "macroarea",
+                                    "value": "upper-body"
+                                },
+                                {
+                                    "key": "color",
+                                    "value": "Crema"
+                                }
+                            ]
+                        },
+                        "description": "Filter products by macroarea and color."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Filter by Price Range and In Stock",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?minPrice=100&maxPrice=500&inStock=true",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "minPrice",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "maxPrice",
+                                    "value": "500"
+                                },
+                                {
+                                    "key": "inStock",
+                                    "value": "true"
+                                }
+                            ]
+                        },
+                        "description": "Filter products by price range and only show those in stock."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Products by Text",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?search=alpaca",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "alpaca"
+                                }
+                            ]
+                        },
+                        "description": "Search products by text in name or description."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Top 3 Biggest Discounts",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?sort=discount_desc&limit=3",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "sort",
+                                    "value": "discount_desc"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "3"
+                                }
+                            ]
+                        },
+                        "description": "Show the top 3 products with the biggest discounts."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Filter by Size, Color, and Macroarea",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?size=M&color=Crema&macroarea=upper-body",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "size",
+                                    "value": "M"
+                                },
+                                {
+                                    "key": "color",
+                                    "value": "Crema"
+                                },
+                                {
+                                    "key": "macroarea",
+                                    "value": "upper-body"
+                                }
+                            ]
+                        },
+                        "description": "Filter products by size, color, and macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "All In-Stock Discounted Products Sorted by Price Ascending",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?inStock=true&discounted=true&sort=price_asc",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "inStock",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "discounted",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "sort",
+                                    "value": "price_asc"
+                                }
+                            ]
+                        },
+                        "description": "Show all in-stock discounted products sorted by price ascending."
                     },
                     "response": []
                 }
             ]
         },
         {
-            "name": "Product Routes",
+            "name": "Obsolete Product Routes",
+            "description": "All routes in this folder are now replaced by /products/filter. Use the dynamic filtering endpoint for all product listing, searching, and filtering needs.",
             "item": [
                 {
-                    "name": "Get All Products",
+                    "name": "Get All Products (Obsolete)",
                     "request": {
                         "method": "GET",
                         "header": [],
@@ -152,12 +359,12 @@
                                 "products"
                             ]
                         },
-                        "description": "Returns all products."
+                        "description": "OBSOLETE: Use /products/filter instead. Returns all products."
                     },
                     "response": []
                 },
                 {
-                    "name": "Get Product by Slug",
+                    "name": "Get Product by Slug (Obsolete)",
                     "request": {
                         "method": "GET",
                         "header": [],
@@ -175,12 +382,12 @@
                                 "lunara"
                             ]
                         },
-                        "description": "Returns details for a product (by slug)."
+                        "description": "OBSOLETE: Use /products/filter with slug filter if supported. Returns details for a product (by slug)."
                     },
                     "response": []
                 },
                 {
-                    "name": "Get Random Products",
+                    "name": "Get Random Products (Obsolete)",
                     "request": {
                         "method": "GET",
                         "header": [],
@@ -198,12 +405,35 @@
                                 "random"
                             ]
                         },
-                        "description": "Returns a random selection of products."
+                        "description": "OBSOLETE: Use /products/filter?sort=random&limit=x instead. Returns a random selection of products."
                     },
                     "response": []
                 },
                 {
-                    "name": "Search Products",
+                    "name": "Get Discounted Products (Obsolete)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/discounted",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "discounted"
+                            ]
+                        },
+                        "description": "OBSOLETE: Use /products/filter?discounted=true instead. Returns all discounted products."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Products (Obsolete)",
                     "request": {
                         "method": "GET",
                         "header": [],
@@ -227,17 +457,17 @@
                                 }
                             ]
                         },
-                        "description": "Search products by name or description."
+                        "description": "OBSOLETE: Use /products/filter?search=... instead. Search products by name or description."
                     },
                     "response": []
                 },
                 {
-                    "name": "Get Discounted Products",
+                    "name": "Get Products by Macroarea (Obsolete)",
                     "request": {
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/discounted",
+                            "raw": "http://localhost:3000/api/v1/macroareas/upper-body/products",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -246,11 +476,35 @@
                             "path": [
                                 "api",
                                 "v1",
-                                "products",
-                                "discounted"
+                                "macroareas",
+                                "upper-body",
+                                "products"
                             ]
                         },
-                        "description": "Returns all products that have a discount."
+                        "description": "OBSOLETE: Use /products/filter?macroarea=upper-body instead. Returns all products for a macroarea."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Products by Category (Obsolete)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/categories/cappotti",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "categories",
+                                "cappotti"
+                            ]
+                        },
+                        "description": "OBSOLETE: Use /products/filter?category=cappotti instead. Returns all products for a category."
                     },
                     "response": []
                 }

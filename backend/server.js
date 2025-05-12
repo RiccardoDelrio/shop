@@ -4,7 +4,6 @@ const PORT = process.env.PORT || 3000;
 const eCommerceRouter = require('./routers/eCommerceRouter')
 const notFound = require('./middlewares/notFound')
 const serverError = require('./middlewares/serverError')
-const validateQuery = require('./middlewares/validateQuery');
 
 const cors = require("cors");
 app.use(cors({ origin: process.env.FRONT_URL || 'http://localhost:5173' }));
@@ -16,9 +15,6 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Boolean Shop API - Welcome to our e-commerce API');
 });
-
-// Apply query validation globally
-app.use(validateQuery);
 
 // API Routes
 app.use('/api/v1', eCommerceRouter);
@@ -40,18 +36,12 @@ app.use(serverError);
  * MACROAREAS
  * GET /api/v1/macroareas                  - All macroareas with their categories
  * GET /api/v1/macroareas/:slug/categories - Categories for a macroarea (by slug)
- * GET /api/v1/macroareas/:slug/products   - All products for a macroarea (by slug)
  *
  * CATEGORIES
  * GET /api/v1/categories                  - All categories (flat list)
- * GET /api/v1/categories/:slug            - All products for a category (by slug)
  *
- * PRODUCTS
- * GET /api/v1/products                    - All products
- * GET /api/v1/products/:slug              - Product details (by slug)
- * GET /api/v1/products/random             - Random products
- * GET /api/v1/products/discounted         - All discounted products
- * GET /api/v1/products/search?q=...       - Search products
+ * PRODUCTS (Dynamic Filtering)
+ * GET /api/v1/products/filter             - DYNAMIC: Filter, search, and list products with any combination of query params (category, macroarea, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.)
  *
  * ORDERS
  * POST /api/v1/orders                     - Create order

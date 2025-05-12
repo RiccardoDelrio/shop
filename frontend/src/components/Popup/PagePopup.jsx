@@ -2,30 +2,36 @@ import { useState, useEffect } from "react";
 import './PagePopup.css';
 
 export default function WelcomePopup() {
-    // Stati per gestire il popup
-    const [showPopup, setShowPopup] = useState(false);    // Controlla la visibilità del popup
-    const [email, setEmail] = useState("");               // Memorizza l'email inserita
-    const [message, setMessage] = useState("");           // Memorizza messaggi di feedback
+    const [showPopup, setShowPopup] = useState(false);
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
 
-    // Viene eseguito una volta quando il componente viene montato
+    // Funzione per controllare se il popup deve essere mostrato
+    function checkLastVisit() {
+        const lastVisit = localStorage.getItem("lastVisitDate");
+        const today = new Date().toDateString();
+        return !lastVisit || lastVisit !== today;
+    }
+
     useEffect(() => {
-        // Controlla se è la prima visita dell'utente
-        const isFirstVisit = !localStorage.getItem("hasVisited");
-        if (isFirstVisit) {
-            setShowPopup(true); // Mostra il popup se è la prima visita
+        // Mostra il popup se è un nuovo giorno
+        if (checkLastVisit()) {
+            setShowPopup(true);
+            localStorage.setItem("lastVisitDate", new Date().toDateString());
         }
-    }, []); // Array vuoto = esegui solo al mount
+    }, []);
 
-    // Funzione per resettare il popup (per debug)
-    const handleDebugReset = () => {
-        localStorage.removeItem("hasVisited");  // Rimuove il flag dalla memoria
-        setShowPopup(true);                    // Mostra il popup
-        setMessage("");                        // Resetta eventuali messaggi
-        setEmail("");                          // Resetta il campo email
-    };
+    // Rimuovi la data per far riapparire il popup
+    localStorage.removeItem("lastVisitDate");
 
-    // Gestisce l'invio del form
-    const handleSubmit = (e) => {
+
+    // Gestione chiusura popup
+    function handleClose() {
+        setShowPopup(false);
+    }
+
+    // Gestione form submission
+    function handleSubmit(e) {
         e.preventDefault();
 
         fetch("http://localhost:3000/api/v1/newsletter/subscribe", {
@@ -36,45 +42,32 @@ export default function WelcomePopup() {
             body: JSON.stringify({ email })
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Errore nella richiesta');
-                }
+                if (!response.ok) throw new Error('Errore nella richiesta');
                 return response.json();
             })
             .then(() => {
-                // Assumiamo che la risposta sia andata a buon fine se arriviamo qui
                 setMessage("Grazie per l'iscrizione!");
-                localStorage.setItem("hasVisited", "true");
-                setTimeout(() => setShowPopup(false), 2000);
+                setTimeout(() => {
+                    setShowPopup(false);
+                    setMessage("");
+                }, 2000);
             })
             .catch(error => {
                 console.error('Errore:', error);
-                setMessage("Si è verificato un errore, ma la tua email potrebbe essere stata salvata");
+                setMessage("Si è verificato un errore durante l'iscrizione");
             });
-    };
+    }
 
-    // Rendering condizionale del componente
     return (
         <>
-            <button
-                onClick={handleDebugReset}
-                className="debug-button btn btn-danger"
-            >
-                Debug: Reset Popup
-            </button>
-
             {showPopup && (
                 <div className="popup-overlay">
                     <div className="popup-content card">
                         <button
                             className="popup-close btn-close"
-                            onClick={() => {
-                                setShowPopup(false);
-                                localStorage.setItem("hasVisited", "true");
-                            }}
+                            onClick={handleClose}
                             aria-label="Close"
                         />
-
                         <div className="card-body text-center">
                             <h2 className="card-title mb-4">Benvenuto!</h2>
                             <p className="card-text mb-4">

@@ -1,12 +1,18 @@
 const express = require("express");
 const router = express.Router();
 
+// Import generalist controller with dynamic filtering
+const dynamicFilteringController = require('../controllers/DynamicFilteringController');
+
 // Import specialized routers
 const productRouter = require('./productRouter');
 const macroareaRouter = require('./macroareaRouter');
 const categoryRouter = require('./categoryRouter');
 const orderRouter = require('./orderRouter');
 const newsletterRouter = require('./newsletterRouter');
+
+// Generalist route for dynamic product filtering
+router.get('/products/filter', dynamicFilteringController.dynamicFiltering);
 
 // Set up routes by domain
 router.use('/products', productRouter);
