@@ -1,18 +1,23 @@
 .product-list-card {
     display: flex;
     width: 100%;
-    margin: 1rem auto;
-    background: white;
+    margin: .4rem auto;
+    max-height: 160px;
+    background: linear-gradient(-135deg, rgba(255, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+    ;
     border-radius: .4rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     padding-left: 0 !important;
+    max-width: 990px;
 
 
     .product-image {
         flex: 0 0 35%;
         background: #fff;
         max-height: 250px;
+        max-width: 100px;
+
 
     }
 
@@ -26,8 +31,35 @@
         padding: 1.5rem;
         flex: 1;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        align-items: center;
+
+        @media screen and (max-width : 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: .4rem;
+
+        }
+    }
+
+    .product-details>* {
+        width: 25%;
+        text-align: left;
+
+        @media screen and (max-width : 768px) {
+            width: 100%;
+
+        }
+
+
+
+    }
+
+    .product-details>:last-child {
+        text-align: right;
+
+        @media screen and (max-width : 768px) {
+            text-align: left;
+        }
     }
 
 
@@ -35,33 +67,59 @@
     .product-name {
         font-size: 1.5rem;
         margin-bottom: 0.75rem;
-        color: #333;
+        color: white;
+        margin: 0;
+
+        @media screen and (max-width : 768px) {
+            font-size: 1.2rem;
+
+        }
     }
 
     .product-description {
         font-size: 1rem;
-        color: #555;
+        color: white;
         margin-bottom: 1rem;
+        margin: 0;
+        margin-right: 1rem;
+
+        @media screen and (max-width : 768px) {
+            margin: 0;
+            font-size: .8rem;
+        }
     }
 
     .product-price {
         font-size: 1.2rem;
         font-weight: bold;
-        color: #000;
+        color: white;
         margin-bottom: 1rem;
+        margin: 0;
+
+        @media screen and (max-width : 768px) {
+            font-size: 1rem;
+
+        }
     }
 
     .product-button {
         text-decoration: none;
         padding: 0;
         color: gold;
-        background: rgb(255, 215, 0) 60%;
-        color: black;
+
+
         border-radius: .3rem;
         padding: 5px 20px;
 
         i {
             margin-left: .3rem;
+        }
+
+        @media screen and (max-width : 768px) {
+            max-height: 100%;
+            font-size: .9rem;
+            padding: 4px 16px;
+
         }
     }
 

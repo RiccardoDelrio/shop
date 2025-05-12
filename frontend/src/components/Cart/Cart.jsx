@@ -17,15 +17,39 @@ const Cart = () => {
 
         setCartItems(cartItems.filter((item, idx) => idx !== index))
     }
+    const handleIncrement = (thisProduct, functionality) => {
+        const thisProductIndex = cartItems.indexOf(thisProduct)
+        let updatedCart = [...cartItems];
+        if (functionality === 'add') {
+
+            updatedCart[thisProductIndex].quantità += 1;
+        } else if (functionality === 'minus' && thisProduct.quantità > 1) {
+            updatedCart[thisProductIndex].quantità -= 1;
+
+
+        }
+        setCartItems(updatedCart)
+
+    }
 
 
     function calculateTotal(items) {
-        return items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
+        let total = 0
+        items.forEach(item => {
+            const thisItemsPrice = item.price * item.quantità
+            console.log(thisItemsPrice);
+
+            total += thisItemsPrice;
+        })
+        return total
+
     }
+
+
 
     return (
         <div className='cartContainer'>
-            {cartItems.length > 0 && (<div className='circle'></div>)}
+            {cartItems.length > 0 && (<div className='circle'>{cartItems.length}</div>)}
             <div className='cart' onClick={toggleCart}>
                 <i className='fa-solid fa-cart-shopping'></i>
             </div>
@@ -52,15 +76,17 @@ const Cart = () => {
                                             <div className='cartInfo'>
                                                 <div>{item.price} €</div>
                                                 <div className='d-flex align-items-center gap-2 h6'>
-                                                    <i
-                                                        /* onClick={() => handleQuantity(item.id, 'remove')} */
+                                                    {item.quantità !== 1 && (<i
+                                                        onClick={() => handleIncrement(item, 'minus')}
                                                         className={`fa-solid fa-minus cartIcon`}
-                                                    ></i>
-                                                    {/* {item.quantity} */} 1
-                                                    <i
-                                                        /* onClick={() => handleQuantity(item.id, 'add')} */
+                                                    ></i>)}
+
+                                                    {item.quantità}
+                                                    {item.quantità !== item.variations.stock && (<i
+                                                        onClick={() => handleIncrement(item, 'add')}
                                                         className={`fa-solid fa-plus cartIcon`}
-                                                    ></i>
+                                                    ></i>)}
+
                                                 </div>
                                             </div>
                                         </div>

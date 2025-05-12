@@ -134,6 +134,7 @@
     .itemImage {
         max-width: 60px;
         aspect-ratio: 1;
+        object-fit: cover;
     }
 
     .cartInfo {
@@ -144,6 +145,12 @@
 
     .cartIcon {
         font-size: .8rem;
+        cursor: pointer;
+    }
+
+    .cartIcon:hover {
+        transform: scale(1.1);
+        transition: .2 ease;
     }
 
     .total {
@@ -157,14 +164,19 @@
     }
 
     .circle {
-        height: 10px;
+        height: 15px;
         aspect-ratio: 1;
         border-radius: 50%;
         background-color: #ffd700;
         position: absolute;
         border: .5px solid goldenrod;
-        top: -2px;
-        right: -4px;
+        top: -5px;
+        right: -5px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgb(109, 93, 93);
     }
 
 }
