@@ -17,11 +17,34 @@ const Cart = () => {
 
         setCartItems(cartItems.filter((item, idx) => idx !== index))
     }
+    const handleIncrement = (thisProduct, functionality) => {
+        const thisProductIndex = cartItems.indexOf(thisProduct)
+        let updatedCart = [...cartItems];
+        if (functionality === 'add') {
+
+            updatedCart[thisProductIndex].quantità += 1;
+        } else if (functionality === 'minus' && thisProduct.quantità > 1) {
+            updatedCart[thisProductIndex].quantità -= 1;
+
+
+        }
+        setCartItems(updatedCart)
+
+    }
 
 
     function calculateTotal(items) {
-        return items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)
+        let total = 0
+        items.forEach(item => {
+            const thisItemsPrice = item.price * item.quantità
+            console.log(thisItemsPrice);
+
+            total += thisItemsPrice;
+        })
+        return total
+
     }
+
 
     return (
         <div className='cartContainer'>
@@ -53,12 +76,12 @@ const Cart = () => {
                                                 <div>{item.price} €</div>
                                                 <div className='d-flex align-items-center gap-2 h6'>
                                                     <i
-                                                        /* onClick={() => handleQuantity(item.id, 'remove')} */
+                                                        onClick={() => handleIncrement(item, 'minus')}
                                                         className={`fa-solid fa-minus cartIcon`}
                                                     ></i>
-                                                    {/* {item.quantity} */} 1
+                                                    {item.quantità}
                                                     <i
-                                                        /* onClick={() => handleQuantity(item.id, 'add')} */
+                                                        onClick={() => handleIncrement(item, 'add')}
                                                         className={`fa-solid fa-plus cartIcon`}
                                                     ></i>
                                                 </div>

@@ -11,7 +11,17 @@ const ProductDetails = () => {
     const [selectedVariation, setSelectedVariation] = useState(null);
 
     const handleAddCart = (thisProduct) => {
-        setCartItems([...cartItems, thisProduct])
+        const existingProduct = cartItems.find(item => item.id === thisProduct.id)
+        const existingProductIndex = cartItems.indexOf(existingProduct)
+        let updatedCart;
+        if (existingProduct) {
+            updatedCart = [...cartItems]
+            updatedCart[existingProductIndex].quantità += 1;
+
+        } else {
+            updatedCart = [...cartItems, { ...thisProduct, quantità: 1 }]
+        }
+        setCartItems(updatedCart)
     }
     console.log(cartItems, "ciao");
 
