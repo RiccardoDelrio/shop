@@ -329,7 +329,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/filter?wardrobe-section=tops-and-coats&color=Cream",
+                            "raw": "http://localhost:3000/api/v1/products/filter?wardrobe_section=tops-and-coats&color=Cream",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -343,7 +343,7 @@
                             ],
                             "query": [
                                 {
-                                    "key": "wardrobe-section",
+                                    "key": "wardrobe_section",
                                     "value": "tops-and-coats"
                                 },
                                 {
@@ -352,7 +352,7 @@
                                 }
                             ]
                         },
-                        "description": "Filter products by wardrobe section and color."
+                        "description": "Filter products by wardrobe section and color. Use 'wardrobe_section' as the filter key."
                     },
                     "response": []
                 },
@@ -418,7 +418,7 @@
                                 }
                             ]
                         },
-                        "description": "Search products by text in name or description."
+                        "description": "Search products by text in name or description. Example: /products/filter?search=alpaca"
                     },
                     "response": []
                 },
@@ -461,7 +461,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/filter?size=M&color=Cream&wardrobe-section=tops-and-coats",
+                            "raw": "http://localhost:3000/api/v1/products/filter?size=M&color=Cream&wardrobe_section=tops-and-coats",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -483,12 +483,12 @@
                                     "value": "Cream"
                                 },
                                 {
-                                    "key": "wardrobe-section",
+                                    "key": "wardrobe_section",
                                     "value": "tops-and-coats"
                                 }
                             ]
                         },
-                        "description": "Filter products by size, color, and wardrobe section."
+                        "description": "Filter products by size, color, and wardrobe section. Use 'wardrobe_section' as the filter key."
                     },
                     "response": []
                 },
@@ -801,6 +801,11 @@
                         "method": "GET",
                         "url": {
                             "raw": "http://localhost:3000/api/v1/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
                             "path": [
                                 "api",
                                 "v1",
@@ -816,6 +821,11 @@
                         "method": "GET",
                         "url": {
                             "raw": "http://localhost:3000/api/v1/products/random",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
                             "path": [
                                 "api",
                                 "v1",
@@ -832,6 +842,11 @@
                         "method": "GET",
                         "url": {
                             "raw": "http://localhost:3000/api/v1/products/discounted",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
                             "path": [
                                 "api",
                                 "v1",
@@ -847,16 +862,28 @@
                     "request": {
                         "method": "GET",
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/search",
+                            "raw": "http://localhost:3000/api/v1/products/search?query=alpaca",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
                             "path": [
                                 "api",
                                 "v1",
                                 "products",
                                 "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "query",
+                                    "value": "alpaca"
+                                }
                             ]
                         },
-                        "description": "Replaced by /products/filter with search=... Use dynamic filtering instead."
-                    }
+                        "description": "Replaced by /products/filter?search=... Use dynamic filtering instead. Example: /products/search?query=alpaca"
+                    },
+                    "response": []
                 },
                 {
                     "name": "Get Products by Wardrobe Section (Outdated)",
@@ -864,15 +891,27 @@
                         "method": "GET",
                         "url": {
                             "raw": "http://localhost:3000/api/v1/wardrobe-sections/:slug/products",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
                             "path": [
                                 "api",
                                 "v1",
                                 "wardrobe-sections",
                                 ":slug",
                                 "products"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "tops-and-coats",
+                                    "description": "The slug of the wardrobe section."
+                                }
                             ]
                         },
-                        "description": "Replaced by /products/filter with wardrobe-section=:slug."
+                        "description": "Replaced by /products/filter with wardrobe_section=:slug. Use dynamic filtering instead."
                     }
                 },
                 {
@@ -881,14 +920,26 @@
                         "method": "GET",
                         "url": {
                             "raw": "http://localhost:3000/api/v1/categories/:slug",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
                             "path": [
                                 "api",
                                 "v1",
                                 "categories",
                                 ":slug"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "earrings",
+                                    "description": "The slug of the category."
+                                }
                             ]
                         },
-                        "description": "Replaced by /products/filter with category=:slug."
+                        "description": "Replaced by /products/filter with category=:slug. Use dynamic filtering instead."
                     }
                 }
             ]

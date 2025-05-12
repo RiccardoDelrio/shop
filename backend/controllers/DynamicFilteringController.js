@@ -4,7 +4,7 @@ function dynamicFiltering(req, res) {
 
     // whitelist to avoid sql injections
     const ALLOWED_FILTERS = [
-        'category', 'Wardrobe_Section', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock'
+        'category', 'wardrobe_section', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock'
     ];
 
     // check if the filters are in the whitelist 
@@ -62,9 +62,9 @@ function dynamicFiltering(req, res) {
         sql += ' AND c.slug = ?';
         params.push(filters.category);
     }
-    if (filters.Wardrobe_Section) {
+    if (filters.wardrobe_section) {
         sql += ' AND WS.slug = ?';
-        params.push(filters.Wardrobe_Section);
+        params.push(filters.wardrobe_section);
     }
     if (filters.color) {
         sql += ' AND pv.color = ?';

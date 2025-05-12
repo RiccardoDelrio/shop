@@ -21,7 +21,7 @@ Returns all categories for a given wardrobe section (by slug).
 ### Get Products by Wardrobe Section
 
 `GET /wardrobe-sections/:slug/products`
-Returns all products for a given wardrobe section (by slug). This is the only way to get all products for a wardrobe section.
+Returns all products for a given wardrobe section (by slug).
 
 ## Category Routes
 
@@ -33,34 +33,43 @@ Returns a flat list of all categories (with macroarea info).
 ### Get Products by Category
 
 `GET /categories/:slug`
-Returns all products for a given category (by slug). Category routes do not return macroarea products directly.
+Returns all products for a given category (by slug).
 
 ## Product Routes
 
-### Get All Products
+### Dynamic Product Filtering (RECOMMENDED)
 
-`GET /products`
-Returns all products.
+`GET /products/filter?...`
+Returns products filtered by any combination of supported query parameters. This endpoint replaces all previous static product listing, searching, and filtering routes.
 
-### Get Product by Slug
+#### Supported Filters
 
-`GET /products/:slug`
-Returns details for a product (by slug).
+- `wardrobe_section`: Filter by wardrobe section slug (e.g. `wardrobe_section=tops-and-coats`)
+- `category`: Filter by category slug (e.g. `category=knits`)
+- `color`: Filter by product color (e.g. `color=Cream`)
+- `size`: Filter by product size (e.g. `size=M`)
+- `discounted`: Only show discounted products (`discounted=true`)
+- `inStock`: Only show products in stock (`inStock=true`)
+- `search`: Search by product name or description (e.g. `search=alpaca`)
+- `minPrice`: Minimum price (e.g. `minPrice=100`)
+- `maxPrice`: Maximum price (e.g. `maxPrice=500`)
 
-### Get Random Products
+#### Ordering
 
-`GET /products/random`
-Returns a random selection of products.
+- `sort=price_asc`: Order by price ascending
+- `sort=price_desc`: Order by price descending
+- `sort=discount_asc`: Order by discount ascending
+- `sort=discount_desc`: Order by discount descending
 
-### Get Discounted Products
+#### Limiting
 
-`GET /products/discounted`
-Returns all products that have a discount.
+- `limit`: Limit the number of results (e.g. `limit=10`)
 
-### Search Products
+**Example:**
 
-`GET /products/search?query=...`
-Search products by name or description.
+`GET /products/filter?wardrobe_section=tops-and-coats&color=Cream&discounted=true&sort=price_desc&limit=5`
+
+> This endpoint replaces all previous static product listing, searching, and filtering routes.
 
 ## Order Management Routes
 
@@ -68,8 +77,6 @@ Search products by name or description.
 
 `POST /orders`
 Create a new order.
-
-**Request body:**
 
 ```json
 {

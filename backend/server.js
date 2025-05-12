@@ -44,6 +44,7 @@ app.use(serverError);
  *
  * PRODUCTS (Dynamic Filtering)
  * GET /api/v1/products/filter             - DYNAMIC: Filter, search, and list products with any combination of query params (category, wardrobe_section, color, size, discounted, search, minPrice, maxPrice, inStock, sort, limit, etc.)
+ *   Example: /products/filter?wardrobe_section=tops-and-coats&color=Cream
  * 
  * PRODUCTS (Static)
  * GET /api/v1/products/bestsellers        - Top 10 best-selling products
