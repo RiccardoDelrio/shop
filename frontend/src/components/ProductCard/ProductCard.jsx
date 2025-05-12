@@ -2,12 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom"; // Import Link for navigation
 import "./ProductCards.css";
 
-const ProductCards = ({ name, description, price, image, slug }) => {
+const ProductCards = ({ name, description, price, image, slug, discount }) => {
     return (
 
         <div className="col card-container d-flex justify-content-center align-items-center">
             <div className="card custom-card">
-                <img
+                {/*                 <p className="position-absolute start-0 rounded-pill bg-danger">{discount}</p>
+ */}                <img
                     src={image}
                     alt={name}
                     className="card-imges"

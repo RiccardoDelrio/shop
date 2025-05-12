@@ -14,17 +14,9 @@ function GlobalProvider({ children }) {
     const [dress, setDress] = useState([]); // State for dress category
     const [macroareas, setMacroareas] = useState([]);
     const [categoryProducts, setCategoryProducts] = useState({});
+    const [discount, setDiscount] = useState([]); // State for discount products
 
-    // Fetch all products
-    /*     function fetchIndex() {
-            fetch('http://localhost:3000/api/v1/products')
-                .then(res => res.json())
-                .then(data => {
-                    setProducts(data);
-                });
-        } */
 
-    // Fetch products by macro area
     function fetchIndexMacroArea(macroArea, callback) {
         fetch(`http://localhost:3000/api/v1/products/macroarea/${macroArea}`)
             .then(res => res.json())
@@ -66,10 +58,17 @@ function GlobalProvider({ children }) {
                 setCategoryProducts(prev => ({ ...prev, [slug]: data }));
             });
     }
+    function fetchDiscount() {
+        fetch('http://localhost:3000/api/v1/products/discounted')
+            .then(res => res.json())
+            .then(data => {
+                setDiscount(data); // Save filtered products to the provided setter
+            });
+    }
 
     useEffect(() => {
-
         fetchRandomProducts(); // Fetch random products on load
+        fetchDiscount()
     }, []);
 
 
@@ -99,6 +98,7 @@ function GlobalProvider({ children }) {
                 categoryProducts,
                 fetchMacroareas,
                 fetchCategoryProducts,
+                discount
             }}
         >
             {children}

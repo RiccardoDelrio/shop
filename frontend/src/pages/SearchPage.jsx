@@ -55,7 +55,7 @@ export default function SearchPage() {
                                 </div>
                             </div>
                         ) : (
-                            <div className={`row row-cols-1 row-cols-md-2 row-cols-xl-3  g-4`}>
+                            <div className={`row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4  g-4`}>
                                 {products.map((product) => (
 
                                     isGridView ? (<ProductCards
@@ -63,7 +63,7 @@ export default function SearchPage() {
                                         name={product.name}
                                         description={product.description}
                                         price={product.price}
-                                        image={product.images?.[0] ?? null}
+                                        image={`http://localhost:3000/imgs/${product.images[0].url}`}
                                         slug={product.slug}
                                     />) : (<ProductCardListView
                                         key={`List-${product.id}`}

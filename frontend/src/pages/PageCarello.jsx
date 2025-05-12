@@ -27,7 +27,7 @@ const Carrello = () => {
                         <hr />
                         {cartItems.map((item, index) => (
                             <div key={item.id} className="d-flex mb-4 border-bottom pb-3">
-                                <img src={item.image} alt={item.name} width="80" height="80" className="me-3" />
+                                <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} width="80" height="80" className="me-3" />
                                 <div className="flex-grow-1">
                                     <strong className="text-danger">{item.name}</strong>
                                     <div className="mt-2">Prezzo: €{item.price}</div>

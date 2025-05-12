@@ -7,7 +7,7 @@ import ProductCards from "../components/ProductCard/ProductCard";
 import PagePopup from "../components/Popup/PagePopup";
 export default function Home() {
     const {
-        randomProducts,
+        randomProducts, discount
 
     } = useGlobal()
     console.log(randomProducts);
@@ -59,6 +59,24 @@ export default function Home() {
                             price={product.price}
                             image={`http://localhost:3000/imgs/${product.images[0].url}`}
                             slug={product.slug}
+                            {...(product.discount > 0 ? { discount: product.discount.slice(0, -3) } : {})} // Conditionally add the discount prop
+
+                        />
+                    ))}
+                </Slider>
+
+                <h1 className="home_title ">Prodotti in sconto</h1>
+
+                <Slider>
+                    {discount.map((product) => (
+                        <ProductCards
+                            key={product.id}
+                            name={product.name}
+                            description={product.description}
+                            price={product.price}
+                            image={`http://localhost:3000/imgs/${product.images[0].url}`}
+                            slug={product.slug}
+                            {...(product.discount > 0 ? { discount: product.discount.slice(0, -3) } : {})} // Conditionally add the discount prop
 
                         />
                     ))}

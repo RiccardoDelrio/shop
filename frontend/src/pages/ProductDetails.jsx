@@ -13,7 +13,7 @@ const ProductDetails = () => {
     const handleAddCart = (thisProduct) => {
         setCartItems([...cartItems, thisProduct])
     }
-    console.log(cartItems);
+    console.log(cartItems, "ciao");
 
 
 
