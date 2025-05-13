@@ -94,11 +94,36 @@ function dynamicFiltering(req, res) {
     }
     sql += ' GROUP BY p.id';
 
-    // Optional: Sorting and limiting
-    if (req.query.sort === 'price_desc') sql += ' ORDER BY p.price DESC';
-    if (req.query.sort === 'price_asc') sql += ' ORDER BY p.price ASC';
-    if (req.query.sort === 'discount_desc') sql += ' ORDER BY p.discount DESC';
-    if (req.query.sort === 'discount_asc') sql += ' ORDER BY p.discount ASC';
+    // Sorting options
+    if (req.query.sort) {
+        switch (req.query.sort) {
+            case 'price_desc':
+                sql += ' ORDER BY p.price DESC';
+                break;
+            case 'price_asc':
+                sql += ' ORDER BY p.price ASC';
+                break;
+            case 'name_asc':
+                sql += ' ORDER BY p.name ASC';
+                break;
+            case 'name_desc':
+                sql += ' ORDER BY p.name DESC';
+                break;
+            case 'newest':
+                sql += ' ORDER BY p.created_at DESC';
+                break;
+            case 'discount_desc':
+                sql += ' ORDER BY p.discount DESC';
+                break;
+            case 'discount_asc':
+                sql += ' ORDER BY p.discount ASC';
+                break;
+            default:
+                // Default sorting (optional)
+                sql += ' ORDER BY p.created_at DESC';
+        }
+    }
+
     if (req.query.limit) {
         sql += ' LIMIT ?';
         params.push(Number(req.query.limit));

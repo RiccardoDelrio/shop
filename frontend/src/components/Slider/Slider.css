@@ -14,13 +14,29 @@
     scroll-behavior: smooth;
     padding: 1rem 0;
     width: 100%;
+    scroll-snap-type: x mandatory;
 }
 
 .slider-content>* {
     flex: 0 0 auto;
-    width: 250px;
-    /* Larghezza fissa per ogni card */
-    transition: transform 0.3s ease-in-out;
+    width: calc(33.333% - 1rem);
+    /* 3 cards per row on desktop */
+    max-width: 290px;
+    scroll-snap-align: start;
+}
+
+@media screen and (max-width: 1024px) {
+    .slider-content>* {
+        width: calc(50% - 1rem);
+        /* 2 cards per row on tablet */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .slider-content>* {
+        width: calc(100% - 1rem);
+        /* 1 card per row on mobile */
+    }
 }
 
 .slider-content>*:hover {

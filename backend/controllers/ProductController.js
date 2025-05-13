@@ -195,7 +195,7 @@ function searchProducts(req, res) {
 // Get bestseller products
 function getBestsellers(req, res) {
     const sql = `
- SELECT 
+        SELECT 
             p.id,
             p.slug,
             p.name,
