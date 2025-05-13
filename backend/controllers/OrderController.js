@@ -1,47 +1,58 @@
-const connection = require('../database/db');
+const connection = require("../database/db");
+const sendEmail = require("../utils/sendEmail");
 
 // Create a new order
 async function createOrder(req, res) {
-    const {
-        customer_info,
-        items,
-        discount = 0
-    } = req.body;
+  const { customer_info, items, discount = 0 } = req.body;
 
-    // Validate required customer info
-    if (!customer_info || !customer_info.email) {
-        return res.status(400).json({ error: 'Customer email is required for orders' });
-    }
+  // Validate required customer info
+  if (!customer_info || !customer_info.email) {
+    return res
+      .status(400)
+      .json({ error: "Customer email is required for orders" });
+  }
 
-    const { first_name, last_name, email, phone, address, city, state, postal_code, country } = customer_info;
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    postal_code,
+    country,
+  } = customer_info;
 
-    // Calculate total (sum of item.price * item.quantity), applying product-level discounts
-    let total = 0;
-    const itemsWithDiscount = await Promise.all(items.map(async item => {
-        // Fetch product discount from DB
-        const [rows] = await connection.promise().query(
-            'SELECT discount FROM Products WHERE id = ?',
-            [item.product_id]
-        );
-        const productDiscount = rows[0]?.discount || 0;
-        const price = parseFloat(item.price);
-        const quantity = parseInt(item.quantity);
-        const discountedPrice = productDiscount > 0 ? price - (price * productDiscount / 100) : price;
-        total += discountedPrice * quantity;
-        return {
-            ...item,
-            discountedPrice
-        };
-    }));
-    // Calculate discount as a percentage (order-level)
-    const discountAmount = total * (parseFloat(discount) / 100);
-    // Calculate delivery: free if total >= 500, else 30
-    const deliveryValue = total >= 500 ? '0' : '30'; // Ensure it's a string to match ENUM
-    // Calculate final price
-    const final_price = total - discountAmount + parseInt(deliveryValue);
+  // Calculate total (sum of item.price * item.quantity), applying product-level discounts
+  let total = 0;
+  const itemsWithDiscount = await Promise.all(
+    items.map(async (item) => {
+      // Fetch product discount from DB
+      const [rows] = await connection
+        .promise()
+        .query("SELECT discount FROM Products WHERE id = ?", [item.product_id]);
+      const productDiscount = rows[0]?.discount || 0;
+      const price = parseFloat(item.price);
+      const quantity = parseInt(item.quantity);
+      const discountedPrice =
+        productDiscount > 0 ? price - (price * productDiscount) / 100 : price;
+      total += discountedPrice * quantity;
+      return {
+        ...item,
+        discountedPrice,
+      };
+    })
+  );
+  // Calculate discount as a percentage (order-level)
+  const discountAmount = total * (parseFloat(discount) / 100);
+  // Calculate delivery: free if total >= 500, else 30
+  const deliveryValue = total >= 500 ? "0" : "30"; // Ensure it's a string to match ENUM
+  // Calculate final price
+  const final_price = total - discountAmount + parseInt(deliveryValue);
 
-    // First create a User entry for this order (even if duplicate email)
-    const userSql = `
+  // First create a User entry for this order (even if duplicate email)
+  const userSql = `
         INSERT INTO Users (
             first_name, last_name, email, phone, 
             address, city, state, postal_code, country
@@ -49,79 +60,174 @@ async function createOrder(req, res) {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    connection.query(
-        userSql,
-        [first_name, last_name, email, phone, address, city, state, postal_code, country],
-        (err, userResults) => {
-            if (err) {
-                // If duplicate email error, create a unique order-specific user
-                if (err.code === 'ER_DUP_ENTRY') {
-                    // Add timestamp to ensure uniqueness
-                    const uniqueEmail = `${email}_${Date.now()}`;
+  connection.query(
+    userSql,
+    [
+      first_name,
+      last_name,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      postal_code,
+      country,
+    ],
+    (err, userResults) => {
+      if (err) {
+        // If duplicate email error, create a unique order-specific user
+        if (err.code === "ER_DUP_ENTRY") {
+          // Add timestamp to ensure uniqueness
+          const uniqueEmail = `${email}_${Date.now()}`;
 
-                    connection.query(
-                        userSql,
-                        [first_name, last_name, uniqueEmail, phone, address, city, state, postal_code, country],
-                        handleUserCreation
-                    );
-                } else {
-                    return res.status(500).json({ error: err.message });
-                }
-            } else {
-                handleUserCreation(null, userResults);
-            }
+          connection.query(
+            userSql,
+            [
+              first_name,
+              last_name,
+              uniqueEmail,
+              phone,
+              address,
+              city,
+              state,
+              postal_code,
+              country,
+            ],
+            handleUserCreation
+          );
+        } else {
+          return res.status(500).json({ error: err.message });
         }
-    );
+      } else {
+        handleUserCreation(null, userResults);
+      }
+    }
+  );
 
-    function handleUserCreation(err, userResults) {
-        if (err) return res.status(500).json({ error: err.message });
+  function handleUserCreation(err, userResults) {
+    if (err) return res.status(500).json({ error: err.message });
 
-        const user_id = userResults.insertId;
+    const user_id = userResults.insertId;
 
-        // Insert the order with the new user ID
-        const orderSql = `
+    // Insert the order with the new user ID
+    const orderSql = `
             INSERT INTO Orders (user_id, status, delivery, total, discount, final_price)
             VALUES (?, 'Pending', ?, ?, ?, ?)
         `;
 
-        connection.query(orderSql, [user_id, deliveryValue, total, discount, final_price], (err, orderResults) => {
-            if (err) return res.status(500).json({ error: err.message });
+    connection.query(
+      orderSql,
+      [user_id, deliveryValue, total, discount, final_price],
+      (err, orderResults) => {
+        if (err) return res.status(500).json({ error: err.message });
 
-            const order_id = orderResults.insertId;
+        const order_id = orderResults.insertId;
 
-            // Then insert all order items
-            const orderItemsValues = itemsWithDiscount.map(item => [
-                order_id,
-                item.product_id,
-                item.product_variation_id || null,
-                item.quantity,
-                item.discountedPrice
-            ]);
+        // Then insert all order items
+        const orderItemsValues = itemsWithDiscount.map((item) => [
+          order_id,
+          item.product_id,
+          item.product_variation_id || null,
+          item.quantity,
+          item.discountedPrice,
+        ]);
 
-            const orderItemsSql = `
+        const orderItemsSql = `
                 INSERT INTO Order_Items (order_id, product_id, product_variation_id, quantity, price)
                 VALUES ?
             `;
 
-            connection.query(orderItemsSql, [orderItemsValues], (err) => {
-                if (err) return res.status(500).json({ error: err.message });
+        connection.query(orderItemsSql, [orderItemsValues], async (err) => {
+          if (err) return res.status(500).json({ error: err.message });
 
-                // Return the created order
-                res.status(201).json({
-                    message: 'Order created successfully',
-                    order_id,
-                    tracking_email: email
-                });
+          try {
+            // Prepara il riepilogo degli articoli
+            const itemsSummary = itemsWithDiscount
+              .map(
+                (item) =>
+                  `- ${item.quantity}x ${
+                    item.name || `Prodotto #${item.product_id}`
+                  }: €${item.discountedPrice}`
+              )
+              .join("\n");
+
+            // Email al cliente
+            await sendEmail(
+              email,
+              `Conferma Ordine #${order_id} - Boolean Shop`,
+              `Gentile ${first_name} ${last_name},
+
+Grazie per il tuo ordine! 
+
+Riepilogo Ordine #${order_id}:
+${itemsSummary}
+
+Spedizione: €${deliveryValue}
+Sconto: ${discount}%
+Totale: €${final_price}
+
+Indirizzo di spedizione:
+${address}
+${postal_code} ${city}
+${state}, ${country}
+
+Puoi seguire il tuo ordine qui:
+http://localhost:5173/track-order?email=${email}&order=${order_id}
+
+Cordiali saluti,
+Il team di Boolean Shop`
+            );
+
+            // Email al venditore
+            await sendEmail(
+              process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+              `Nuovo Ordine #${order_id}`,
+              `Nuovo ordine ricevuto!
+
+Ordine #${order_id}
+Cliente: ${first_name} ${last_name}
+Email: ${email}
+Telefono: ${phone}
+
+Articoli:
+${itemsSummary}
+
+Totale: €${final_price}
+
+Indirizzo di spedizione:
+${address}
+${postal_code} ${city}
+${state}, ${country}
+
+Gestisci l'ordine qui:
+http://localhost:5173/admin/orders/${order_id}`
+            );
+
+            res.status(201).json({
+              message: "Ordine creato con successo",
+              order_id,
+              tracking_email: email,
             });
+          } catch (error) {
+            console.error("Errore invio email:", error);
+            // L'ordine è stato creato ma l'invio email è fallito
+            res.status(201).json({
+              message: "Ordine creato ma invio email fallito",
+              order_id,
+              tracking_email: email,
+            });
+          }
         });
-    }
+      }
+    );
+  }
 }
 
 // Get order by ID
 function getOrderById(req, res) {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const sql = `
+  const sql = `
         SELECT 
             o.*,
             u.first_name, u.last_name, u.email, u.phone,
@@ -147,23 +253,26 @@ function getOrderById(req, res) {
         GROUP BY o.id
     `;
 
-    connection.query(sql, [id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(404).json({ error: 'Order not found' });
+  connection.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0)
+      return res.status(404).json({ error: "Order not found" });
 
-        res.json(results[0]);
-    });
+    res.json(results[0]);
+  });
 }
 
 // Track order
 function trackOrder(req, res) {
-    const { email, order_id } = req.body;
+  const { email, order_id } = req.body;
 
-    if (!email || !order_id) {
-        return res.status(400).json({ error: 'Email and order ID are required for tracking' });
-    }
+  if (!email || !order_id) {
+    return res
+      .status(400)
+      .json({ error: "Email and order ID are required for tracking" });
+  }
 
-    const sql = `
+  const sql = `
         SELECT 
             o.id,
             o.status,
@@ -180,47 +289,54 @@ function trackOrder(req, res) {
         WHERE o.id = ? AND (u.email = ? OR u.email LIKE ?)
     `;
 
-    // Search for both exact email and email_timestamp pattern
-    const emailPattern = `${email}\\_%`;
+  // Search for both exact email and email_timestamp pattern
+  const emailPattern = `${email}\\_%`;
 
-    connection.query(sql, [order_id, email, emailPattern], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(404).json({ error: 'Order not found or email does not match' });
+  connection.query(sql, [order_id, email, emailPattern], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0)
+      return res
+        .status(404)
+        .json({ error: "Order not found or email does not match" });
 
-        res.json(results[0]);
-    });
+    res.json(results[0]);
+  });
 }
 
 // Update order status
 function updateOrderStatus(req, res) {
-    const { id } = req.params;
-    const { status } = req.body;
+  const { id } = req.params;
+  const { status } = req.body;
 
-    // Validate status
-    const validStatuses = ['Pending', 'Processing', 'Completed', 'Cancelled'];
-    if (!validStatuses.includes(status)) {
-        return res.status(400).json({ error: 'Invalid status. Must be one of: Pending, Processing, Completed, Cancelled' });
-    }
+  // Validate status
+  const validStatuses = ["Pending", "Processing", "Completed", "Cancelled"];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({
+      error:
+        "Invalid status. Must be one of: Pending, Processing, Completed, Cancelled",
+    });
+  }
 
-    const sql = `
+  const sql = `
         UPDATE Orders
         SET status = ?
         WHERE id = ?
     `;
 
-    connection.query(sql, [status, id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.affectedRows === 0) return res.status(404).json({ error: 'Order not found' });
+  connection.query(sql, [status, id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.affectedRows === 0)
+      return res.status(404).json({ error: "Order not found" });
 
-        res.json({ message: `Order status updated successfully to ${status}` });
-    });
+    res.json({ message: `Order status updated successfully to ${status}` });
+  });
 }
 
 // Get orders by email
 function getOrdersByEmail(req, res) {
-    const { email } = req.params;
+  const { email } = req.params;
 
-    const sql = `
+  const sql = `
         SELECT 
             o.id,
             o.status,
@@ -235,20 +351,20 @@ function getOrdersByEmail(req, res) {
         ORDER BY o.created_at DESC
     `;
 
-    // Search for both exact email and email_timestamp pattern
-    const emailPattern = `${email}\\_%`;
+  // Search for both exact email and email_timestamp pattern
+  const emailPattern = `${email}\\_%`;
 
-    connection.query(sql, [email, emailPattern], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+  connection.query(sql, [email, emailPattern], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
 
-        res.json(results);
-    });
+    res.json(results);
+  });
 }
 
 module.exports = {
-    createOrder,
-    getOrderById,
-    trackOrder,
-    updateOrderStatus,
-    getOrdersByEmail
+  createOrder,
+  getOrderById,
+  trackOrder,
+  updateOrderStatus,
+  getOrdersByEmail,
 };

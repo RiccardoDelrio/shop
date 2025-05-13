@@ -9,34 +9,20 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendEmail(to, subject, text, html) {
-  console.log("Attempting to send email with credentials:", {
-    from: process.env.EMAIL_USER,
-    to: to,
-  });
-
+async function sendEmail(to, subject, text) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to,
     subject,
     text,
-    html: html || text.replace(/\n/g, "<br>"),
   };
 
   try {
-    // Verifica la connessione
-    await transporter.verify();
-    console.log("SMTP connection verified successfully");
-
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully:", info.response);
+    console.log("Email inviata:", info.response);
     return info;
   } catch (error) {
-    console.error("Detailed error:", {
-      message: error.message,
-      code: error.code,
-      command: error.command,
-    });
+    console.error("Errore invio email:", error);
     throw error;
   }
 }

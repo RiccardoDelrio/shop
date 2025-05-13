@@ -22,33 +22,59 @@ const Checkout = () => {
 
     console.log(cartItems);
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault()
-        fetch('http://localhost:3000/api/v1/orders', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({ "customer_info": { ...formData }, "items": itmesForOrder, "discount": 0 })
-        })
-            .then(res => res.json())
-            .then(data => {
-                setFormStatus(data);
-                if (!data.error) {
 
-                    setCartItems([])
-                }
+        // Validazione base dei campi
+        if (!formData.email || !formData.first_name || !formData.last_name) {
+            setFormStatus({
+                error: "Per favore compila tutti i campi obbligatori"
+            });
+            return;
+        }
 
-            })
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "customer_info": { ...formData },
+                    "items": itmesForOrder,
+                    "discount": 0
+                })
+            });
 
+            const data = await response.json();
 
+            if (data.error) {
+                setFormStatus({
+                    error: data.error
+                });
+                return;
+            }
 
+            // Se l'ordine è andato a buon fine
+            setFormStatus({
+                message: "Ordine completato con successo! Controlla la tua email per i dettagli.",
+                success: true
+            });
+            setCartItems([]); // Svuota il carrello
+
+            // Mostra un messaggio di successo per 3 secondi
+            // setTimeout(() => {
+            //     window.location.href = '/'; // Redirect alla home dopo 3 secondi
+            // }, 3000);
+
+        } catch (error) {
+            console.error('Errore durante l\'invio dell\'ordine:', error);
+            setFormStatus({
+                error: "Si è verificato un errore durante l'invio dell'ordine"
+            });
+        }
     }
     console.log(formStatus);
-
-
 
     /* {
         "customer_info": {
@@ -79,13 +105,18 @@ const Checkout = () => {
                 <div className={`${formStatus.error ? 'bg-danger' : 'bg-success'} rounded-4 m-auto p-5 text-center h5 position-relative`}>
                     {formStatus.error ? (
                         <>
-                            <div onClick={() => setFormStatus()} className="position-absolute start-0 top-0 p-3 text-white"><i className='fa-solid fa-arrow-left'></i></div>
+                            <div onClick={() => setFormStatus(null)} className="position-absolute start-0 top-0 p-3 text-white cursor-pointer">
+                                <i className='fa-solid fa-arrow-left'></i>
+                            </div>
                             <p className="h4">{formStatus.error}</p>
                         </>
                     ) : (
-                        <p className='h4'>{formStatus.message}</p>
+                        <>
+                            <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
+                            <p className='h4'>{formStatus.message}</p>
+                            <small className="text-white-50">Verrai reindirizzato alla home tra pochi secondi...</small>
+                        </>
                     )}
-
                 </div>
             ) : (<>
                 <div className='mb-3'>
