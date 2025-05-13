@@ -1,0 +1,27 @@
+.checkout-container {
+    max-width: 800px;
+    margin: auto;
+
+
+
+
+    .form-button {
+        padding: .3rem 1rem;
+        border-radius: .4rem;
+        border: none;
+        background-color: gold;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+
+        .icon-button {
+            display: flex;
+            align-items: center;
+        }
+
+
+
+    }
+}
