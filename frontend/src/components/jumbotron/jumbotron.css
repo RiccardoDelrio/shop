@@ -95,7 +95,9 @@
     position: relative;
 
     h1 {
-        font-family: "Allura", cursive;
+        font-family: "Delius Swash Caps", cursive;
+
+
         font-weight: 400;
         font-style: normal;
         background-clip: text;

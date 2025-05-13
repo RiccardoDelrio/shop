@@ -195,15 +195,34 @@ function searchProducts(req, res) {
 // Get bestseller products
 function getBestsellers(req, res) {
     const sql = `
-        SELECT 
-            b.*,
-            (SELECT image_url FROM Product_Images WHERE product_id = b.product_id AND is_primary = TRUE LIMIT 1) AS primary_image
-        FROM Bestseller_Products b
+ SELECT 
+            p.id,
+            p.slug,
+            p.name,
+            p.description,
+            p.long_description,
+            p.price,
+            p.discount,
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'url', pi.image_url,
+                        'view_type', pi.view_type,
+                        'is_primary', pi.is_primary,
+                        'product_variation_id', pi.product_variation_id
+                    )
+                )
+                FROM Product_Images pi 
+                WHERE pi.product_id = p.id
+            ) AS images
+        FROM Products p
+        INNER JOIN Bestseller_Products b ON p.id = b.product_id
+        GROUP BY p.id
     `;
 
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        
+
         res.json(results);
     });
 }

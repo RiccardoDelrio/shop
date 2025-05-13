@@ -7,10 +7,10 @@ import ProductCards from "../components/ProductCard/ProductCard";
 import PagePopup from "../components/Popup/PagePopup";
 export default function Home() {
     const {
-        randomProducts, discount
+        bestSellers, discount
 
     } = useGlobal()
-    console.log(randomProducts);
+    console.log(bestSellers, "bestSellers");
 
 
     return (
@@ -50,10 +50,10 @@ export default function Home() {
                     </Link>
                 </div>
                 <h1 className="home_title ">Discover our collection</h1>
-                <h1 className="home_title fs-1 p-0 m-0">Explore our curated selection of haute couture pieces.</h1>
+                <h1 className="home_title fs-1 p-0 m-0">Best Sellers</h1>
 
                 <Slider>
-                    {randomProducts.map((product) => (
+                    {bestSellers.map((product) => (
                         <ProductCards
                             key={product.id}
                             name={product.name}

@@ -8,7 +8,7 @@ function GlobalProvider({ children }) {
     const [top, setTop] = useState([]);
     const [bottom, setBottom] = useState([]);
     const [accessories, setAccessories] = useState([]);
-    const [randomProducts, setRandomProducts] = useState([]);
+    const [bestSellers, setBestSellers] = useState([]);
     const [category, setCategory] = useState('')
     const [visualizedProducts, setVisualizedProducts] = useState([])
     const [wardrobeSections, setWardrobeSections] = useState([]); // this is the main state
@@ -17,11 +17,11 @@ function GlobalProvider({ children }) {
 
 
     // Fetch 10 random products
-    function fetchRandomProducts() {
-        fetch('http://localhost:3000/api/v1/products/random')
+    function fetchBestSellers() {
+        fetch('http://localhost:3000/api/v1/products/bestsellers')
             .then(res => res.json())
             .then(data => {
-                setRandomProducts(data); // Save random products to state
+                setBestSellers(data); // Save random products to state
                 return data
             });
     }
@@ -57,7 +57,7 @@ function GlobalProvider({ children }) {
     }
 
     useEffect(() => {
-        fetchRandomProducts(); // Fetch random products on load
+        fetchBestSellers(); // Fetch random products on load
         fetchDiscount()
     }, []);
 
@@ -78,13 +78,12 @@ function GlobalProvider({ children }) {
                 setAccessories,
                 cartItems,
                 setCartItems,
-                randomProducts,
+                bestSellers,
                 category, // Expose random products
                 visualizedProducts,
                 setVisualizedProducts,
                 fetchProductsByCategory,
-                fetchRandomProducts,
-                randomProducts, // Expose category filter function
+                fetchBestSellers,
                 wardrobeSections,
                 categoryProducts,
                 fetchWardrobeSections,

@@ -1,6 +1,6 @@
 @import "bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&display=swap');
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 
@@ -66,13 +66,15 @@ li {
 }
 
 .home_title {
-    font-size: 5rem;
+    font-size: 3rem;
     background: none;
     background-clip: text;
     -webkit-background-clip: text;
-    font-family: "Allura", cursive;
+    font-family: "Delius Swash Caps", cursive;
+
+
     text-align: center;
-    margin-top: 150px;
+    margin-top: 70px;
     color: white;
     margin-bottom: 20px;
 }
