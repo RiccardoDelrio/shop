@@ -77,7 +77,7 @@ export default function WelcomePopup() {
                 <div className={`popup-overlay ${isFading ? 'fading' : ''}`}>
                     <div className={`popup-content card ${isFading ? 'fading' : ''}`}>
                         <button
-                            className="popup-close btn-close"
+                            className="popup-close btn-close btn-close-white"
                             onClick={handleClose}
                             aria-label="Close"
                         />
@@ -115,7 +115,8 @@ export default function WelcomePopup() {
                                                 <label htmlFor="emailInput">Email</label>
                                             </div>
                                             <button type="submit" className="btn button w-100">
-                                                {/* <span className="d-flex align-items-center justify-content-center"><img src="/img/logo.svg" alt="Boolique's Logo" height={30} /> Subscribe</span> */}
+                                                {/* here in case we like the logo on the button
+                                                  <span className="d-flex align-items-center justify-content-center"><img src="/img/logo.svg" alt="Boolique's Logo" height={30} /> Subscribe</span> */}
                                                 Subscribe
                                             </button>
                                         </form>

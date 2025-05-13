@@ -11,8 +11,7 @@ import DefaultLayout from "./layout/defaultLayout";
 import WardrobeSectionPage from './pages/WardrobeSectionPage'; // renamed from MacroAreaPage
 import SearchPage from './pages/SearchPage';
 import Checkout from './pages/Checkout/Checkout';
-
-
+import NotFound from './pages/NotFound'; // Updated import path from components to pages
 
 
 function App() {
@@ -36,6 +35,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/search/:query" element={<SearchPage />} />
             <Route path='/checkout' element={<Checkout />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
