@@ -1,5 +1,6 @@
 import React from "react";
 import { useGlobal } from "../contexts/GlobalContext";
+import { Link } from "react-router";
 
 
 
@@ -17,7 +18,7 @@ const Carrello = () => {
         let total = 0
         items.forEach(item => {
             const thisItemsPrice = item.price * item.quantità
-            console.log(thisItemsPrice);
+
 
             total += thisItemsPrice;
         })
@@ -42,6 +43,17 @@ const Carrello = () => {
         setCartItems(updatedCart)
 
     }
+    const calculateOriginalPrice = (item, discountedPrice, discountPercentage) => {
+        if (Number(item.discount) > 0) {
+            const discountFactor = 1 - discountPercentage / 100;
+            const originalPrice = discountedPrice / discountFactor;
+            return Number(originalPrice.toFixed(2));
+        }
+
+
+    }
+    console.log('Cart Items', cartItems);
+
 
 
     return (
@@ -59,13 +71,17 @@ const Carrello = () => {
                                 <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} width="80" height="80" className="me-3" />
                                 <div className="flex-grow-1">
                                     <strong className="text-danger">{item.name}</strong>
-                                    <div className="mt-2">Prezzo: €{item.price}</div>
+                                    <div className="mt-2">Prezzo: <span className="text-secondary text-decoration-line-through me-2">{calculateOriginalPrice(item, Number(item.price), Number(item.discount))}</span> €{item.price}</div>
                                     <div>Qtà: {item.quantità}</div>
                                     <div>Subtotale: €{(item.price * item.quantità)}</div>
                                 </div>
-                                <div className="ms-3 d-flex flex-column justify-content-center align-items-center">
-                                    <button onClick={() => handleIncrement(item, 'add')} className="btn btn-sm btn-outline-secondary mb-3"><i className="bi bi-plus-lg"></i></button>
-                                    <button onClick={() => handleRemoveItems(index)} className="btn btn-sm btn-outline-danger"><i className="bi bi-x-lg"></i></button>
+                                <div className="ms-3 d-flex flex-column justify-content-center align-items-end">
+                                    <button onClick={() => handleRemoveItems(index)} className="btn btn-sm btn-outline-danger mb-3"><i className="bi bi-x-lg"></i></button>
+                                    <div className="d-flex gap-3">
+
+                                        <button disabled={item.quantità === 1} onClick={() => handleIncrement(item, 'minus')} className="btn btn-sm btn-outline-secondary "><i className="bi bi-dash-lg"></i></button>
+                                        <button disabled={item.variations.stock === item.quantità} onClick={() => handleIncrement(item, 'add')} className="btn btn-sm btn-outline-secondary "><i className="bi bi-plus-lg"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -81,7 +97,7 @@ const Carrello = () => {
                             {shipPrice === 0 && (<p className="text-success">La spedizione è GRATUITA!</p>)}
                             <hr />
                             <h5><strong>Totale ordine: {calculateTotal()} €</strong></h5>
-                            <button disabled={cartItems.length === 0} className="btn btn-success w-100 mt-3">Procedi all'Acquisto</button>
+                            <button disabled={cartItems.length === 0} className="btn btn-success w-100 mt-3"><Link className="text-decoration-none text-white" to={'/checkout'}>Procedi all'Acquisto</Link></button>
                         </div>
                     </div>
                 </div>

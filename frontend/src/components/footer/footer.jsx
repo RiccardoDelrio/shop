@@ -40,7 +40,7 @@ export default function Footer() {
                                             < NavLink to="/" className="nav-link p-0 footer-nav-link ">Sconti</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            < NavLink to="/" className="nav-link p-0 footer-nav-link ">Catalogo</NavLink>
+                                            < NavLink to="/catalogo" className="nav-link p-0 footer-nav-link ">Catalogo</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
                                             < NavLink to="/size-table" className="nav-link p-0 footer-nav-link ">Guida alle taglie</NavLink>

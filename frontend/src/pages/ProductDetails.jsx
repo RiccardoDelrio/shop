@@ -14,6 +14,20 @@ const ProductDetails = () => {
     const handleAddCart = (thisProduct) => {
         const variationIndex = thisProduct.variations.indexOf(selectedVariation)
         const rightVariation = thisProduct.variations[variationIndex]
+        const discountedPrice = () => {
+            const discount = Number(thisProduct.discount)
+            const price = Number(thisProduct.price)
+            let discountedPrice;
+            if (discount > 0) {
+                const newPrice = price - price * discount / 100
+                return newPrice
+
+            } else {
+
+                return price
+            }
+        }
+
 
         const existingProduct = cartItems.find(item =>
             item.id === thisProduct.id && item.variations.id === rightVariation.id
@@ -23,13 +37,15 @@ const ProductDetails = () => {
         if (existingProduct) {
             updatedCart = [...cartItems]
             updatedCart[existingProductIndex].quantità += 1;
+            updatedCart[existingProductIndex].price = discountedPrice()
 
         } else {
-            updatedCart = [...cartItems, { ...thisProduct, quantità: 1, variations: rightVariation }]
+            updatedCart = [...cartItems, { ...thisProduct, quantità: 1, variations: rightVariation, price: discountedPrice() }]
         }
         setCartItems(updatedCart)
     }
-    console.log(cartItems, "ciao");
+
+
 
 
 

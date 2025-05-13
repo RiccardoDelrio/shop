@@ -10,6 +10,7 @@ import Carello from './pages/PageCarello';
 import DefaultLayout from "./layout/defaultLayout";
 import WardrobeSectionPage from './pages/WardrobeSectionPage'; // renamed from MacroAreaPage
 import SearchPage from './pages/SearchPage';
+import Checkout from './pages/Checkout';
 
 
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/product/:slug" element={<ProductDetails />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/search/:query" element={<SearchPage />} />
+            <Route path='/checkout' element={<Checkout />} />
           </Route>
         </Routes>
       </BrowserRouter>
