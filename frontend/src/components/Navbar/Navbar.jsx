@@ -23,7 +23,7 @@ const Navbar = () => {
             <div className="rightnav">
                 <div className="logo">
                     <img src="/img/logo.svg" alt="" />
-                    <h1 className="header_title">Boolean</h1>
+                    <h1 className="header_title text-white">Boolique</h1>
                 </div>
 
                 <ul className={`ul ${isMenuOpen ? 'menuOpen' : ''}`}>

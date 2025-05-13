@@ -68,35 +68,42 @@ export default function WelcomePopup() {
                             onClick={handleClose}
                             aria-label="Close"
                         />
-                        <div className="card-body text-center">
-                            <h2 className="card-title mb-4">Benvenuto!</h2>
-                            <p className="card-text mb-4">
-                                Iscriviti alla nostra newsletter per ricevere offerte esclusive
-                            </p>
+                        <div className="popup-grid">
+                            <div className="popup-left">
+                                <img src="https://picsum.photos/200" alt="Newsletter" className="popup-image" />
+                            </div>
+                            <div className="popup-right">
+                                <div className="card-body text-center">
+                                    <h2 className="card-title mb-4">Benvenuto!</h2>
+                                    <p className="card-text mb-4">
+                                        Iscriviti alla nostra newsletter per ricevere offerte esclusive
+                                    </p>
 
-                            <form onSubmit={handleSubmit} className="newsletter-form">
-                                <div className="form-floating mb-3">
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="emailInput"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Inserisci la tua email"
-                                        required
-                                    />
-                                    <label htmlFor="emailInput">Email</label>
-                                </div>
-                                <button type="submit" className="btn button w-100">
-                                    Iscriviti
-                                </button>
-                            </form>
+                                    <form onSubmit={handleSubmit} className="newsletter-form">
+                                        <div className="form-floating mb-3">
+                                            <input
+                                                type="email"
+                                                className="form-control"
+                                                id="emailInput"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="Inserisci la tua email"
+                                                required
+                                            />
+                                            <label htmlFor="emailInput">Email</label>
+                                        </div>
+                                        <button type="submit" className="btn button w-100">
+                                            Iscriviti
+                                        </button>
+                                    </form>
 
-                            {message && (
-                                <div className="alert alert-success mt-3" role="alert">
-                                    {message}
+                                    {message && (
+                                        <div className="alert alert-success mt-3" role="alert">
+                                            {message}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </div>
