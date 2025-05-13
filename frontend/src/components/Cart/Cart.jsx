@@ -1,13 +1,32 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './cart.css'
 import { Link } from 'react-router'
 import { useGlobal } from '../../contexts/GlobalContext'
-
+import { useEffect } from 'react'
 const Cart = () => {
     const { products, cartItems, setCartItems, groupedProducts, bottom, randomProducts } = useGlobal()
     console.log(products);
 
     const [isOpen, setIsOpen] = useState(false)
+    const cartRef = useRef(null)
+
+    const handleClose = () => setIsOpen(false)
+
+    // useEffect per ascoltare i click fuori dalla modale
+    useEffect(() => {
+        const handleClickOut = (e) => {
+            // Se la modale è aperta E il clic NON è dentro la modale
+            if (isOpen && cartRef.current && !cartRef.current.contains(e.target)) {
+                handleClose(); // Chiudiamo la modale
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOut);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOut);
+        };
+    }, [isOpen]);
 
 
     const toggleCart = () => {
@@ -55,7 +74,7 @@ const Cart = () => {
             </div>
 
             {isOpen && (
-                <div className='cartPopup'>
+                <div ref={cartRef} className='cartPopup'>
                     <div className='cartHeader'>
                         <h3>Il tuo carrello</h3>
                         <button onClick={toggleCart}>
@@ -104,7 +123,7 @@ const Cart = () => {
                     </div>
 
                     <div className='cartFooter'>
-                        <Link to="/carello">Vai al carrello <span><i className='fa-solid fa-arrow-right'></i></span></Link>
+                        <Link onClick={toggleCart} to="/carello">Vai al carrello <span><i className='fa-solid fa-arrow-right'></i></span></Link>
                     </div>
                 </div>
             )}
