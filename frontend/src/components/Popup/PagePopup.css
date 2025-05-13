@@ -15,7 +15,7 @@
 
 .popup-content {
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
-    background-image: url("/public/img/sfondorosso.png") !important;
+    background-image: url("/img/sfondorosso.png") !important;
     padding: 3rem;
     border-radius: 15px;
     max-width: 1000px;
@@ -54,19 +54,18 @@
     height: 50px;
     border-radius: 50%;
     transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-
 }
 
 .popup-close:hover {
-    color: #FFFFFF;
-    background-color: rgba(255, 255, 255, 0.1);
+    /* color: #FFFFFF; */
+    background-color: rgba(255, 255, 255, 1);
     transform: rotate(90deg);
 }
 
 .newsletter-form .button {
-    background-color: #FFD700;
-    color: rgb(65, 1, 1);
-    border: 2px solid #DAA520;
+    background-color: rgb(205, 0, 0);
+    color: white;
+    border: 2px solid black;
     padding: 0.75rem;
     border-radius: 10px;
     font-weight: 600;
@@ -79,7 +78,7 @@
 
 
 .newsletter-form .button:hover {
-    background-color: #DAA520;
+    background-color: rgb(255, 0, 0);
     transform: translateY(-2px);
     padding-right: 3rem;
     /* Aumenta lo spazio per l'animazione */
@@ -141,23 +140,64 @@
     border-radius: 10px;
 }
 
-/* fade effect */
+/* Keyframe animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideDownFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
 .popup-overlay {
-    /* ...existing styles... */
     opacity: 1;
-    transition: opacity 0.5s ease;
+    animation: fadeIn 1s ease forwards;
 }
 
 .popup-overlay.fading {
-    opacity: 0;
+    animation: fadeOut 0.75s ease forwards;
 }
 
 .popup-content {
-    /* ...existing styles... */
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    animation: slideUpFadeIn 1s ease forwards;
 }
 
 .popup-content.fading {
-    opacity: 0;
-    transform: translateY(20px);
+    animation: slideDownFadeOut 0.75s ease forwards;
 }

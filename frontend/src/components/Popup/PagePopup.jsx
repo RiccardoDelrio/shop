@@ -5,9 +5,7 @@ export default function WelcomePopup() {
     const [showPopup, setShowPopup] = useState(false);
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
-    const [isFading, setIsFading] = useState(false);
-
-    // Funzione per controllare se il popup deve essere mostrato
+    const [isFading, setIsFading] = useState(false);    // Function to check if the popup should be shown
     function checkLastVisit() {
         const lastVisit = localStorage.getItem("lastVisitDate");
         const today = new Date().toDateString();
@@ -15,20 +13,25 @@ export default function WelcomePopup() {
     }
 
     useEffect(() => {
-        // Mostra il popup se è un nuovo giorno
+        // Show the popup if it's a new day, but after a delay
         if (checkLastVisit()) {
-            setShowPopup(true);
-            localStorage.setItem("lastVisitDate", new Date().toDateString());
+            // Delay showing the popup by 1 second for better user experience
+            setTimeout(() => {
+                setShowPopup(true);
+                localStorage.setItem("lastVisitDate", new Date().toDateString());
+            }, 700);
         }
     }, []);
 
     // Rimuovi la data per far riapparire il popup
     localStorage.removeItem("lastVisitDate");
-
-
     // Gestione chiusura popup
     function handleClose() {
-        setShowPopup(false);
+        setIsFading(true);
+        setTimeout(() => {
+            setShowPopup(false);
+            setIsFading(false);
+        }, 750);
     }
 
     // Gestione form submission
@@ -45,14 +48,14 @@ export default function WelcomePopup() {
             .then(response => {
                 if (!response.ok) {
                     if (response.status === 409) {
-                        throw new Error('Email già registrata');
+                        throw new Error('Email already registered');
                     }
-                    throw new Error('Errore nella richiesta');
+                    throw new Error('Request error');
                 }
                 return response.json();
             })
             .then(() => {
-                setMessage(["Grazie per l'iscrizione!", "Controlla la tua email per la conferma."]);
+                setMessage(["Thanks for subscribing!", "Check your email for confirmation."]);
                 setTimeout(() => {
                     setIsFading(true);
                     setTimeout(() => {
@@ -63,8 +66,8 @@ export default function WelcomePopup() {
                 }, 3000);
             })
             .catch(error => {
-                console.error('Errore:', error);
-                setMessage(error.message || "Si è verificato un errore durante l'iscrizione");
+                console.error('Error:', error);
+                setMessage(error.message || "An error occurred during subscription");
             });
     }
 
@@ -80,15 +83,13 @@ export default function WelcomePopup() {
                         />
                         <div className="popup-grid">
                             <div className="popup-left">
-                                <img src="/public/img/imgpopup.png" alt="Newsletter" className="popup-image" />
+                                <img src="/img/imgpopup.png" alt="Newsletter" className="popup-image" />
                             </div>
                             <div className="popup-right">
                                 <div className="card-body text-center" style={{ marginTop: "4rem" }}>
-                                    {/* d-flex flex-column justify-content-center mb-3*/}
-
-                                    <h2 className="card-title mb-4">Benvenuto!</h2>
+                                    {/* d-flex flex-column justify-content-center mb-3*/}                                    <h2 className="card-title mb-4">Welcome!</h2>
                                     <p className="card-text mb-4">
-                                        Iscriviti alla nostra newsletter per ricevere offerte esclusive
+                                        Subscribe to our newsletter to receive exclusive offers
                                     </p>
                                     {message ? (
                                         <div className="alert alert-success mt-3" role="alert">
@@ -108,14 +109,14 @@ export default function WelcomePopup() {
                                                     className="form-control"
                                                     id="emailInput"
                                                     value={email}
-                                                    onChange={(e) => setEmail(e.target.value)}
-                                                    placeholder="Inserisci la tua email"
+                                                    onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email"
                                                     required
                                                 />
                                                 <label htmlFor="emailInput">Email</label>
                                             </div>
                                             <button type="submit" className="btn button w-100">
-                                                Iscriviti
+                                                {/* <span className="d-flex align-items-center justify-content-center"><img src="/img/logo.svg" alt="Boolique's Logo" height={30} /> Subscribe</span> */}
+                                                Subscribe
                                             </button>
                                         </form>
                                     )}
