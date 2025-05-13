@@ -6,8 +6,15 @@ const Slider = ({ children }) => {
 
     const slide = (direction) => {
         if (rowRef.current) {
-            const { scrollLeft, clientWidth } = rowRef.current;
-            const scrollTo = direction === "left" ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+            const firstCard = rowRef.current.children[0];
+            const cardWidth = firstCard?.offsetWidth || 0;
+            const gap = 16; // 1rem gap
+            const scrollAmount = cardWidth + gap;
+
+            const scrollTo = direction === "left"
+                ? rowRef.current.scrollLeft - scrollAmount
+                : rowRef.current.scrollLeft + scrollAmount;
+
             rowRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
         }
     };

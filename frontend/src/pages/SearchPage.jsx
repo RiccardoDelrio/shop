@@ -3,6 +3,58 @@ import { useSearchParams } from 'react-router-dom'
 import ProductCards from '../components/ProductCard/ProductCard'
 import ProductCardListView from '../components/ProductCarListView/ProductCarListView'
 
+const AVAILABLE_COLORS = [
+    // Metallic Colors
+    { value: 'antique-silver', label: 'Antique Silver' },
+    { value: 'burnished-silver', label: 'Burnished Silver' },
+    { value: 'champagne-gold', label: 'Champagne Gold' },
+    { value: 'gold', label: 'Gold/Yellow Gold' },
+    { value: 'platinum', label: 'Platinum' },
+    { value: 'red-gold', label: 'Red Gold' },
+    { value: 'rose-gold', label: 'Rose Gold' },
+    { value: 'satin-silver', label: 'Satin Silver' },
+    { value: 'silver', label: 'Silver' },
+    { value: 'sterling-silver', label: 'Sterling Silver' },
+    { value: 'white-gold', label: 'White Gold' },
+
+    // Basic Colors
+    { value: 'black', label: 'Black' },
+    { value: 'white', label: 'White' },
+    { value: 'red', label: 'Red' },
+    { value: 'berry-red', label: 'Berry Red/Burgundy' },
+
+    // Blues
+    { value: 'blue', label: 'Blue' },
+    { value: 'teal', label: 'Teal' },
+
+    // Greens
+    { value: 'dark-green', label: 'Dark Green' },
+    { value: 'emerald-green', label: 'Emerald Green' },
+    { value: 'forest-green', label: 'Forest Green' },
+    { value: 'green', label: 'Green' },
+    { value: 'olive', label: 'Olive' },
+    { value: 'sage-green', label: 'Sage Green' },
+
+    // Earth Tones
+    { value: 'beige', label: 'Beige' },
+    { value: 'brown', label: 'Brown' },
+    { value: 'khaki', label: 'Khaki' },
+    { value: 'natural-linen', label: 'Natural Linen' },
+    { value: 'oatmeal', label: 'Oatmeal' },
+
+    // Purples & Pinks
+    { value: 'deep-purple', label: 'Deep Purple' },
+    { value: 'lilac', label: 'Lilac' },
+    { value: 'pink', label: 'Pink' },
+    { value: 'rose-quartz', label: 'Rose Quartz' },
+
+    // Grays & Others
+    { value: 'gray', label: 'Gray' },
+    { value: 'cream', label: 'Cream' },
+    { value: 'mustard', label: 'Mustard' },
+    { value: 'rust', label: 'Rust' },
+];
+
 export default function SearchPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [products, setProducts] = useState([]);
@@ -12,15 +64,15 @@ export default function SearchPage() {
     // Leggi i filtri direttamente da searchParams
     const filters = {
         category: searchParams.get('category') || '',
-        wardrobeSection: searchParams.get('wardrobeSection') || '', // changed from macroarea
+        wardrobeSection: searchParams.get('wardrobeSection') || '',
         search: searchParams.get('search') || '',
         minPrice: searchParams.get('minPrice') || '',
         maxPrice: searchParams.get('maxPrice') || '',
         color: searchParams.get('color') || '',
         size: searchParams.get('size') || '',
         discounted: searchParams.get('discounted') === 'true',
-        inStock: searchParams.get('inStock') === 'true'
-
+        inStock: searchParams.get('inStock') === 'true',
+        sort: searchParams.get('sort') || '' // Aggiungi il parametro sort
     };
 
     const handleFilterChange = (e) => {
@@ -45,14 +97,9 @@ export default function SearchPage() {
     };
 
     const getImageUrl = (product) => {
-        try {
-            if (product.images && Array.isArray(product.images) && product.images.length > 0 && product.images[0].url) {
-                return `http://localhost:3000/imgs/${product.images[0].url}`;
-            }
-            return 'http://localhost:3000/imgs/placeholder.jpg';
-        } catch (error) {
-            return 'http://localhost:3000/imgs/placeholder.jpg';
-        }
+        return product.images?.[0]?.url
+            ? `http://localhost:3000/imgs/${product.images[0].url}`
+            : '';
     };
 
     useEffect(() => {
@@ -97,15 +144,29 @@ export default function SearchPage() {
 
     return (
         <div className="catalogo-container">
-            {/* Fixed header with controls */}
             <div className="catalogo-header">
                 <div className="d-flex justify-content-between align-items-center">
                     <h2 className="catalogo-title">
                         {filters.search ? `Results for: ${filters.search}` : 'All products'}
                     </h2>
-                    <button className="btn btn-outline-light" onClick={toggleView}>
-                        <i className={`bi ${isGridView ? 'bi-grid-3x3-gap' : 'bi-list'}`}></i>
-                    </button>
+                    <div className="d-flex gap-2">
+                        <select
+                            className="form-select"
+                            name="sort"
+                            value={filters.sort}
+                            onChange={handleFilterChange}
+                        >
+                            <option value="">Sort by</option>
+                            <option value="price_asc">Price: Low to High</option>
+                            <option value="price_desc">Price: High to Low</option>
+                            <option value="name_asc">Name: A to Z</option>
+                            <option value="name_desc">Name: Z to A</option>
+                            <option value="new_arrivals">New Arrivals</option>
+                        </select>
+                        <button className="btn btn-outline-light" onClick={toggleView}>
+                            <i className={`bi ${isGridView ? 'bi-grid-3x3-gap' : 'bi-list'}`}></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -168,10 +229,12 @@ export default function SearchPage() {
                                     value={filters.color}
                                     onChange={handleFilterChange}
                                 >
-                                    <option value="">All</option>
-                                    <option value="black">Black</option>
-                                    <option value="white">White</option>
-                                    <option value="red">Red</option>
+                                    <option value="">All Colors</option>
+                                    {AVAILABLE_COLORS.map(color => (
+                                        <option key={color.value} value={color.value}>
+                                            {color.label}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 

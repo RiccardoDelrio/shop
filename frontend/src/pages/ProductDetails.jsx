@@ -9,7 +9,7 @@ const ProductDetails = () => {
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
-    /* const discountedPrice = discount ? price - (price * discount / 100) : price; */
+    const [selectedColor, setSelectedColor] = useState(null);
 
     const handleAddCart = (thisProduct) => {
         const variationIndex = thisProduct.variations.indexOf(selectedVariation)
@@ -64,9 +64,28 @@ const ProductDetails = () => {
     }, [slug]);
     console.log(product);
 
+    // Raggruppa le variazioni per colore
+    const getUniqueColors = (variations) => {
+        const uniqueColors = [];
+        variations.forEach(variant => {
+            if (!uniqueColors.find(c => c.color === variant.color)) {
+                uniqueColors.push({
+                    color: variant.color,
+                    color_hex: variant.color_hex
+                });
+            }
+        });
+        return uniqueColors;
+    };
+
+    // Filtra le variazioni per il colore selezionato
+    const getVariationsForColor = (variations, color) => {
+        return variations.filter(variant => variant.color === color);
+    };
+
     if (!product) return <div>Loading...</div>;
 
-
+    const availableColors = getUniqueColors(product.variations);
 
     return (
         <section className="product">
@@ -102,48 +121,63 @@ const ProductDetails = () => {
             <div className="product__info">
                 <div className="title">
                     <h1>{product.name}</h1>
-
                 </div>
                 <div className="price">
                     € <span>{Number(product.price).toFixed(2)}</span>
                 </div>
                 <div className="variant">
-                    <h3>SELECT A SIZE</h3>
-                    <ul className="size-list">
-                        {product.variations.map((variation) => (
+                    <h3>SELECT A COLOR</h3>
+                    <ul className="color-list">
+                        {availableColors.map((colorOption) => (
                             <li
-                                key={variation.id}
-                                className={selectedVariation?.id === variation.id ? 'active' : ''}
-                                onClick={() => setSelectedVariation(variation)}
+                                key={colorOption.color}
+                                className={selectedColor === colorOption.color ? 'active' : ''}
+                                onClick={() => {
+                                    setSelectedColor(colorOption.color);
+                                    setSelectedVariation(null);
+                                }}
                             >
-                                {variation.size}
-                                <small>({variation.stock} left)</small>
+                                <div
+                                    className="color-preview"
+                                    style={{ backgroundColor: colorOption.color_hex }}
+                                />
+                                <span>{colorOption.color}</span>
                             </li>
                         ))}
                     </ul>
+
+                    {selectedColor && (
+                        <>
+                            <h3>SELECT A SIZE</h3>
+                            <ul className="size-list">
+                                {getVariationsForColor(product.variations, selectedColor).map((variation) => (
+                                    <li
+                                        key={variation.id}
+                                        className={selectedVariation?.id === variation.id ? 'active' : ''}
+                                        onClick={() => setSelectedVariation(variation)}
+                                    >
+                                        {variation.size}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
                 </div>
                 <div className="description">
                     <h3>DESCRIPTION</h3>
                     <p>{product.description}</p>
                     <p>{product.long_description}</p>
-                    {selectedVariation && (
-                        <div className="selected-variant">
-                            <p className="m-0">Color: {selectedVariation.color}</p>
-                            <div
-                                className="color-preview"
-                                style={{ backgroundColor: selectedVariation.color_hex }}
-                            />
-                        </div>
-                    )}
+
                 </div>
                 <button
                     onClick={() => handleAddCart(product)}
                     className="buy--btn"
                     disabled={!selectedVariation || selectedVariation.stock === 0}
                 >
-                    {!selectedVariation ? 'SELECT A SIZE' :
-                        selectedVariation.stock === 0 ? 'OUT OF STOCK' :
-                            'ADD TO CART'}
+                    {!selectedColor ? 'SELECT A COLOR' :
+                        !selectedVariation ? 'SELECT A SIZE' :
+                            selectedVariation.stock === 0 ? 'OUT OF STOCK' :
+                                'ADD TO CART'}
                 </button>
             </div>
         </section >
