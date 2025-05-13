@@ -22,7 +22,7 @@ export default function WelcomePopup() {
     }, []);
 
     // Rimuovi la data per far riapparire il popup
-    // localStorage.removeItem("lastVisitDate");
+    localStorage.removeItem("lastVisitDate");
 
 
     // Gestione chiusura popup
@@ -42,19 +42,24 @@ export default function WelcomePopup() {
             body: JSON.stringify({ email })
         })
             .then(response => {
-                if (!response.ok) throw new Error('Errore nella richiesta');
+                if (!response.ok) {
+                    if (response.status === 409) {
+                        throw new Error('Email già registrata');
+                    }
+                    throw new Error('Errore nella richiesta');
+                }
                 return response.json();
             })
             .then(() => {
-                setMessage("Grazie per l'iscrizione!");
+                setMessage("Grazie per l'iscrizione! Controlla la tua email per la conferma.");
                 setTimeout(() => {
                     setShowPopup(false);
                     setMessage("");
-                }, 2000);
+                }, 3000);
             })
             .catch(error => {
                 console.error('Errore:', error);
-                setMessage("Si è verificato un errore durante l'iscrizione");
+                setMessage(error.message || "Si è verificato un errore durante l'iscrizione");
             });
     }
 
