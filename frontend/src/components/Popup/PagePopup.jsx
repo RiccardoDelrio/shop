@@ -5,6 +5,7 @@ export default function WelcomePopup() {
     const [showPopup, setShowPopup] = useState(false);
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [isFading, setIsFading] = useState(false);
 
     // Funzione per controllare se il popup deve essere mostrato
     function checkLastVisit() {
@@ -51,10 +52,14 @@ export default function WelcomePopup() {
                 return response.json();
             })
             .then(() => {
-                setMessage("Grazie per l'iscrizione! Controlla la tua email per la conferma.");
+                setMessage(["Grazie per l'iscrizione!", "Controlla la tua email per la conferma."]);
                 setTimeout(() => {
-                    setShowPopup(false);
-                    setMessage("");
+                    setIsFading(true);
+                    setTimeout(() => {
+                        setShowPopup(false);
+                        setMessage("");
+                        setIsFading(false);
+                    }, 750);
                 }, 3000);
             })
             .catch(error => {
@@ -66,8 +71,8 @@ export default function WelcomePopup() {
     return (
         <>
             {showPopup && (
-                <div className="popup-overlay">
-                    <div className="popup-content card">
+                <div className={`popup-overlay ${isFading ? 'fading' : ''}`}>
+                    <div className={`popup-content card ${isFading ? 'fading' : ''}`}>
                         <button
                             className="popup-close btn-close"
                             onClick={handleClose}
@@ -75,37 +80,44 @@ export default function WelcomePopup() {
                         />
                         <div className="popup-grid">
                             <div className="popup-left">
-                                <img src="../../../public/img/imgpopup.png" alt="Newsletter" className="popup-image" />
+                                <img src="/public/img/imgpopup.png" alt="Newsletter" className="popup-image" />
                             </div>
                             <div className="popup-right">
-                                <div className="card-body text-center">
+                                <div className="card-body text-center" style={{ marginTop: "4rem" }}>
+                                    {/* d-flex flex-column justify-content-center mb-3*/}
+
                                     <h2 className="card-title mb-4">Benvenuto!</h2>
                                     <p className="card-text mb-4">
                                         Iscriviti alla nostra newsletter per ricevere offerte esclusive
                                     </p>
-
-                                    <form onSubmit={handleSubmit} className="newsletter-form">
-                                        <div className="form-floating mb-3">
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                id="emailInput"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                placeholder="Inserisci la tua email"
-                                                required
-                                            />
-                                            <label htmlFor="emailInput">Email</label>
-                                        </div>
-                                        <button type="submit" className="btn button w-100">
-                                            Iscriviti
-                                        </button>
-                                    </form>
-
-                                    {message && (
+                                    {message ? (
                                         <div className="alert alert-success mt-3" role="alert">
-                                            {message}
+                                            {Array.isArray(message) ? (
+                                                message.map((line, index) => (
+                                                    <p key={index} className={index > 0 ? 'mb-0' : 'mb-2'}>
+                                                        {line}
+                                                    </p>
+                                                ))
+                                            ) : message}
                                         </div>
+                                    ) : (
+                                        <form onSubmit={handleSubmit} className="newsletter-form">
+                                            <div className="form-floating mb-3">
+                                                <input
+                                                    type="email"
+                                                    className="form-control"
+                                                    id="emailInput"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    placeholder="Inserisci la tua email"
+                                                    required
+                                                />
+                                                <label htmlFor="emailInput">Email</label>
+                                            </div>
+                                            <button type="submit" className="btn button w-100">
+                                                Iscriviti
+                                            </button>
+                                        </form>
                                     )}
                                 </div>
                             </div>
