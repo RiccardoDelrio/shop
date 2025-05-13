@@ -74,7 +74,7 @@ const Checkout = () => {
       } */
 
     return (
-        <div className="checkout-container my-5">
+        <form className="checkout-container my-5">
             {formStatus ? (
                 <div className={`${formStatus.error ? 'bg-danger' : 'bg-success'} rounded-4 m-auto p-5 text-center h5 position-relative`}>
                     {formStatus.error ? (
@@ -131,13 +131,17 @@ const Checkout = () => {
 
                     <label htmlFor="postal_code" className="form-label">C.A.P.</label>
                     <input
-                        onChange={(e) => handleFormData(e)}
-                        type="number"
+                        onChange={(e) => { setFormData({ ...formData, [e.target.name]: Number(e.target.value) }) }}
+                        type="text"
+
+
                         className="form-control"
                         name="postal_code"
                         id="postal_code"
                         aria-describedby="emailHelpId"
                         placeholder="C.A.P."
+                        value={formData.postal_code || ''}
+
                     />
                 </div>
                 <div className='mb-3'>
@@ -218,7 +222,7 @@ const Checkout = () => {
 
 
 
-        </div>
+        </form>
 
     )
 }
