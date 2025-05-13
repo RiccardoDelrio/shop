@@ -14,7 +14,7 @@ export default function StorySite() {
                 {/* Blocco centrale con sfondo chiaro */}
                 <div className="block-text text-white p-5 rounded-3" >
                     <p>
-                        <strong>Boolean</strong> nasce dall’ambizione di reinterpretare l’eleganza contemporanea con una visione
+                        <strong>Boolique</strong> nasce dall’ambizione di reinterpretare l’eleganza contemporanea con una visione
                         essenziale, curata nei dettagli e profondamente radicata nel valore dell’artigianalità.
                     </p>
                     <p>
@@ -28,7 +28,7 @@ export default function StorySite() {
                         i veri simboli di raffinatezza.
                     </p>
                     <p>
-                        <strong>Boolean</strong> è uno spazio per chi cerca più di un capo: un'identità visiva che rispecchi valori
+                        <strong>Boolique</strong> è uno spazio per chi cerca più di un capo: un'identità visiva che rispecchi valori
                         profondi, con coerenza e discrezione.
                     </p>
                 </div>
