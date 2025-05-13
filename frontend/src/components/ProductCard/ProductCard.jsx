@@ -10,7 +10,7 @@ const ProductCards = ({ name, description, price, image, slug, discount }) => {
         <div className="col card-container d-flex justify-content-center align-items-center">
             <div className="card custom-card">
                 {discount > 0 && (
-                    <p className="position-absolute start-0  rounded-pill bg-warning px-3">{discount}%</p>
+                    <p className="position-absolute discounted-tag rounded-pill bg-warning px-3"><span className="h6">- </span>{discount}%</p>
                 )}
                 <img
                     src={image}

@@ -60,6 +60,12 @@
         padding-top: 10px;
     }
 
+    .discounted-tag {
+        top: 5px;
+        left: 5px;
+        color: rgb(168, 1, 1);
+    }
+
     .card-description {
         font-size: 1rem;
         padding-top: 2rem;
