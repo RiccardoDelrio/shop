@@ -70,7 +70,7 @@ export default function WelcomePopup() {
                         />
                         <div className="popup-grid">
                             <div className="popup-left">
-                                <img src="https://picsum.photos/200" alt="Newsletter" className="popup-image" />
+                                <img src="../../../public/img/imgpopup.png" alt="Newsletter" className="popup-image" />
                             </div>
                             <div className="popup-right">
                                 <div className="card-body text-center">

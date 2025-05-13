@@ -530,6 +530,72 @@
                     "response": []
                 },
                 {
+                    "name": "Newest Products First",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?sort=newest&limit=10",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "sort",
+                                    "value": "newest"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        },
+                        "description": "Show the 10 newest products based on creation date, newest first."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Oldest Products First",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/products/filter?sort=oldest&limit=10",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "products",
+                                "filter"
+                            ],
+                            "query": [
+                                {
+                                    "key": "sort",
+                                    "value": "oldest"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        },
+                        "description": "Show the 10 oldest products based on creation date, oldest first."
+                    },
+                    "response": []
+                },
+                {
                     "name": "Top 10 Best-Selling Products",
                     "request": {
                         "method": "GET",
@@ -569,7 +635,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"customer_info\": {\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Rossi\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"123456789\",\n    \"address\": \"Via Roma 1\",\n    \"city\": \"Milano\",\n    \"state\": \"MI\",\n    \"postal_code\": \"20100\",\n    \"country\": \"Italy\"\n  },\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"product_variation_id\": 12,\n      \"quantity\": 2,\n      \"price\": 100\n    }\n  ],\n  \"delivery\": 10,\n  \"total\": 200,\n  \"discount\": 0\n}"
+                            "raw": "{\n  \"customer_info\": {\n    \"first_name\": \"Mario\",\n    \"last_name\": \"Rossi\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"123456789\",\n    \"address\": \"Via Roma 1\",\n    \"city\": \"Milano\",\n    \"state\": \"MI\",\n    \"postal_code\": \"20100\",\n    \"country\": \"Italy\"\n  },\n  \"items\": [\n    {\n      \"product_id\": 5,\n      \"product_variation_id\": 12,\n      \"quantity\": 2,\n      \"price\": 100\n    }\n  ],\n  \"discount\": 10\n}"
                         },
                         "url": {
                             "raw": "http://localhost:3000/api/v1/orders",
@@ -584,7 +650,7 @@
                                 "orders"
                             ]
                         },
-                        "description": "Create a new order. Requires customer_info.email. If email is missing, returns: {\n  \"error\": \"Customer email is required for orders\"\n}"
+                        "description": "Create a new order.\n\n- 'total' is calculated server-side as the sum of all item prices (price × quantity), applying product-level discounts automatically.\n- Each product's discount is applied before the order-level discount.\n- 'discount' is a percentage (e.g. 10 for 10% off the subtotal after product discounts).\n- 'delivery' is calculated automatically by the backend: it is 30 by default, but free if the order total is at least 500.\n- 'customer_info.email' is required.\nIf email is missing, returns: { \"error\": \"Customer email is required for orders\" }"
                     },
                     "response": []
                 },
