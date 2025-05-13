@@ -176,7 +176,12 @@ export default function SearchPage() {
                     {/* Filters Sidebar */}
                     <div className="col-lg-3">
                         <div className="filter-sidebar p-3 rounded">
-                            <h4 className="mb-3">Filters</h4>
+                            <div className='d-flex justify-content-between'>
+
+                                <h4 className="mb-3">Filters</h4>
+                                <p onClick={() => setSearchParams()} className='text-secondary'>Reset filters</p>
+                            </div>
+
 
                             <div className="mb-3">
                                 <label className="form-label">Category</label>
