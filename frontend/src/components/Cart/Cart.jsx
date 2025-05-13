@@ -37,7 +37,7 @@ const Cart = () => {
         let total = 0
         items.forEach(item => {
             const thisItemsPrice = item.price * item.quantità
-            console.log(thisItemsPrice);
+
 
             total += thisItemsPrice;
         })
