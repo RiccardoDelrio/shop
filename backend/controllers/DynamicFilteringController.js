@@ -1,11 +1,22 @@
+/**
+ * DynamicFilteringController.js
+ * 
+ * Handles the dynamic filtering of products with various parameters:
+ * - Filter parameters (category, wardrobe_section, color, size, etc.)
+ * - Sorting options (price_asc, price_desc, newest, oldest, etc.)
+ * - Pagination (limit)
+ */
 const connection = require('../database/db');
 
 function dynamicFiltering(req, res) {
-
     // whitelist to avoid sql injections
+    // These are parameters used for filtering products
     const ALLOWED_FILTERS = [
         'category', 'wardrobe_section', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock'
     ];
+
+    // These are parameters used for controlling result presentation (not filtering)
+    const ALLOWED_SPECIAL_PARAMS = ['sort', 'limit'];
 
     // check if the filters are in the whitelist 
     const isValidFilter = (filter) => ALLOWED_FILTERS.includes(filter);
@@ -18,15 +29,14 @@ function dynamicFiltering(req, res) {
         }
     });
 
-    // Check for invalid filters and return an error
-    const invalidFilters = Object.keys(req.query).filter(key => !isValidFilter(key) && key !== 'sort' && key !== 'limit');
-    if (invalidFilters.length > 0) {
-        return res.status(400).json({ error: `Invalid filters: ${invalidFilters.join(', ')}` });
+    // Check for invalid parameters and return an error
+    const invalidParams = Object.keys(req.query).filter(key => !isValidFilter(key) && !ALLOWED_SPECIAL_PARAMS.includes(key));
+    if (invalidParams.length > 0) {
+        return res.status(400).json({ error: `Invalid parameters: ${invalidParams.join(', ')}` });
     }
 
-    let sql = `
-  SELECT 
-    p.id, p.slug, p.name, p.description, p.long_description, p.price, p.discount,
+    let sql = `  SELECT 
+    p.id, p.slug, p.name, p.description, p.long_description, p.price, p.discount, p.created_at,
     c.id AS category_id, c.name AS category_name, c.slug AS category_slug,
     WS.id AS wardrobe_section_id, WS.name AS wardrobe_section_name, WS.slug AS wardrobe_section_slug,
     (
@@ -91,14 +101,33 @@ function dynamicFiltering(req, res) {
     if (filters.maxPrice) {
         sql += ' AND p.price <= ?';
         params.push(Number(filters.maxPrice));
-    }
-    sql += ' GROUP BY p.id';
+    } sql += ' GROUP BY p.id';
 
-    // Optional: Sorting and limiting
-    if (req.query.sort === 'price_desc') sql += ' ORDER BY p.price DESC';
-    if (req.query.sort === 'price_asc') sql += ' ORDER BY p.price ASC';
-    if (req.query.sort === 'discount_desc') sql += ' ORDER BY p.discount DESC';
-    if (req.query.sort === 'discount_asc') sql += ' ORDER BY p.discount ASC';
+    // Handle sorting options
+    const sortOption = req.query.sort;
+    if (sortOption) {
+        switch (sortOption) {
+            case 'price_desc':
+                sql += ' ORDER BY p.price DESC';
+                break;
+            case 'price_asc':
+                sql += ' ORDER BY p.price ASC';
+                break;
+            case 'discount_desc':
+                sql += ' ORDER BY p.discount DESC';
+                break;
+            case 'discount_asc':
+                sql += ' ORDER BY p.discount ASC';
+                break;
+            case 'newest':
+                sql += ' ORDER BY p.created_at DESC';
+                break;
+            case 'oldest':
+                sql += ' ORDER BY p.created_at ASC';
+                break;
+            // Default: no sorting applied
+        }
+    }
     if (req.query.limit) {
         sql += ' LIMIT ?';
         params.push(Number(req.query.limit));

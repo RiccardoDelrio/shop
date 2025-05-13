@@ -1,12 +1,10 @@
 const connection = require('../database/db');
 
 // Create a new order
-function createOrder(req, res) {
+async function createOrder(req, res) {
     const {
         customer_info,
         items,
-        delivery,
-        total,
         discount = 0
     } = req.body;
 
@@ -17,8 +15,30 @@ function createOrder(req, res) {
 
     const { first_name, last_name, email, phone, address, city, state, postal_code, country } = customer_info;
 
+    // Calculate total (sum of item.price * item.quantity), applying product-level discounts
+    let total = 0;
+    const itemsWithDiscount = await Promise.all(items.map(async item => {
+        // Fetch product discount from DB
+        const [rows] = await connection.promise().query(
+            'SELECT discount FROM Products WHERE id = ?',
+            [item.product_id]
+        );
+        const productDiscount = rows[0]?.discount || 0;
+        const price = parseFloat(item.price);
+        const quantity = parseInt(item.quantity);
+        const discountedPrice = productDiscount > 0 ? price - (price * productDiscount / 100) : price;
+        total += discountedPrice * quantity;
+        return {
+            ...item,
+            discountedPrice
+        };
+    }));
+    // Calculate discount as a percentage (order-level)
+    const discountAmount = total * (parseFloat(discount) / 100);
+    // Calculate delivery: free if total >= 500, else 30
+    const deliveryValue = total >= 500 ? '0' : '30'; // Ensure it's a string to match ENUM
     // Calculate final price
-    const final_price = parseFloat(total) - parseFloat(discount) + parseFloat(delivery);
+    const final_price = total - discountAmount + parseInt(deliveryValue);
 
     // First create a User entry for this order (even if duplicate email)
     const userSql = `
@@ -64,18 +84,18 @@ function createOrder(req, res) {
             VALUES (?, 'Pending', ?, ?, ?, ?)
         `;
 
-        connection.query(orderSql, [user_id, delivery, total, discount, final_price], (err, orderResults) => {
+        connection.query(orderSql, [user_id, deliveryValue, total, discount, final_price], (err, orderResults) => {
             if (err) return res.status(500).json({ error: err.message });
 
             const order_id = orderResults.insertId;
 
             // Then insert all order items
-            const orderItemsValues = items.map(item => [
+            const orderItemsValues = itemsWithDiscount.map(item => [
                 order_id,
                 item.product_id,
                 item.product_variation_id || null,
                 item.quantity,
-                item.price
+                item.discountedPrice
             ]);
 
             const orderItemsSql = `

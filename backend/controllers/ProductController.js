@@ -6,11 +6,11 @@ function getAllProducts(req, res) {
         SELECT 
             p.id,
             p.slug,
-            p.name,
-            p.description,
+            p.name,            p.description,
             p.long_description,
             p.price,
             p.discount,
+            p.created_at,
             JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'url', pi.image_url,
@@ -42,6 +42,7 @@ function getProductBySlug(req, res) {
             p.long_description,
             p.price,
             p.discount,
+            p.created_at,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -88,6 +89,7 @@ function getRandomProducts(req, res) {
             p.long_description,
             p.price,
             p.discount,
+            p.created_at,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -124,6 +126,7 @@ function getDiscountedProducts(req, res) {
             p.long_description,
             p.price,
             p.discount,
+            p.created_at,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -167,6 +170,7 @@ function searchProducts(req, res) {
             p.long_description,
             p.price,
             p.discount,
+            p.created_at,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -203,6 +207,7 @@ function getBestsellers(req, res) {
             p.long_description,
             p.price,
             p.discount,
+            p.created_at,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(

@@ -60,6 +60,8 @@ Returns products filtered by any combination of supported query parameters. This
 - `sort=price_desc`: Order by price descending
 - `sort=discount_asc`: Order by discount ascending
 - `sort=discount_desc`: Order by discount descending
+- `sort=newest`: Order by creation date, newest first
+- `sort=oldest`: Order by creation date, oldest first
 
 #### Limiting
 
@@ -99,13 +101,17 @@ Create a new order.
       "price": 100
     }
   ],
-  "delivery": 10,
-  "total": 200,
   "discount": 0
 }
 ```
 
-**Note:** `customer_info.email` is required.
+**Note:**
+
+- `customer_info.email` is required.
+- `total` is now calculated server-side as the sum of all item prices (price × quantity), **with each product's discount (if any) automatically applied**.
+- `discount` is a percentage (e.g. 10 for 10% off the subtotal after product discounts).
+- `delivery` is calculated automatically by the backend: it is 30 by default, but free if the order total is at least 500.
+- **Product-level discounts are always applied first, then the order-level discount is applied to the subtotal.**
 
 ### Get Order by ID
 
