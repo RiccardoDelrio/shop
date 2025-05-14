@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './navbar.css';
 import SearchBar from '../SearchBar/SearchBar';
 import Cart from '../Cart/Cart';
+import UserMenu from '../UserMenu/UserMenu';
 import { Link } from 'react-router-dom';
 import { useGlobal } from '../../contexts/GlobalContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { wardrobeSections, fetchWardrobeSections } = useGlobal();
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         fetchWardrobeSections();
@@ -35,10 +38,10 @@ const Navbar = () => {
                     ))}
                     <li className="navlink"><Link to="/catalogo">Catalog</Link></li>
                 </ul>
-            </div>
-            {/* Left nav */}
+            </div>            {/* Left nav */}
             <div className="leftnav">
                 <SearchBar />
+                <UserMenu />
                 <Cart />
                 <div className="hamburgerMenu" onClick={toggleMenu}>
                     <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
