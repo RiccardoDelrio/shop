@@ -257,10 +257,24 @@
     cursor: pointer;
     padding: 0.5rem;
     border: 2px solid transparent;
+    border-radius: 2rem;
+
+    &:hover {
+        background-color: rgb(71, 71, 71);
+
+
+        transition: .2s;
+
+        color: white;
+
+    }
 }
 
 .color-list li.active {
-    border-color: #000;
+    border-radius: 2rem;
+    background-color: white;
+    color: black;
+    padding: 0 1rem;
 }
 
 .color-preview {
