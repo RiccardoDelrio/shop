@@ -10,6 +10,7 @@ const Checkout = () => {
     const isAuthenticated = !!currentUser
     const [formData, setFormData] = useState({})
     const [formStatus, setFormStatus] = useState(null)
+    const [formCheck, setFormCheck] = useState(null)    // Stato per il messaggio di aggiornamento del profilo
     const [updateMessage, setUpdateMessage] = useState('')    // Precompila i dati del form con le informazioni dell'utente loggato
     useEffect(() => {
         console.log("CurrentUser:", currentUser);
@@ -155,6 +156,18 @@ const Checkout = () => {
             </div>
         )
     }
+    useEffect(() => {
+        if (formStatus?.order_id) {
+            const handleFormCheck = async () => {
+                const response = await fetch(`http://localhost:3000/api/v1/orders/${formStatus.order_id}`)
+                    .then(res => res.json())
+                    .then(data => setFormCheck(data))
+
+
+            }
+            handleFormCheck()
+        }
+    }, [formStatus])
 
     return (
         <div className="checkout-container my-5">
@@ -176,13 +189,33 @@ const Checkout = () => {
                             </>
                         ) : (
                             <>
+                                <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
                                 <p className='h4'>{formStatus.message}</p>
-                                <p>Il tuo ordine #{formStatus.order_id} è stato creato con successo!</p>
-                                <p>Riceverai una email di conferma all'indirizzo: {formData.email}</p>
-                                <div className="mt-3">
-                                    <Link to="/" className="btn btn-light me-2">Torna alla Home</Link>
-                                    <Link to="/search" className="btn btn-outline-light">Continua lo shopping</Link>
-                                </div>
+                                {formCheck?.id && (
+                                    <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
+                                        <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
+                                        <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
+                                        <p><strong>Email:</strong> {formCheck.email}</p>
+                                        <p><strong>Telefono:</strong> {formCheck.phone}</p>
+                                        <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
+                                        <hr />
+                                        <h6 className="mt-3 mb-2">📦 Prodotti</h6>
+                                        <ul className="list-unstyled">
+                                            {formCheck.items.map((item, index) => (
+                                                <li key={index} className="mb-2">
+                                                    <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
+                                                    <small>Variante: {item.color}, Taglia: {item.size}</small>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <hr />
+                                        <p><strong>Totale:</strong> {formCheck.total}€</p>
+                                        {parseFloat(formCheck.discount) > 0 && (
+                                            <p><strong>Sconto:</strong> {formCheck.discount}€</p>
+                                        )}
+                                        <p><strong>Stato ordine:</strong> {formCheck.status}</p>
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>
