@@ -56,16 +56,8 @@ const Checkout = () => {
             }
 
             // Se l'ordine è andato a buon fine
-            setFormStatus({
-                message: "Ordine completato con successo! Controlla la tua email per i dettagli.",
-                success: true
-            });
+            setFormStatus(data);
             setCartItems([]); // Svuota il carrello
-
-            // Mostra un messaggio di successo per 3 secondi
-            // setTimeout(() => {
-            //     window.location.href = '/'; // Redirect alla home dopo 3 secondi
-            // }, 3000);
 
         } catch (error) {
             console.error('Errore durante l\'invio dell\'ordine:', error);
