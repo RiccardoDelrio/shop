@@ -229,6 +229,11 @@
             &:disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
+
+                &:hover {
+                    background: #000;
+                    color: white;
+                }
             }
 
             &:not(:disabled):hover {
