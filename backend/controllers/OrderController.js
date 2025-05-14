@@ -192,17 +192,203 @@ async function createOrder(req, res) {
             const orderItemsSql = `
                 INSERT INTO Order_Items (order_id, product_id, product_variation_id, quantity, price)
                 VALUES ?
-            `;
-
-            connection.query(orderItemsSql, [orderItemsValues], (err) => {
+            `; connection.query(orderItemsSql, [orderItemsValues], async (err) => {
                 if (err) return res.status(500).json({ error: err.message });
 
-                // Return the created order
-                res.status(201).json({
-                    message: 'Order created successfully',
-                    order_id,
-                    tracking_email: email
-                });
+                try {
+                    // Generate a numeric customer-facing ID
+                    const numericOrderId = generateNumericId(order_id);
+
+                    // Fetch product names for the email
+                    const productIds = items.map(item => item.product_id);
+                    const [productRows] = await connection.promise().query(
+                        'SELECT id, name FROM Products WHERE id IN (?)',
+                        [productIds]
+                    );
+
+                    // Create a map of product id to name
+                    const productMap = {};
+                    productRows.forEach(product => {
+                        productMap[product.id] = product.name;
+                    });
+
+                    // Prepare items summary for emails
+                    const itemsSummary = itemsWithDiscount
+                        .map(item => `<tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.quantity}x ${productMap[item.product_id] || `Prodotto #${item.product_id}`}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">€${item.discountedPrice.toFixed(2)}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">€${(item.discountedPrice * item.quantity).toFixed(2)}</td>
+                        </tr>`
+                        ).join('');
+
+                    // Email al cliente
+                    await sendEmail(
+                        email,
+                        `Order Confirmation #${numericOrderId} - Boolean Shop`,
+                        `<div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px; background-color: #ffffff;">
+                            <div style="text-align: center; margin-bottom: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 4px;">
+                                <h1 style="color: #333; margin: 0;">Order Confirmation</h1>
+                                <p style="font-size: 18px; color: #666; margin: 5px 0 0 0;">Order #${numericOrderId}</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 30px;">
+                                <h2 style="color: #444; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Dear ${first_name} ${last_name},</h2>
+                                <p style="color: #555; font-size: 16px;">Thank you for your order! We're processing it right away and will notify you when it ships.</p>
+                            </div>
+                            
+                            <div style="background-color: #f9f9f9; border-radius: 4px; padding: 15px; margin-bottom: 25px;">
+                                <h3 style="color: #444; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Order Summary</h3>
+                                
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                    <thead>
+                                        <tr style="background-color: #f0f0f0;">
+                                            <th style="padding: 10px; text-align: left;">Item</th>
+                                            <th style="padding: 10px; text-align: right;">Unit Price</th>
+                                            <th style="padding: 10px; text-align: right;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${itemsSummary}
+                                    </tbody>
+                                </table>
+                                
+                                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Subtotal:</td>
+                                        <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
+                                    </tr>
+                                    ${discount > 0 ? `
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Discount (${discount}%):</td>
+                                        <td style="padding: 5px; text-align: right; color: #c00;">-€${discountAmount.toFixed(2)}</td>
+                                    </tr>` : ''}
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Shipping:</td>
+                                        <td style="padding: 5px; text-align: right;">€${deliveryValue}</td>
+                                    </tr>
+                                    <tr style="font-weight: bold; font-size: 16px;">
+                                        <td style="padding: 10px 5px; text-align: right; border-top: 2px solid #eee;">Total:</td>
+                                        <td style="padding: 10px 5px; text-align: right; border-top: 2px solid #eee;">€${final_price.toFixed(2)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div style="margin-bottom: 25px;">
+                                <h3 style="color: #444; border-bottom: 1px solid #eee; padding-bottom: 10px;">Shipping Address</h3>
+                                <p style="color: #555; margin-left: 15px;">
+                                    ${address}<br>
+                                    ${postal_code} ${city}<br>
+                                    ${state}, ${country}
+                                </p>
+                            </div>
+                            
+                            <div style="text-align: center; margin: 30px 0 20px;">
+                                <a href="http://localhost:5173/track-order?email=${email}&order=${numericOrderId}" style="background-color: #4CAF50; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Track Your Order</a>
+                            </div>
+                            
+                            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #777; font-size: 14px;">
+                                <p>Best regards,<br>
+                                The Boolean Shop Team</p>
+                                <p style="font-size: 12px; color: #999; margin-top: 20px;">© ${new Date().getFullYear()} Boolean Shop. All rights reserved.</p>
+                            </div>
+                        </div>`
+                    );
+
+                    // Email al venditore/admin
+                    await sendEmail(
+                        process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
+                        `New Order #${numericOrderId}`,
+                        `<div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px; background-color: #ffffff;">
+                            <div style="text-align: center; margin-bottom: 20px; padding: 20px; background-color: #f0f7ff; border-radius: 4px;">
+                                <h2 style="color: #0066cc; margin: 0;">New Order Received</h2>
+                                <p style="font-size: 18px; color: #666; margin: 5px 0 0 0;">Order #${numericOrderId} (DB ID: ${order_id})</p>
+                            </div>
+                            
+                            <div style="background-color: #f9f9f9; border-radius: 4px; padding: 15px; margin-bottom: 25px;">
+                                <h3 style="color: #444; margin-top: 0;">Customer Information</h3>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="padding: 8px; width: 120px; color: #666;"><strong>Name:</strong></td>
+                                        <td style="padding: 8px;">${first_name} ${last_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; color: #666;"><strong>Email:</strong></td>
+                                        <td style="padding: 8px;"><a href="mailto:${email}" style="color: #0066cc; text-decoration: none;">${email}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px; color: #666;"><strong>Phone:</strong></td>
+                                        <td style="padding: 8px;">${phone}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div style="background-color: #f9f9f9; border-radius: 4px; padding: 15px; margin-bottom: 25px;">
+                                <h3 style="color: #444; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Order Details</h3>
+                                
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                    <thead>
+                                        <tr style="background-color: #f0f0f0;">
+                                            <th style="padding: 10px; text-align: left;">Item</th>
+                                            <th style="padding: 10px; text-align: right;">Unit Price</th>
+                                            <th style="padding: 10px; text-align: right;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${itemsSummary}
+                                    </tbody>
+                                </table>
+                                
+                                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Subtotal:</td>
+                                        <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
+                                    </tr>
+                                    ${discount > 0 ? `
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Discount (${discount}%):</td>
+                                        <td style="padding: 5px; text-align: right; color: #c00;">-€${discountAmount.toFixed(2)}</td>
+                                    </tr>` : ''}
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Shipping:</td>
+                                        <td style="padding: 5px; text-align: right;">€${deliveryValue}</td>
+                                    </tr>
+                                    <tr style="font-weight: bold; font-size: 16px;">
+                                        <td style="padding: 10px 5px; text-align: right; border-top: 2px solid #eee;">Total:</td>
+                                        <td style="padding: 10px 5px; text-align: right; border-top: 2px solid #eee;">€${final_price.toFixed(2)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div style="margin-bottom: 25px;">
+                                <h3 style="color: #444; border-bottom: 1px solid #eee; padding-bottom: 10px;">Shipping Address</h3>
+                                <p style="color: #555; margin-left: 15px;">
+                                    ${address}<br>
+                                    ${postal_code} ${city}<br>
+                                    ${state}, ${country}
+                                </p>
+                            </div>
+                            
+                            <div style="text-align: center; margin: 30px 0 20px;">
+                                <a href="http://localhost:5173/admin/orders/${order_id}" style="background-color: #0066cc; color: white; padding: 12px 25px; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Manage This Order</a>
+                            </div>
+                        </div>`
+                    );
+
+                    // Return the created order with numericOrderId
+                    res.status(201).json({
+                        message: 'Ordine creato con successo',
+                        order_id: numericOrderId,
+                        tracking_email: email
+                    });
+                } catch (error) {
+                    console.error('Errore invio email:', error);
+                    // L'ordine è stato creato ma l'invio email è fallito
+                    res.status(201).json({
+                        message: 'Ordine creato ma invio email fallito',
+                        order_id: order_id,
+                        tracking_email: email
+                    });
+                }
             });
         });
     }
@@ -210,7 +396,12 @@ async function createOrder(req, res) {
 
 // Get order by ID
 function getOrderById(req, res) {
-    const { id } = req.params;
+    let { id } = req.params;
+
+    // Check if it's a numeric customer-facing ID (larger than typical DB IDs)
+    if (id > 1000000) {
+        id = extractDatabaseId(parseInt(id));
+    }
 
     const sql = `
         SELECT 
@@ -236,22 +427,29 @@ function getOrderById(req, res) {
         LEFT JOIN Product_Variations pv ON oi.product_variation_id = pv.id
         WHERE o.id = ?
         GROUP BY o.id
-    `;
-
-    connection.query(sql, [id], (err, results) => {
+    `; connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(404).json({ error: 'Order not found' });
 
-        res.json(results[0]);
+        // Add the customer-facing numeric ID to the response for consistency
+        const response = results[0];
+        response.numeric_id = generateNumericId(response.id);
+
+        res.json(response);
     });
 }
 
 // Track order - update to work with numeric IDs
 function trackOrder(req, res) {
-    const { email, order_id } = req.body;
+    let { email, order_id } = req.body;
 
     if (!email || !order_id) {
         return res.status(400).json({ error: 'Email and order ID are required for tracking' });
+    }
+
+    // Check if it's a numeric customer-facing ID (larger than typical DB IDs)
+    if (order_id > 1000000) {
+        order_id = extractDatabaseId(order_id);
     }
 
     const sql = `
@@ -272,13 +470,15 @@ function trackOrder(req, res) {
     `;
 
     // Search for both exact email and email_timestamp pattern
-    const emailPattern = `${email}\\_%`;
-
-    connection.query(sql, [order_id, email, emailPattern], (err, results) => {
+    const emailPattern = `${email}\\_%`; connection.query(sql, [order_id, email, emailPattern], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(404).json({ error: 'Order not found or email does not match' });
 
-        res.json(results[0]);
+        // Encode the ID in the response for consistency
+        const response = results[0];
+        response.encoded_id = generateNumericId(response.id);
+
+        res.json(response);
     });
 }
 
