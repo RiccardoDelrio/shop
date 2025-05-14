@@ -1,6 +1,7 @@
 import React from "react";
 import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router-dom";
+import "./PageCarello.css";
 
 const Carrello = () => {
     const { cartItems, setCartItems } = useGlobal();
@@ -41,81 +42,124 @@ const Carrello = () => {
             updatedCart[thisProductIndex].quantità -= 1;
         }
         setCartItems(updatedCart);
-    };
-
-    const calculateOriginalPrice = (item, discountedPrice, discountPercentage) => {
+    };    const calculateOriginalPrice = (item, discountedPrice, discountPercentage) => {
         if (Number(item.discount) > 0) {
             const discountFactor = 1 - discountPercentage / 100;
             const originalPrice = discountedPrice / discountFactor;
             return formatCurrency(originalPrice);
         }
+        return null;
     };
 
-    console.log('Cart Items', cartItems);
-
-    return (
-        <div className="main-container">
-            <div className="container py-4">
+    console.log('Cart Items', cartItems);    return (
+        <div className="cart-container">
+            <div className="cart-header">
+                <h2 className="cart-title">Your Cart</h2>
+                <hr className="cart-divider" />
+            </div>
+            
+            {cartItems.length === 0 ? (
+                <div className="empty-cart-message">
+                    <h4>Your cart is empty</h4>
+                    <p>Add products to your cart to continue shopping.</p>
+                    <Link to="/catalogo" className="btn continue-shopping-btn mt-3">
+                        Browse Products
+                    </Link>
+                </div>
+            ) : (
                 <div className="row">
-                    {/* Colonna prodotti */}
-                    <div className="col-md-8">
-                        <h4>Oggetto</h4>
-                        <hr />
+                    {/* Product Column */}
+                    <div className="col-lg-8">
                         {cartItems.map((item, index) => (
-                            <div key={item.id} className="d-flex mb-4 border-bottom pb-3">
-                                <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} width="80" height="80" className="me-3" />
-                                <div className="flex-grow-1">
-                                    <strong className="text-danger">{item.name}</strong>
-                                    <div className="mt-2">
-                                        Prezzo: {item.discount > 0 && (
-                                            <span className="text-secondary text-decoration-line-through me-2">
+                            <div key={item.id} className="cart-item">
+                                <div className="cart-item-image">
+                                    <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} width="80" height="80" />
+                                </div>
+                                <div className="cart-item-details">
+                                    <div className="cart-item-name">{item.name}</div>
+                                    <div className="cart-item-price">
+                                        {item.discount > 0 && (
+                                            <span className="cart-item-discount">
                                                 {calculateOriginalPrice(item, Number(item.price), Number(item.discount))} €
                                             </span>
                                         )}
                                         {formatCurrency(item.price)} €
                                     </div>
-                                    <div>Qtà: {item.quantità}</div>
-                                    <div>Subtotale: {formatCurrency(item.price * item.quantità)} €</div>
+                                    <div className="cart-item-quantity">Quantity: {item.quantità}</div>
+                                    <div className="cart-item-subtotal">Subtotal: {formatCurrency(item.price * item.quantità)} €</div>
                                 </div>
-                                <div className="ms-3 d-flex flex-column justify-content-center align-items-end">
-                                    <button onClick={() => handleRemoveItems(index)} className="btn btn-sm btn-outline-danger mb-3"><i className="bi bi-x-lg"></i></button>
-                                    <div className="d-flex gap-3">
-                                        <button disabled={item.quantità === 1} onClick={() => handleIncrement(item, 'minus')} className="btn btn-sm btn-outline-secondary "><i className="bi bi-dash-lg"></i></button>
-                                        <button disabled={item.variations.stock === item.quantità} onClick={() => handleIncrement(item, 'add')} className="btn btn-sm btn-outline-secondary "><i className="bi bi-plus-lg"></i></button>
+                                <div className="cart-item-actions">
+                                    <button onClick={() => handleRemoveItems(index)} className="cart-remove-btn">
+                                        <i className="bi bi-x-lg"></i> Remove
+                                    </button>
+                                    <div>
+                                        <button 
+                                            disabled={item.quantità === 1} 
+                                            onClick={() => handleIncrement(item, 'minus')} 
+                                            className="cart-quantity-btn"
+                                        >
+                                            <i className="bi bi-dash-lg"></i>
+                                        </button>
+                                        <span className="mx-2">{item.quantità}</span>
+                                        <button 
+                                            disabled={item.variations.stock === item.quantità} 
+                                            onClick={() => handleIncrement(item, 'add')} 
+                                            className="cart-quantity-btn"
+                                        >
+                                            <i className="bi bi-plus-lg"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
 
-                    {/* Colonna riepilogo */}
-                    <div className="col-md-4">
-                        <div className="border rounded p-4">
-                            <h5>Riepilogo</h5>
-                            <p>Subtotale: {formatCurrency(subtotal)} €</p>
-                            <p>Di cui IVA: {formatCurrency(ivaAmount)} €</p>
-                            <p>Spedizione: {formatCurrency(shipPrice)} €</p>
+                    {/* Summary Column */}
+                    <div className="col-lg-4">
+                        <div className="cart-summary">
+                            <h4 className="cart-summary-title">Order Summary</h4>
+                            <div className="cart-summary-row">
+                                <span>Subtotal:</span>
+                                <span>{formatCurrency(subtotal)} €</span>
+                            </div>
+                            <div className="cart-summary-row">
+                                <span>VAT (22%):</span>
+                                <span>{formatCurrency(ivaAmount)} €</span>
+                            </div>
+                            <div className="cart-summary-row">
+                                <span>Shipping:</span>
+                                <span>{formatCurrency(shipPrice)} €</span>
+                            </div>
+                            
                             {shipPrice === 0 ? (
-                                <p className="text-success">La spedizione è GRATUITA!</p>
+                                <div className="free-shipping-note">
+                                    <i className="bi bi-check-circle-fill me-1"></i> Free shipping applied!
+                                </div>
                             ) : (
-                                <p className="text-secondary small">
+                                <div className="shipping-info">
                                     <i className="bi bi-info-circle me-1"></i>
-                                    Spendi ancora {formatCurrency(500 - subtotal)} € per ottenere la spedizione gratuita.
-                                </p>
+                                    Spend {formatCurrency(500 - subtotal)} € more to get free shipping.
+                                </div>
                             )}
-                            <hr />
-                            <h5><strong>Totale ordine: {formatCurrency(calculateTotal())} €</strong></h5>
-                            <button
-                                disabled={cartItems.length === 0}
-                                className="btn btn-success w-100 mt-3">
-                                <Link className="text-decoration-none text-white" to={'/checkout'}>
-                                    Procedi all'Acquisto
-                                </Link>
-                            </button>
+                            
+                            <hr className="cart-summary-divider" />
+                            
+                            <div className="cart-summary-total">
+                                <span>Total:</span>
+                                <span>{formatCurrency(calculateTotal())} €</span>
+                            </div>
+                            
+                            <Link 
+                                to="/checkout" 
+                                className="checkout-btn" 
+                                aria-disabled={cartItems.length === 0}
+                            >
+                                Proceed to Checkout
+                            </Link>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

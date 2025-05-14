@@ -19,30 +19,28 @@ const Login = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
-    }; const handleSubmit = async (e) => {
+    };    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
-            // Utilizza la funzione login fornita dal contesto di autenticazione
+            // Use the login function provided by the authentication context
             const response = await login(formData.email, formData.password);
 
             if (!response || !response.token) {
-                throw new Error("Errore: Token non ricevuto dal server");
+                throw new Error("Error: Token not received from server");
             }
 
             // Imposta il messaggio di successo
-            setSuccess(true);
-
-            // Aggiungiamo un piccolo ritardo per garantire che il contesto di autenticazione 
-            // abbia il tempo di aggiornarsi prima del reindirizzamento
+            setSuccess(true);            // Add a small delay to ensure that the authentication context
+            // has time to update before redirecting
             setTimeout(() => {
                 navigate('/');
             }, 1000);
 
         } catch (err) {
-            setError(err.message || "Errore durante il login. Verifica le tue credenziali.");
+            setError(err.message || "Login error. Please check your credentials.");
         } finally {
             setLoading(false);
         }
@@ -50,12 +48,11 @@ const Login = () => {
 
     return (
         <div className="auth-container">
-            <div className="auth-card">
-                <h2 className="auth-title">Accedi</h2>
+            <div className="auth-card">                <h2 className="auth-title">Sign In</h2>
 
                 {success && (
                     <div className="alert alert-success" role="alert">
-                        Login effettuato con successo! Verrai reindirizzato...
+                        Login successful! You will be redirected...
                     </div>
                 )}
 
@@ -90,19 +87,17 @@ const Login = () => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-
-                    <button
+                    </div>                    <button
                         type="submit"
-                        className="btn btn-primary auth-button"
+                        className="auth-button"
                         disabled={loading}
                     >
-                        {loading ? 'Accesso in corso...' : 'Accedi'}
+                        {loading ? 'Signing in...' : 'Sign In'}
                     </button>
                 </form>
 
                 <div className="auth-redirect">
-                    Non hai un account? <Link to="/register">Registrati</Link>
+                    Don't have an account? <Link to="/register">Register</Link>
                 </div>
             </div>
         </div>

@@ -22,22 +22,20 @@ const Register = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
-    };
-
-    const handleSubmit = async (e) => {
+    };    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
-        // Validazione base
+        // Basic validation
         if (formData.password !== formData.confirm_password) {
-            setError('Le password non corrispondono');
+            setError('Passwords do not match');
             setLoading(false);
             return;
         }
 
         if (formData.password.length < 6) {
-            setError('La password deve essere di almeno 6 caratteri');
+            setError('Password must be at least 6 characters long');
             setLoading(false);
             return;
         } try {
@@ -67,11 +65,9 @@ const Register = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2 className="auth-title">Registrazione</h2>
-
-                {success && (
+                <h2 className="auth-title">Register</h2>                {success && (
                     <div className="alert alert-success" role="alert">
-                        Registrazione completata con successo! Verrai reindirizzato...
+                        Registration completed successfully! You will be redirected...
                     </div>
                 )}
 
@@ -79,11 +75,9 @@ const Register = () => {
                     <div className="alert alert-danger" role="alert">
                         {error}
                     </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="auth-form">
+                )}                <form onSubmit={handleSubmit} className="auth-form">
                     <div className="form-group">
-                        <label htmlFor="first_name">Nome</label>
+                        <label htmlFor="first_name">First Name</label>
                         <input
                             type="text"
                             className="form-control"
@@ -96,7 +90,7 @@ const Register = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="last_name">Cognome</label>
+                        <label htmlFor="last_name">Last Name</label>
                         <input
                             type="text"
                             className="form-control"
@@ -119,9 +113,7 @@ const Register = () => {
                             onChange={handleChange}
                             required
                         />
-                    </div>
-
-                    <div className="form-group">
+                    </div>                    <div className="form-group">
                         <label htmlFor="password">Password</label>
                         <input
                             type="password"
@@ -135,7 +127,7 @@ const Register = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="confirm_password">Conferma Password</label>
+                        <label htmlFor="confirm_password">Confirm Password</label>
                         <input
                             type="password"
                             className="form-control"
@@ -149,15 +141,15 @@ const Register = () => {
 
                     <button
                         type="submit"
-                        className="btn btn-primary auth-button"
+                        className="auth-button"
                         disabled={loading}
                     >
-                        {loading ? 'Registrazione in corso...' : 'Registrati'}
+                        {loading ? 'Registration in progress...' : 'Register'}
                     </button>
                 </form>
 
                 <div className="auth-redirect">
-                    Hai già un account? <Link to="/login">Accedi</Link>
+                    Already have an account? <Link to="/login">Sign In</Link>
                 </div>
             </div>
         </div>
