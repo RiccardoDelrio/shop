@@ -2,7 +2,6 @@ const connection = require("../database/db");
 const sendEmail = require("../utils/sendEmail");
 // Add the new utility instead of the encoder
 const { generateNumericId, extractDatabaseId } = require("../utils/numericIdGenerator");
-const connection = require('../database/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const JWT_SECRET = process.env.JWT_SECRET || 'alta_moda_shop_super_secret_key';

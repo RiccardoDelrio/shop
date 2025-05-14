@@ -22,70 +22,44 @@ import NotFound from './pages/NotFound'; // Updated import path from components 
 
 
 function App() {
-
   return (
     <>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<DefaultLayout />}>
-              {/* Pagine pubbliche */}
-              <Route path="/" element={<Home />} />
-              <Route path="/catalogo" element={<Navigate to="/search" replace />} />
-              <Route path="/wardrobe-section/:slug" element={<WardrobeSectionPage />} />
-              <Route path="/size-table" element={<SizeTable />} />
-              <Route path="/story-site" element={<StorySite />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/product/:slug" element={<ProductDetails />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/search/:query" element={<SearchPage />} />
-
-              {/* Pagine di autenticazione */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-
-              {/* Pagine protette */}
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />              <Route path="/change-password" element={
-                <ProtectedRoute>
-                  <ChangePassword />
-                </ProtectedRoute>
-              } />
-              <Route path="/orders" element={
-                <ProtectedRoute>
-                  <OrdersHistory />
-                </ProtectedRoute>
-              } />
-              <Route path="/carello" element={<Carello />} />
-              <Route path='/checkout' element={
-
-                <Checkout />
-
-              } />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
+            {/* Pagine pubbliche */}
             <Route path="/" element={<Home />} />
             <Route path="/catalogo" element={<Navigate to="/search" replace />} />
-
             <Route path="/wardrobe-section/:slug" element={<WardrobeSectionPage />} />
             <Route path="/size-table" element={<SizeTable />} />
             <Route path="/story-site" element={<StorySite />} />
-            < Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/contacts" element={<Contacts />} />
-            <Route path="/carello" element={<Carello />} />
             <Route path="/product/:slug" element={<ProductDetails />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/search/:query" element={<SearchPage />} />
+
+            {/* Pagine di autenticazione */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            {/* Pagine protette */}
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/change-password" element={
+              <ProtectedRoute>
+                <ChangePassword />
+              </ProtectedRoute>
+            } />
+            <Route path="/orders" element={
+              <ProtectedRoute>
+                <OrdersHistory />
+              </ProtectedRoute>
+            } />
+            <Route path="/carello" element={<Carello />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path="*" element={<NotFound />} />
           </Route>
