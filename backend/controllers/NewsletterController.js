@@ -19,7 +19,7 @@ const submitEmail = async (req, res) => {
     if (err) {
       // Handle duplicate email
       if (err.code === "ER_DUP_ENTRY") {
-        return res.status(409).json({ error: "Email già registrata" });
+        return res.status(409).json({ error: "Email already registered" });
       }
       return res.status(500).json({ error: err.message });
     }
@@ -28,22 +28,30 @@ const submitEmail = async (req, res) => {
       console.log("Email inviata a:", email);
       await sendEmail(
         email,
-        "Benvenuto nella Newsletter di Boolean Shop",
-        `Gentile cliente,
-
-✨ Grazie per esserti iscritto alla newsletter di Boolean Shop! ✨
-
-Ecco cosa riceverai:
-• Offerte esclusive
-• Novità sui prodotti
-• Sconti speciali
-• Contenuti personalizzati
-
-Cordiali saluti,
-Il team di Boolean Shop
----
-Se non desideri più ricevere le nostre email, puoi cancellarti in qualsiasi momento.
-© ${new Date().getFullYear()} Boolean Shop. Tutti i diritti riservati.`
+        "Welcome to Boolean Shop Newsletter",
+        `<div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+          <h2>Dear Customer,</h2>
+          
+          <p>✨ <strong>Thank you for subscribing to the Boolean Shop newsletter!</strong> ✨</p>
+          
+          <p>Here's what you'll receive:</p>
+          <ul>
+            <li>Exclusive offers</li>
+            <li>Product updates</li>
+            <li>Special discounts</li>
+            <li>Personalized content</li>
+          </ul>
+          
+          <p>Best regards,<br>
+          The Boolean Shop Team</p>
+          
+          <hr style="border: 1px solid #eee; margin: 20px 0;">
+          
+          <p style="font-size: 12px; color: #777;">
+            If you no longer wish to receive our emails, you can unsubscribe at any time.<br>
+            © ${new Date().getFullYear()} Boolean Shop. All rights reserved.
+          </p>
+        </div>`
       );
 
       res.status(201).json({
