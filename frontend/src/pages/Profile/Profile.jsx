@@ -1,0 +1,249 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import './Profile.css';
+
+const Profile = () => {
+    const { currentUser, updateProfile, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        address: '',
+        city: '',
+        state: '',
+        postal_code: '',
+        country: '',
+        phone: ''
+    });
+
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState({ type: '', content: '' });
+
+    // Popola i dati del form quando l'utente è disponibile
+    useEffect(() => {
+        if (currentUser) {
+            setFormData(prevData => ({
+                ...prevData,
+                first_name: currentUser.first_name || '',
+                last_name: currentUser.last_name || '',
+                address: currentUser.address || '',
+                city: currentUser.city || '',
+                state: currentUser.state || '',
+                postal_code: currentUser.postal_code || '',
+                country: currentUser.country || '',
+                phone: currentUser.phone || ''
+            }));
+        }
+    }, [currentUser]);
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage({ type: '', content: '' });
+
+        try {
+            await updateProfile(formData);
+
+            setMessage({
+                type: 'success',
+                content: 'Profilo aggiornato con successo!'
+            });
+
+            // Ripulisci il messaggio dopo 3 secondi
+            setTimeout(() => {
+                setMessage({ type: '', content: '' });
+            }, 3000);
+
+        } catch (error) {
+            setMessage({
+                type: 'danger',
+                content: `Errore: ${error.message}`
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    if (!currentUser) {
+        return <div className="profile-container">Caricamento in corso...</div>;
+    }
+
+    return (
+        <div className="profile-container">
+            <div className="profile-content">
+                <h2>Il mio profilo</h2>
+
+                {message.content && (
+                    <div className={`alert alert-${message.type}`}>
+                        {message.content}
+                    </div>
+                )}
+
+                <div className="profile-info mb-4">
+                    <p><strong>Email:</strong> {currentUser.email}</p>
+                </div>
+
+                <h4>Informazioni personali</h4>
+
+                <form onSubmit={handleSubmit} className="profile-form">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="first_name">Nome</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="first_name"
+                                    name="first_name"
+                                    value={formData.first_name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="last_name">Cognome</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="last_name"
+                                    name="last_name"
+                                    value={formData.last_name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="address">Indirizzo</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="address"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="city">Città</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="city"
+                                    name="city"
+                                    value={formData.city}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="state">Provincia</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="state"
+                                    name="state"
+                                    value={formData.state}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="postal_code">CAP</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="postal_code"
+                                    name="postal_code"
+                                    value={formData.postal_code}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="country">Paese</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="country"
+                                    name="country"
+                                    value={formData.country}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="phone">Telefono</label>
+                        <input
+                            type="tel"
+                            className="form-control"
+                            id="phone"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="profile-actions">
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={loading}
+                        >
+                            {loading ? 'Salvataggio...' : 'Salva modifiche'}
+                        </button>
+
+                        <button
+                            type="button"
+                            className="btn btn-link change-password-link"
+                            onClick={() => navigate('/change-password')}
+                        >
+                            Cambia Password
+                        </button>
+                    </div>
+                </form>
+
+                <div className="profile-logout">
+                    <button
+                        onClick={handleLogout}
+                        className="btn btn-outline-danger"
+                    >
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Profile;
