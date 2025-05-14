@@ -24,7 +24,7 @@ export default function WelcomePopup() {
     }, []);
 
     // Rimuovi la data per far riapparire il popup
-    localStorage.removeItem("lastVisitDate");
+    /* localStorage.removeItem("lastVisitDate"); */
     // Gestione chiusura popup
     function handleClose() {
         setIsFading(true);

@@ -4,6 +4,7 @@ import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router";
 import Slider from "../components/Slider/Slider";
 import ProductCards from "../components/ProductCard/ProductCard";
+import PagePopup from '../components/Popup/PagePopup'
 export default function Home() {
     const {
         bestSellers, discount
@@ -14,6 +15,8 @@ export default function Home() {
 
     return (
         <div className="">
+            <PagePopup />
+
             <div className="main">
                 <Jumbotron />
                 <h1 className="home_title">
