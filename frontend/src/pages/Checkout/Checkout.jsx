@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './checkout.css'
 import { useGlobal } from '../../contexts/GlobalContext'
 const Checkout = () => {
     const { cartItems, setCartItems } = useGlobal()
     const [formData, setFormData] = useState('')
     const [formStatus, setFormStatus] = useState(null)
+    const [formCheck, setFormCheck] = useState([])
     const handleFormData = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -45,7 +46,11 @@ const Checkout = () => {
 
 
 
+
     }
+
+
+
     console.log(formStatus);
 
 
