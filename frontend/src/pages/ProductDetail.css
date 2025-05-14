@@ -19,6 +19,8 @@
         gap: 0.5rem;
     }
 
+
+
     .icon-quantity {
         padding: 8px;
         width: 40px;
@@ -37,6 +39,15 @@
         &:hover {
             background-color: #232323;
             transition: .2s;
+        }
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        color: gray;
+
+        &:hover {
+            background-color: transparent;
         }
     }
 

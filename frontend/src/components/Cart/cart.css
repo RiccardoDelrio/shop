@@ -11,7 +11,7 @@
         position: absolute;
         top: 100%;
         right: 0;
-        width: 300px;
+        width: 350px;
         background-color: rgba(0, 0, 0, 0.95);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 8px;
@@ -125,7 +125,7 @@
 
     .cartItemContent {
         flex-grow: 1;
-        padding-left: 1.5rem;
+        padding-left: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -140,7 +140,7 @@
     .cartInfo {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        column-gap: 1.5rem;
     }
 
     .cartIcon {
@@ -148,9 +148,21 @@
         cursor: pointer;
     }
 
+
+
     .cartIcon:hover {
         transform: scale(1.1);
         transition: .2 ease;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        color: gray;
+
+        &:hover {
+            background-color: transparent;
+            transform: scale(1);
+        }
     }
 
     .total {

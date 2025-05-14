@@ -141,6 +141,7 @@ const ProductDetails = () => {
 
         setCartItems(updatedCart);
     };
+    const isButtonDisabled = thisProductInCart?.quantità >= selectedVariation?.stock
 
 
 
@@ -248,7 +249,7 @@ const ProductDetails = () => {
                             </button>)}
 
                         <div>{thisProductInCart?.quantità}</div>
-                        <button disabled={thisProductInCart?.quantità >= selectedVariation?.stock} onClick={() => handleIncrement('add')} className="icon-quantity">
+                        <button disabled={isButtonDisabled} onClick={() => handleIncrement('add')} className={`icon-quantity ${isButtonDisabled ? 'disabled' : ''}`}>
                             <i className="fa-solid fa-plus"> </i>
                         </button>
                     </div>

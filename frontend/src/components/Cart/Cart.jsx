@@ -39,7 +39,7 @@ const Cart = () => {
     const handleIncrement = (thisProduct, functionality) => {
         const thisProductIndex = cartItems.indexOf(thisProduct)
         let updatedCart = [...cartItems];
-        if (functionality === 'add') {
+        if (functionality === 'add' && thisProduct.quantità <= thisProduct.variations.stock) {
 
             updatedCart[thisProductIndex].quantità += 1;
         } else if (functionality === 'minus' && thisProduct.quantità > 1) {
@@ -91,20 +91,30 @@ const Cart = () => {
                                             <img className='itemImage' src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} />
                                         </div>
                                         <div className='cartItemContent'>
-                                            <div>{item.name}</div>
-                                            <div className='cartInfo'>
-                                                <div>{item.price} €</div>
-                                                <div className='d-flex align-items-center gap-2 h6'>
-                                                    {item.quantità !== 1 && (<i
+                                            <div className='pe-3 d-flex justify-content-between align-items-center'>
+                                                <div className='text-danger'>
+
+                                                    {item.name}
+                                                </div>
+                                                <div>
+                                                    {item.price}€
+                                                </div>
+                                            </div>
+                                            <div className='cartInfo flex-wrap mt-2'>
+                                                <div className='small'>{item.variations.size} </div>
+                                                <div className='small '>{item.variations.color} </div>
+                                                <div className='d-flex w-50 align-items-center gap-2 mt-3 h6'>
+
+                                                    <i
                                                         onClick={() => handleIncrement(item, 'minus')}
-                                                        className={`fa-solid fa-minus cartIcon`}
-                                                    ></i>)}
+                                                        className={`fa-solid fa-minus cartIcon ${item.quantità !== 1 ? '' : 'disabled'}`}
+                                                    ></i>
 
                                                     {item.quantità}
-                                                    {item.quantità !== item.variations.stock && (<i
+                                                    <i
                                                         onClick={() => handleIncrement(item, 'add')}
-                                                        className={`fa-solid fa-plus cartIcon`}
-                                                    ></i>)}
+                                                        className={`fa-solid fa-plus cartIcon ${item.quantità <= item.variations.stock ? '' : 'disabled'} `}
+                                                    ></i>
 
                                                 </div>
                                             </div>
