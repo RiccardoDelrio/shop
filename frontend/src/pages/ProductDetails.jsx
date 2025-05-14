@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./ProductDetail.css";
 import { useGlobal } from "../contexts/GlobalContext";
 
@@ -226,6 +226,7 @@ const ProductDetails = () => {
                                     </li>
                                 ))}
                             </ul>
+                            <Link to={'/size-table'} className="m-0 text-secondary  small">Guida alle taglie </Link>
                         </>
                     )}
                 </div>
