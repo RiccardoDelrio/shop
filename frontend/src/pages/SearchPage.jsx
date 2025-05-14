@@ -308,7 +308,7 @@ export default function SearchPage() {
                                         price={product.price}
                                         image={getImageUrl(product)}
                                         slug={product.slug}
-                                        {...(product.discount > 0 ? { discount: product.discount.slice(0, -3) } : {})} // Conditionally add the discount prop
+                                        {...(product.discount > 0 ? { discount: product.discount } : {})} // Conditionally add the discount prop
 
                                     />) : (<ProductCardListView
                                         key={`List-${product.id}`}
@@ -317,7 +317,7 @@ export default function SearchPage() {
                                         price={product.price}
                                         image={getImageUrl(product)}
                                         slug={product.slug}
-
+                                        {...(product.discount > 0 ? { discount: product.discount } : {})} // Conditionally add the discount prop
                                     />)
 
                                 ))}

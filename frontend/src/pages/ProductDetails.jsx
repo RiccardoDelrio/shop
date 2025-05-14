@@ -144,6 +144,11 @@ const ProductDetails = () => {
     const isButtonDisabled = thisProductInCart?.quantità >= selectedVariation?.stock
 
 
+    const formatPrice = (price) => {
+        const num = Number(price);
+        return num % 1 === 0 ? num.toString() : num.toFixed(2);
+    };
+
 
     if (!product) return <div>Loading...</div>;
 
@@ -188,8 +193,23 @@ const ProductDetails = () => {
                 <div className="title">
                     <h1>{product.name}</h1>
                 </div>
-                <div className="price">
-                    € <span>{Number(product.price).toFixed(2)}</span>
+                {/* // Replace the current price display with this */}
+                <div className="price d-flex align-items-center">
+                    {product.discount > 0 ? (
+                        <>
+                            <span style={{ textDecoration: 'line-through', color: '#999', marginRight: '10px' }}>
+                                € {formatPrice(product.price)}
+                            </span>
+                            <span style={{ color: '#c00' }}>
+                                € {formatPrice(product.price - (product.price * Number(product.discount) / 100))}
+                            </span>
+                            <span style={{ fontSize: '0.85rem', marginLeft: '8px', backgroundColor: '#c00', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>
+                                &minus; {formatPrice(product.discount)} %
+                            </span>
+                        </>
+                    ) : (
+                        <>€ <span className="ms-2">{formatPrice(product.price)}</span></>
+                    )}
                 </div>
                 <div className="variant">
                     <h3>SELECT A COLOR</h3>
