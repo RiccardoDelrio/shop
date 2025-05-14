@@ -1,7 +1,7 @@
 import React from "react";
 import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router-dom";
-import "./PageCarello.css";
+import './pageCarrello.css'
 
 const Carrello = () => {
     const { cartItems, setCartItems } = useGlobal();
@@ -42,125 +42,115 @@ const Carrello = () => {
             updatedCart[thisProductIndex].quantità -= 1;
         }
         setCartItems(updatedCart);
-    };    const calculateOriginalPrice = (item, discountedPrice, discountPercentage) => {
-        if (Number(item.discount) > 0) {
-            const discountFactor = 1 - discountPercentage / 100;
-            const originalPrice = discountedPrice / discountFactor;
-            return formatCurrency(originalPrice);
-        }
-        return null;
     };
 
-    console.log('Cart Items', cartItems);    return (
-        <div className="cart-container">
-            <div className="cart-header">
-                <h2 className="cart-title">Your Cart</h2>
-                <hr className="cart-divider" />
-            </div>
-            
-            {cartItems.length === 0 ? (
-                <div className="empty-cart-message">
-                    <h4>Your cart is empty</h4>
-                    <p>Add products to your cart to continue shopping.</p>
-                    <Link to="/catalogo" className="btn continue-shopping-btn mt-3">
-                        Browse Products
-                    </Link>
-                </div>
-            ) : (
+    const calculateOriginalPrice = (item, discountedPrice, discountPercentage, quantity) => {
+        if (Number(item.discount) > 0) {
+            const discountFactor = 1 - discountPercentage / 100;
+            const originalPrice = (discountedPrice / discountFactor) * quantity;
+            return formatCurrency(originalPrice);
+        }
+    };
+
+    console.log('Cart Items', cartItems);
+
+    return (
+        <div className="main-container cart-wrapper">
+            <div className="container py-4">
                 <div className="row">
-                    {/* Product Column */}
-                    <div className="col-lg-8">
+                    {/* Colonna prodotti */}
+                    <div className="col-md-8">
+                        <h4>Oggetto</h4>
+                        <hr />
                         {cartItems.map((item, index) => (
-                            <div key={item.id} className="cart-item">
-                                <div className="cart-item-image">
-                                    <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} width="80" height="80" />
-                                </div>
-                                <div className="cart-item-details">
-                                    <div className="cart-item-name">{item.name}</div>
-                                    <div className="cart-item-price">
-                                        {item.discount > 0 && (
-                                            <span className="cart-item-discount">
-                                                {calculateOriginalPrice(item, Number(item.price), Number(item.discount))} €
-                                            </span>
-                                        )}
-                                        {formatCurrency(item.price)} €
-                                    </div>
-                                    <div className="cart-item-quantity">Quantity: {item.quantità}</div>
-                                    <div className="cart-item-subtotal">Subtotal: {formatCurrency(item.price * item.quantità)} €</div>
-                                </div>
-                                <div className="cart-item-actions">
-                                    <button onClick={() => handleRemoveItems(index)} className="cart-remove-btn">
-                                        <i className="bi bi-x-lg"></i> Remove
-                                    </button>
-                                    <div>
-                                        <button 
-                                            disabled={item.quantità === 1} 
-                                            onClick={() => handleIncrement(item, 'minus')} 
-                                            className="cart-quantity-btn"
-                                        >
-                                            <i className="bi bi-dash-lg"></i>
-                                        </button>
-                                        <span className="mx-2">{item.quantità}</span>
-                                        <button 
-                                            disabled={item.variations.stock === item.quantità} 
-                                            onClick={() => handleIncrement(item, 'add')} 
-                                            className="cart-quantity-btn"
-                                        >
-                                            <i className="bi bi-plus-lg"></i>
+                            <div key={item.id} className="d-flex gap-3 mb-4 border-bottom pb-3 cart-product">
+                                <div>
+                                    <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} className=" product-image" />
+                                    <div className="quantity-selector">
+                                        {item.quantità === 1 ? (
+                                            <button onClick={() => handleRemoveItems(index)} className="icon-quantity">
+                                                <i className="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        ) : (
+                                            <button onClick={() => handleIncrement(item, 'minus')} className="icon-quantity">
+                                                <i className="fa-solid fa-minus"></i>
+                                            </button>)}
+
+                                        <div>{item.quantità}</div>
+                                        <button disabled={item.quantità === item.variations.stock} onClick={() => handleIncrement(item, 'add')} className="icon-quantity">
+                                            <i className="fa-solid fa-plus"> </i>
                                         </button>
                                     </div>
+
                                 </div>
+                                <div className="flex-grow-1">
+                                    <div className="d-flex justify-content-between flex-column-reverse flex-sm-row">
+
+                                        <strong className="text-danger">{item.name}</strong>
+                                        <div>
+
+                                            {item.discount > 0 && (
+                                                <small className="text-secondary text-decoration-line-through me-2">
+                                                    {calculateOriginalPrice(item, Number(item.price), Number(item.discount), Number(item.quantità))} €
+                                                </small>
+                                            )}
+                                            <strong>{formatCurrency(item.price * item.quantità)} €</strong>
+                                        </div>
+
+                                    </div>
+                                    <div className=" mt-2 d-flex flex-column gap-3">
+                                        <div className="text-secondary small">{item.description}</div>
+                                        <div className="text-secondary small">{item.variations.size}</div>
+                                        <div className="text-secondary small d-flex gap-2">
+                                            <div>
+                                                {item.variations.color}
+                                            </div>
+                                            <div style={{ backgroundColor: item.variations.color_hex }} className="circle-color">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
                             </div>
                         ))}
                     </div>
 
-                    {/* Summary Column */}
-                    <div className="col-lg-4">
-                        <div className="cart-summary">
-                            <h4 className="cart-summary-title">Order Summary</h4>
-                            <div className="cart-summary-row">
-                                <span>Subtotal:</span>
-                                <span>{formatCurrency(subtotal)} €</span>
-                            </div>
-                            <div className="cart-summary-row">
-                                <span>VAT (22%):</span>
-                                <span>{formatCurrency(ivaAmount)} €</span>
-                            </div>
-                            <div className="cart-summary-row">
-                                <span>Shipping:</span>
-                                <span>{formatCurrency(shipPrice)} €</span>
-                            </div>
-                            
+                    {/* Colonna riepilogo */}
+                    <div className="col-md-4">
+                        <div className=" rounded p-4 summary-column">
+                            <h5>Riepilogo</h5>
+                            <p>Subtotale: {formatCurrency(subtotal)} €</p>
+                            <p>Di cui IVA: {formatCurrency(ivaAmount)} €</p>
+                            <p>Spedizione: {formatCurrency(shipPrice)} €</p>
                             {shipPrice === 0 ? (
-                                <div className="free-shipping-note">
-                                    <i className="bi bi-check-circle-fill me-1"></i> Free shipping applied!
-                                </div>
+                                <p className="text-success">La spedizione è GRATUITA!</p>
                             ) : (
-                                <div className="shipping-info">
+                                <p className="text-secondary small">
                                     <i className="bi bi-info-circle me-1"></i>
-                                    Spend {formatCurrency(500 - subtotal)} € more to get free shipping.
-                                </div>
+                                    Spendi ancora {formatCurrency(500 - subtotal)} € per ottenere la spedizione gratuita.
+                                </p>
                             )}
-                            
-                            <hr className="cart-summary-divider" />
-                            
-                            <div className="cart-summary-total">
-                                <span>Total:</span>
-                                <span>{formatCurrency(calculateTotal())} €</span>
-                            </div>
-                            
-                            <Link 
-                                to="/checkout" 
-                                className="checkout-btn" 
-                                aria-disabled={cartItems.length === 0}
-                            >
-                                Proceed to Checkout
-                            </Link>
+                            <hr />
+                            <h5><strong>Totale ordine: {formatCurrency(calculateTotal())} €</strong></h5>
+                            <button
+                                disabled={cartItems.length === 0}
+                                className="btn btn-success w-100 mt-3 cta-button">
+                                <Link className="text-decoration-none text-white" to={'/checkout'}>
+                                    Procedi all'Acquisto
+                                </Link>
+                            </button>
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
+            </div >
+        </div >
     );
 };
 
