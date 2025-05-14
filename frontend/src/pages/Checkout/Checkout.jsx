@@ -25,26 +25,62 @@ const Checkout = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        fetch('http://localhost:3000/api/v1/orders', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({ "customer_info": { ...formData }, "items": itmesForOrder, "discount": 0 })
-        })
-            .then(res => res.json())
-            .then(data => {
-                setFormStatus(data);
-                if (!data.error) {
 
-                    setCartItems([])
-                }
+        // Validazione base dei campi
+        if (!formData.email || !formData.first_name || !formData.last_name) {
+            setFormStatus({
+                error: "Per favore compila tutti i campi obbligatori"
+            });
+            return;
+        }
 
-            })
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "customer_info": { ...formData },
+                    "items": itmesForOrder,
+                    "discount": 0
+                })
+            });
 
+            const data = await response.json();
 
+            if (data.error) {
+                setFormStatus({
+                    error: data.error
+                });
+                return;
+            }
 
+            // Se l'ordine è andato a buon fine
+            setFormStatus(data);
+            setCartItems([]); // Svuota il carrello
+
+        } catch (error) {
+            console.error('Errore durante l\'invio dell\'ordine:', error);
+            setFormStatus({
+                error: "Si è verificato un errore durante l'invio dell'ordine"
+            });
+        }
     }
+    useEffect(() => {
+        if (formStatus?.order_id) {
+            const handleFormCheck = async () => {
+                const response = await fetch(`http://localhost:3000/api/v1/orders/${formStatus.order_id}`)
+                    .then(res => res.json())
+                    .then(data => setFormCheck(data))
+
+
+            }
+            handleFormCheck()
+        }
+    }, [formStatus])
+
+    console.log(formCheck, 'FormCheck');
 
 
 
@@ -88,7 +124,32 @@ const Checkout = () => {
                         <>
                             <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
                             <p className='h4'>{formStatus.message}</p>
-                            <small className="text-white-50">Verrai reindirizzato alla home tra pochi secondi...</small>
+                            {formCheck?.id && (
+                                <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
+                                    <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
+                                    <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
+                                    <p><strong>Email:</strong> {formCheck.email}</p>
+                                    <p><strong>Telefono:</strong> {formCheck.phone}</p>
+                                    <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
+                                    <hr />
+                                    <h6 className="mt-3 mb-2">📦 Prodotti</h6>
+                                    <ul className="list-unstyled">
+                                        {formCheck.items.map((item, index) => (
+                                            <li key={index} className="mb-2">
+                                                <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
+                                                <small>Variante: {item.color}, Taglia: {item.size}</small>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <hr />
+                                    <p><strong>Totale:</strong> {formCheck.total}€</p>
+                                    {parseFloat(formCheck.discount) > 0 && (
+                                        <p><strong>Sconto:</strong> {formCheck.discount}€</p>
+                                    )}
+                                    <p><strong>Stato ordine:</strong> {formCheck.status}</p>
+                                </div>
+                            )}
+
                         </>
                     )}
                 </div>
