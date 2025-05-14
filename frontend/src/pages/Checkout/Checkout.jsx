@@ -23,8 +23,6 @@ const Checkout = () => {
 
     console.log(cartItems);
 
-
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         fetch('http://localhost:3000/api/v1/orders', {
@@ -46,14 +44,11 @@ const Checkout = () => {
 
 
 
-
     }
 
 
 
     console.log(formStatus);
-
-
 
     /* {
         "customer_info": {
@@ -84,13 +79,18 @@ const Checkout = () => {
                 <div className={`${formStatus.error ? 'bg-danger' : 'bg-success'} rounded-4 m-auto p-5 text-center h5 position-relative`}>
                     {formStatus.error ? (
                         <>
-                            <div onClick={() => setFormStatus()} className="position-absolute start-0 top-0 p-3 text-white"><i className='fa-solid fa-arrow-left'></i></div>
+                            <div onClick={() => setFormStatus(null)} className="position-absolute start-0 top-0 p-3 text-white cursor-pointer">
+                                <i className='fa-solid fa-arrow-left'></i>
+                            </div>
                             <p className="h4">{formStatus.error}</p>
                         </>
                     ) : (
-                        <p className='h4'>{formStatus.message}</p>
+                        <>
+                            <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
+                            <p className='h4'>{formStatus.message}</p>
+                            <small className="text-white-50">Verrai reindirizzato alla home tra pochi secondi...</small>
+                        </>
                     )}
-
                 </div>
             ) : (<>
                 <div className='mb-3'>
