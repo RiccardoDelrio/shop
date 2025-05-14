@@ -1,4 +1,18 @@
 const connection = require('../database/db');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const JWT_SECRET = process.env.JWT_SECRET || 'alta_moda_shop_super_secret_key';
+
+// Funzione di utilità per generare una password casuale
+function generateRandomPassword(length = 8) {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
+}
 
 // Create a new order
 async function createOrder(req, res) {
@@ -13,7 +27,7 @@ async function createOrder(req, res) {
         return res.status(400).json({ error: 'Customer email is required for orders' });
     }
 
-    const { first_name, last_name, email, phone, address, city, state, postal_code, country } = customer_info;
+    const { first_name, last_name, email, phone, address, city, state, postal_code, country, is_guest } = customer_info;
 
     // Calculate total (sum of item.price * item.quantity), applying product-level discounts
     let total = 0;
@@ -40,45 +54,119 @@ async function createOrder(req, res) {
     // Calculate final price
     const final_price = total - discountAmount + parseInt(deliveryValue);
 
-    // First create a User entry for this order (even if duplicate email)
-    const userSql = `
-        INSERT INTO Users (
-            first_name, last_name, email, phone, 
-            address, city, state, postal_code, country
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    // Check if token was provided to identify already logged in users
+    const authHeader = req.headers['authorization'];
+    let user_id = null; if (authHeader && !is_guest) {
+        try {
+            const token = authHeader.split(' ')[1];
+            // Properly decode the JWT token to get user information
+            const decoded = jwt.verify(token, JWT_SECRET);
 
-    connection.query(
-        userSql,
-        [first_name, last_name, email, phone, address, city, state, postal_code, country],
-        (err, userResults) => {
-            if (err) {
-                // If duplicate email error, create a unique order-specific user
-                if (err.code === 'ER_DUP_ENTRY') {
-                    // Add timestamp to ensure uniqueness
-                    const uniqueEmail = `${email}_${Date.now()}`;
+            if (decoded && decoded.user_id) {
+                user_id = decoded.user_id;                // Verify that this user exists and get their data
+                const [userRows] = await connection.promise().query(
+                    'SELECT id, email, first_name, last_name, phone, address, city, state, postal_code, country FROM Users WHERE id = ?',
+                    [user_id]
+                );
 
-                    connection.query(
-                        userSql,
-                        [first_name, last_name, uniqueEmail, phone, address, city, state, postal_code, country],
-                        handleUserCreation
-                    );
+                if (userRows.length === 0) {
+                    // User not found - proceed as guest
+                    user_id = null;
                 } else {
-                    return res.status(500).json({ error: err.message });
+                    // Se l'email nell'ordine non corrisponde all'utente, usa quella dell'utente
+                    if (userRows[0].email !== email) {
+                        // Sovrascrive i dati dell'ordine con i dati utente se è stato trovato
+                        const userData = userRows[0];
+                        // Aggiorna i dati del cliente con quelli dell'utente loggato se non sono stati forniti
+                        if (userData.first_name) first_name = first_name || userData.first_name;
+                        if (userData.last_name) last_name = last_name || userData.last_name;
+                        if (userData.email) email = userData.email; // Usa sempre l'email dell'utente loggato
+                        if (userData.phone) phone = phone || userData.phone;
+                        if (userData.address) address = address || userData.address;
+                        if (userData.city) city = city || userData.city;
+                        if (userData.state) state = state || userData.state;
+                        if (userData.postal_code) postal_code = postal_code || userData.postal_code;
+                        if (userData.country) country = country || userData.country;
+                    }
                 }
-            } else {
-                handleUserCreation(null, userResults);
             }
+        } catch (err) {
+            console.error("Error validating user token:", err);
+            // Continue with guest process if token validation fails
+            user_id = null;
         }
-    );
+    }
 
-    function handleUserCreation(err, userResults) {
-        if (err) return res.status(500).json({ error: err.message });
+    // Try to find user by email if token validation failed
+    if (!user_id && email) {
+        try {
+            const [userRows] = await connection.promise().query(
+                'SELECT id FROM Users WHERE email = ?',
+                [email]
+            );
 
-        const user_id = userResults.insertId;
+            if (userRows.length > 0) {
+                user_id = userRows[0].id;
+            }
+        } catch (err) {
+            console.error("Error finding user by email:", err);
+        }
+    }    // If we have an authenticated user, proceed directly to order creation
+    if (user_id) {
+        createOrderForUser(user_id);
+    } else {
+        // Altrimenti crea un nuovo utente con password casuale
+        const password = customer_info.password || generateRandomPassword();
 
-        // Insert the order with the new user ID
+        // Hash della password
+        const saltRounds = 10;
+        bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+            if (err) return res.status(500).json({ error: 'Errore nella generazione della password: ' + err.message });            // Crea nuovo utente con la password hashata
+            const userSql = `
+                INSERT INTO Users (
+                    first_name, last_name, email, phone, 
+                    address, city, state, postal_code, country, password, role
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '${is_guest ? 'guest' : 'customer'}')
+            `;
+
+            connection.query(
+                userSql,
+                [first_name, last_name, email, phone, address, city, state, postal_code, country, hashedPassword],
+                (err, userResults) => {
+                    if (err) {
+                        // Se email duplicata, crea un utente specifico per l'ordine
+                        if (err.code === 'ER_DUP_ENTRY') {                            // Aggiungi timestamp per garantire l'unicità
+                            const uniqueEmail = `${email}_${Date.now()}`;
+                            // Rigenera la query SQL per assicurarsi che venga usato il ruolo corretto
+                            const uniqueUserSql = `
+                                INSERT INTO Users (
+                                    first_name, last_name, email, phone, 
+                                    address, city, state, postal_code, country, password, role
+                                )
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '${is_guest ? 'guest' : 'customer'}')
+                            `;
+                            connection.query(
+                                uniqueUserSql,
+                                [first_name, last_name, uniqueEmail, phone, address, city, state, postal_code, country, hashedPassword],
+                                (err, results) => {
+                                    if (err) return res.status(500).json({ error: err.message });
+                                    createOrderForUser(results.insertId);
+                                }
+                            );
+                        } else {
+                            return res.status(500).json({ error: err.message });
+                        }
+                    } else {
+                        createOrderForUser(userResults.insertId);
+                    }
+                }
+            );
+        });
+    }
+
+    function createOrderForUser(user_id) {
+        // Insert the order with the user ID
         const orderSql = `
             INSERT INTO Orders (user_id, status, delivery, total, discount, final_price)
             VALUES (?, 'Pending', ?, ?, ?, ?)
@@ -216,9 +304,97 @@ function updateOrderStatus(req, res) {
     });
 }
 
+
+
+/**
+ * Ottiene tutti gli ordini dell'utente specificato tramite ID
+ */
+function getUserOrders(req, res) {
+    // Ottieni l'ID utente direttamente dai parametri dell'URL
+    const userId = req.params.userId;
+
+    if (!userId) {
+        return res.status(400).json({
+            success: false,
+            error: 'ID utente mancante'
+        });
+    }
+
+    // Query per ottenere tutti gli ordini dell'utente con i relativi items
+    const sql = `
+        SELECT 
+            o.id,
+            o.status,
+            o.total,
+            o.discount,
+            o.delivery,
+            o.final_price,
+            o.created_at,
+            o.updated_at,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', oi.id,
+                    'product_id', oi.product_id,
+                    'product_name', p.name,
+                    'product_variation_id', oi.product_variation_id,
+                    'color', pv.color,
+                    'size', pv.size,
+                    'quantity', oi.quantity,
+                    'price', oi.price,
+                    'image', (SELECT pi.image_url FROM Product_Images pi WHERE pi.product_id = p.id AND pi.is_primary = 1 LIMIT 1)
+                )
+            ) AS items
+        FROM Orders o
+        JOIN Order_Items oi ON o.id = oi.order_id
+        JOIN Products p ON oi.product_id = p.id
+        LEFT JOIN Product_Variations pv ON oi.product_variation_id = pv.id
+        WHERE o.user_id = ?
+        GROUP BY o.id
+        ORDER BY o.created_at DESC
+    `;
+
+    connection.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Errore nel recupero degli ordini:', err);
+            return res.status(500).json({
+                success: false,
+                error: 'Errore durante il recupero degli ordini'
+            });
+        }
+
+        // Formatta il risultato per ciascun ordine
+        const formattedResults = results.map(order => {
+            // Se items è una stringa (può succedere con JSON_ARRAYAGG), convertiamo in array
+            let items = order.items;
+            if (typeof items === 'string') {
+                try {
+                    items = JSON.parse(items);
+                } catch {
+                    items = [];
+                }
+            }
+
+            return {
+                ...order,
+                items
+            };
+        });
+
+        res.status(200).json({
+            success: true,
+            count: formattedResults.length,
+            orders: formattedResults
+        });
+    });
+}
+
 // Get orders by email
 function getOrdersByEmail(req, res) {
     const { email } = req.params;
+
+    if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+    }
 
     const sql = `
         SELECT 
@@ -226,12 +402,29 @@ function getOrdersByEmail(req, res) {
             o.status,
             o.total,
             o.discount,
+            o.delivery,
             o.final_price,
             o.created_at,
-            o.updated_at
+            o.updated_at,
+            u.email,
+            u.first_name,
+            u.last_name,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'id', oi.id,
+                    'product_id', oi.product_id,
+                    'product_name', p.name,
+                    'product_variation_id', oi.product_variation_id,
+                    'quantity', oi.quantity,
+                    'price', oi.price
+                )
+            ) AS items
         FROM Orders o
         JOIN Users u ON o.user_id = u.id
+        JOIN Order_Items oi ON o.id = oi.order_id
+        JOIN Products p ON oi.product_id = p.id
         WHERE u.email = ? OR u.email LIKE ?
+        GROUP BY o.id
         ORDER BY o.created_at DESC
     `;
 
@@ -239,9 +432,37 @@ function getOrdersByEmail(req, res) {
     const emailPattern = `${email}\\_%`;
 
     connection.query(sql, [email, emailPattern], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error retrieving orders:', err);
+            return res.status(500).json({
+                success: false,
+                error: 'Error retrieving orders'
+            });
+        }
 
-        res.json(results);
+        // Format the results for each order
+        const formattedResults = results.map(order => {
+            // If items is a string (can happen with JSON_ARRAYAGG), convert to array
+            let items = order.items;
+            if (typeof items === 'string') {
+                try {
+                    items = JSON.parse(items);
+                } catch {
+                    items = [];
+                }
+            }
+
+            return {
+                ...order,
+                items
+            };
+        });
+
+        res.status(200).json({
+            success: true,
+            count: formattedResults.length,
+            orders: formattedResults
+        });
     });
 }
 
@@ -250,5 +471,6 @@ module.exports = {
     getOrderById,
     trackOrder,
     updateOrderStatus,
-    getOrdersByEmail
+    getOrdersByEmail,
+    getUserOrders,
 };
