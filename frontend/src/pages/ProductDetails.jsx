@@ -10,6 +10,14 @@ const ProductDetails = () => {
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
+    const [addToCart, setAddToCart] = useState(false)
+    console.log('cart items', cartItems);
+
+
+    const thisProductInCart = cartItems.find(item =>
+        item?.id === product?.id && item?.variations?.id === selectedVariation?.id
+    );
+
 
     const handleAddCart = (thisProduct) => {
         const variationIndex = thisProduct.variations.indexOf(selectedVariation)
@@ -43,9 +51,19 @@ const ProductDetails = () => {
             updatedCart = [...cartItems, { ...thisProduct, quantità: 1, variations: rightVariation, price: discountedPrice() }]
         }
         setCartItems(updatedCart)
+        setAddToCart(false); // resetta subito
+        setTimeout(() => {
+            setAddToCart(true); // ora cambia, quindi lo useEffect si attiva
+        }, 0);
+
     }
 
+    console.log(addToCart);
 
+    const handleRemoveItems = (index) => {
+        setCartItems(cartItems.filter((item, idx) => idx !== index));
+    };
+    console.log(cartItems.indexOf(thisProductInCart), 'index');
 
 
 
@@ -82,13 +100,60 @@ const ProductDetails = () => {
     const getVariationsForColor = (variations, color) => {
         return variations.filter(variant => variant.color === color);
     };
+    useEffect(() => {
+        if (addToCart) {
+            setTimeout(() => {
+                setAddToCart(false)
+
+            }, 2000);
+        }
+    }, [addToCart])
+
+    const alredyInCart = () => {
+        if (!selectedVariation || !product?.variations) return false;
+
+        const variationIndex = product.variations.indexOf(selectedVariation);
+        if (variationIndex === -1) return false;
+
+        const rightVariation = product.variations[variationIndex];
+        if (!rightVariation) return false;
+
+        const existingProduct = cartItems.find(item =>
+            item?.id === product?.id && item?.variations?.id === rightVariation.id
+        );
+
+        return !!existingProduct;
+    };
+
+    const handleIncrement = (functionality) => {
+        const cartProductIndex = cartItems.findIndex(item =>
+            item.id === product.id && item.variations.id === selectedVariation.id
+        );
+
+        if (cartProductIndex === -1) return;
+
+        let updatedCart = [...cartItems];
+        if (functionality === 'add') {
+            updatedCart[cartProductIndex].quantità += 1;
+        } else if (functionality === 'minus' && updatedCart[cartProductIndex].quantità > 1) {
+            updatedCart[cartProductIndex].quantità -= 1;
+        }
+
+        setCartItems(updatedCart);
+    };
+
+
 
     if (!product) return <div>Loading...</div>;
 
     const availableColors = getUniqueColors(product.variations);
 
     return (
-        <section className="product">
+        <section className="product position-relative">
+            {addToCart && (
+                <div className="position-absolute end-0 bottom-0 bg-success p-3 rounded-4">Aggiunto al carrello <span className="ms-2"><i className="fa-solid fa-check"></i></span></div>
+            )}
+
             <div className="product__photo">
                 <div className="photo-container">
                     <div className="photo-main">
@@ -169,16 +234,37 @@ const ProductDetails = () => {
                     <p>{product.long_description}</p>
 
                 </div>
-                <button
-                    onClick={() => handleAddCart(product)}
-                    className="buy--btn"
-                    disabled={!selectedVariation || selectedVariation.stock === 0}
-                >
-                    {!selectedColor ? 'SELECT A COLOR' :
-                        !selectedVariation ? 'SELECT A SIZE' :
-                            selectedVariation.stock === 0 ? 'OUT OF STOCK' :
-                                'ADD TO CART'}
-                </button>
+                {alredyInCart() ? (
+                    <div className="quantity-selector">
+                        {thisProductInCart?.quantità === 1 ? (
+                            <button onClick={() => handleRemoveItems(cartItems.indexOf(thisProductInCart))} className="icon-quantity">
+                                <i className="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        ) : (
+                            <button onClick={() => handleIncrement('minus')} className="icon-quantity">
+                                <i className="fa-solid fa-minus"></i>
+                            </button>)}
+
+                        <div>{thisProductInCart?.quantità}</div>
+                        <button disabled={thisProductInCart?.quantità >= selectedVariation?.stock} onClick={() => handleIncrement('add')} className="icon-quantity">
+                            <i className="fa-solid fa-plus"> </i>
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => handleAddCart(product)}
+                        className="buy--btn"
+                        disabled={!selectedVariation || selectedVariation.stock === 0}
+                    >
+                        {!selectedColor ? 'SELECT A COLOR' :
+                            !selectedVariation ? 'SELECT A SIZE' :
+                                selectedVariation.stock === 0 ? 'OUT OF STOCK' :
+                                    'ADD TO CART'}
+                    </button>
+                )}
+
             </div>
         </section >
     );

@@ -1,6 +1,7 @@
 import React from "react";
 import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router-dom";
+import './pageCarrello.css'
 
 const Carrello = () => {
     const { cartItems, setCartItems } = useGlobal();
@@ -43,10 +44,10 @@ const Carrello = () => {
         setCartItems(updatedCart);
     };
 
-    const calculateOriginalPrice = (item, discountedPrice, discountPercentage) => {
+    const calculateOriginalPrice = (item, discountedPrice, discountPercentage, quantity) => {
         if (Number(item.discount) > 0) {
             const discountFactor = 1 - discountPercentage / 100;
-            const originalPrice = discountedPrice / discountFactor;
+            const originalPrice = (discountedPrice / discountFactor) * quantity;
             return formatCurrency(originalPrice);
         }
     };
@@ -54,7 +55,7 @@ const Carrello = () => {
     console.log('Cart Items', cartItems);
 
     return (
-        <div className="main-container">
+        <div className="main-container cart-wrapper">
             <div className="container py-4">
                 <div className="row">
                     {/* Colonna prodotti */}
@@ -62,35 +63,68 @@ const Carrello = () => {
                         <h4>Oggetto</h4>
                         <hr />
                         {cartItems.map((item, index) => (
-                            <div key={item.id} className="d-flex mb-4 border-bottom pb-3">
-                                <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} width="80" height="80" className="me-3" />
+                            <div key={item.id} className="d-flex gap-3 mb-4 border-bottom pb-3 cart-product">
+                                <div>
+                                    <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} className=" product-image" />
+                                    <div className="quantity-selector">
+                                        {item.quantità === 1 ? (
+                                            <button onClick={() => handleRemoveItems(index)} className="icon-quantity">
+                                                <i className="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        ) : (
+                                            <button onClick={() => handleIncrement(item, 'minus')} className="icon-quantity">
+                                                <i className="fa-solid fa-minus"></i>
+                                            </button>)}
+
+                                        <div>{item.quantità}</div>
+                                        <button disabled={item.quantità === item.variations.stock} onClick={() => handleIncrement(item, 'add')} className="icon-quantity">
+                                            <i className="fa-solid fa-plus"> </i>
+                                        </button>
+                                    </div>
+
+                                </div>
                                 <div className="flex-grow-1">
-                                    <strong className="text-danger">{item.name}</strong>
-                                    <div className="mt-2">
-                                        Prezzo: {item.discount > 0 && (
-                                            <span className="text-secondary text-decoration-line-through me-2">
-                                                {calculateOriginalPrice(item, Number(item.price), Number(item.discount))} €
-                                            </span>
-                                        )}
-                                        {formatCurrency(item.price)} €
+                                    <div className="d-flex justify-content-between flex-column-reverse flex-sm-row">
+
+                                        <strong className="text-danger">{item.name}</strong>
+                                        <div>
+
+                                            {item.discount > 0 && (
+                                                <small className="text-secondary text-decoration-line-through me-2">
+                                                    {calculateOriginalPrice(item, Number(item.price), Number(item.discount), Number(item.quantità))} €
+                                                </small>
+                                            )}
+                                            <strong>{formatCurrency(item.price * item.quantità)} €</strong>
+                                        </div>
+
                                     </div>
-                                    <div>Qtà: {item.quantità}</div>
-                                    <div>Subtotale: {formatCurrency(item.price * item.quantità)} €</div>
-                                </div>
-                                <div className="ms-3 d-flex flex-column justify-content-center align-items-end">
-                                    <button onClick={() => handleRemoveItems(index)} className="btn btn-sm btn-outline-danger mb-3"><i className="bi bi-x-lg"></i></button>
-                                    <div className="d-flex gap-3">
-                                        <button disabled={item.quantità === 1} onClick={() => handleIncrement(item, 'minus')} className="btn btn-sm btn-outline-secondary "><i className="bi bi-dash-lg"></i></button>
-                                        <button disabled={item.variations.stock === item.quantità} onClick={() => handleIncrement(item, 'add')} className="btn btn-sm btn-outline-secondary "><i className="bi bi-plus-lg"></i></button>
+                                    <div className=" mt-2 d-flex flex-column gap-3">
+                                        <div className="text-secondary small">{item.description}</div>
+                                        <div className="text-secondary small">{item.variations.size}</div>
+                                        <div className="text-secondary small d-flex gap-2">
+                                            <div>
+                                                {item.variations.color}
+                                            </div>
+                                            <div style={{ backgroundColor: item.variations.color_hex }} className="circle-color">
+
+                                            </div>
+                                        </div>
                                     </div>
+
+
+
+
                                 </div>
+
                             </div>
                         ))}
                     </div>
 
                     {/* Colonna riepilogo */}
                     <div className="col-md-4">
-                        <div className="border rounded p-4">
+                        <div className=" rounded p-4 summary-column">
                             <h5>Riepilogo</h5>
                             <p>Subtotale: {formatCurrency(subtotal)} €</p>
                             <p>Di cui IVA: {formatCurrency(ivaAmount)} €</p>
@@ -107,7 +141,7 @@ const Carrello = () => {
                             <h5><strong>Totale ordine: {formatCurrency(calculateTotal())} €</strong></h5>
                             <button
                                 disabled={cartItems.length === 0}
-                                className="btn btn-success w-100 mt-3">
+                                className="btn btn-success w-100 mt-3 cta-button">
                                 <Link className="text-decoration-none text-white" to={'/checkout'}>
                                     Procedi all'Acquisto
                                 </Link>
@@ -115,8 +149,8 @@ const Carrello = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 
