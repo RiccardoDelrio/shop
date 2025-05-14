@@ -10,7 +10,7 @@ export default function SizeTable() {
                 </div>
                 <div className='p-3'>
                     <p className='text-center fst-italic'>" La nostra maison si distingue per l'eccellenza sartoriale e per l'attenzione meticolosa dedicata alla vestibilità di ogni singolo capo. La seguente tabella delle misure è stata elaborata per offrire una guida precisa e affidabile alle nostre taglie standard, concepite per stature comprese tra i 166 e i 172 cm.
-                        Invitiamo la gentile clientela a consultarla con cura, così da individuare la taglia più appropriata e garantire un'esperienza d’acquisto in linea con gli elevati standard qualitativi che ci contraddistinguono. Ogni misura è stata studiata per valorizzare al meglio la figura, fondendo comfort e ricercatezza estetica. "</p>
+                        We invite our valued clientele to consult it carefully, in order to identify the most appropriate size and guarantee a purchasing experience in line with the high quality standards that distinguish us. Each measurement has been designed to enhance the figure, blending comfort and aesthetic refinement. "</p>
                 </div>
                 <div className='table-container'>
 

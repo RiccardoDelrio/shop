@@ -26,6 +26,9 @@ const Carrello = () => {
             const thisItemsPrice = item.price * item.quantità;
             total += thisItemsPrice;
         });
+        // WARNING: This is a frontend calculation only. 
+        // Final prices are recalculated server-side for security.
+        // A malicious user could modify prices in browser dev tools.
         return total;
     }
 
@@ -127,7 +130,7 @@ const Carrello = () => {
                         <div className=" rounded p-4 summary-column">
                             <h5>Riepilogo</h5>
                             <p>Subtotale: {formatCurrency(subtotal)} €</p>
-                            <p>Di cui IVA: {formatCurrency(ivaAmount)} €</p>
+                            <p>VAT included: {formatCurrency(ivaAmount)} €</p>
                             <p>Spedizione: {formatCurrency(shipPrice)} €</p>
                             {shipPrice === 0 ? (
                                 <p className="text-success">La spedizione è GRATUITA!</p>

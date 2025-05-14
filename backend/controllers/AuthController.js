@@ -55,7 +55,7 @@ async function register(req, res) {
         const expiresAt = new Date();
         expiresAt.setSeconds(expiresAt.getSeconds() + TOKEN_EXPIRY_SECONDS);
 
-        // Salvataggio del token nel database
+        // Saving the token in database
         try {
             await connection.promise().query(
                 'INSERT INTO user_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',

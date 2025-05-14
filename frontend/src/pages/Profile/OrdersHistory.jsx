@@ -38,7 +38,7 @@ const OrdersHistory = () => {
                     setLoading(false);
                 });
         } else {
-            setError('Nessun utente trovato');
+            setError('No user found');
             setLoading(false);
         }
     };

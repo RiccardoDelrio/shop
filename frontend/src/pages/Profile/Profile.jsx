@@ -220,7 +220,7 @@ const Profile = () => {
                             className="btn btn-primary"
                             disabled={loading}
                         >
-                            {loading ? 'Salvataggio...' : 'Salva modifiche'}
+                            {loading ? 'Saving...' : 'Save changes'}
                         </button>
 
                         <button

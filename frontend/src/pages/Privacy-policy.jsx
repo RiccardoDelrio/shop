@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
                         <h5 className="mt-5 fw-bold">1. Introduzione</h5>
                         <p>
                             Boolean si impegna a tutelare la privacy dei propri utenti nel rispetto del Regolamento (UE) 2016/679 (“GDPR”).
-                            I dati personali vengono trattati con attenzione, riservatezza e solo per finalità specifiche e legittime.
+                            Personal data is processed with care, confidentiality and only for specific and legitimate purposes.
                         </p>
 
                         <h5 className="mt-4 fw-bold">2. Titolare del trattamento</h5>

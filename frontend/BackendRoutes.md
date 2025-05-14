@@ -203,8 +203,7 @@ Create a new order.
     {
       "product_id": 5,
       "product_variation_id": 12,
-      "quantity": 2,
-      "price": 100
+      "quantity": 2
     }
   ],
   "discount": 0
@@ -214,7 +213,8 @@ Create a new order.
 **Note:**
 
 - `customer_info.email` is required.
-- `total` is now calculated server-side as the sum of all item prices (price × quantity), **with each product's discount (if any) automatically applied**.
+- Product prices are automatically fetched from the database for security.
+- `total` is calculated server-side as the sum of all item prices (price × quantity), **with each product's discount (if any) automatically applied**.
 - `discount` is a percentage (e.g. 10 for 10% off the subtotal after product discounts).
 - `delivery` is calculated automatically by the backend: it is 30 by default, but free if the order total is at least 500.
 - **Product-level discounts are always applied first, then the order-level discount is applied to the subtotal.**

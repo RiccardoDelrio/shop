@@ -73,8 +73,8 @@ const Checkout = () => {
         return {
             "product_id": item.id,
             "product_variation_id": item.variations.id,
-            "quantity": item.quantità,
-            "price": item.price
+            "quantity": item.quantità
+            // Removed price field for security
         }
     })
 

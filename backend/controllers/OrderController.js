@@ -35,18 +35,24 @@ async function createOrder(req, res) {
     // Calculate total (sum of item.price * item.quantity), applying product-level discounts
     let total = 0;
     const itemsWithDiscount = await Promise.all(items.map(async item => {
-        // Fetch product discount from DB
+        // Fetch product price and discount from DB instead of relying on frontend input
         const [rows] = await connection.promise().query(
-            'SELECT discount FROM Products WHERE id = ?',
+            'SELECT price, discount FROM Products WHERE id = ?',
             [item.product_id]
         );
+
+        if (!rows || rows.length === 0) {
+            throw new Error(`Product with ID ${item.product_id} not found`);
+        }
+
+        const productPrice = parseFloat(rows[0].price);
         const productDiscount = rows[0]?.discount || 0;
-        const price = parseFloat(item.price);
         const quantity = parseInt(item.quantity);
-        const discountedPrice = productDiscount > 0 ? price - (price * productDiscount / 100) : price;
+        const discountedPrice = productDiscount > 0 ? productPrice - (productPrice * productDiscount / 100) : productPrice;
         total += discountedPrice * quantity;
         return {
             ...item,
+            price: productPrice,
             discountedPrice
         };
     }));
@@ -56,7 +62,7 @@ async function createOrder(req, res) {
     const deliveryValue = total >= 500 ? '0' : '30'; // Ensure it's a string to match ENUM
     // Calculate final price
     const final_price = total - discountAmount + parseInt(deliveryValue);
-    // Calculate IVA (22%) from the total (which already includes IVA)
+    // Calculate VAT (22%) from the total (which already includes it)
     const ivaAmount = Number((total - (total / 1.22)).toFixed(2));
 
     // Check if token was provided to identify already logged in users
@@ -214,14 +220,37 @@ async function createOrder(req, res) {
                         productMap[product.id] = product.name;
                     });
 
+                    // Fetch variation details for each item
+                    const variationDetails = {};
+                    for (const item of items) {
+                        if (item.product_variation_id) {
+                            const [variationRows] = await connection.promise().query(
+                                'SELECT color, size FROM Product_Variations WHERE id = ?',
+                                [item.product_variation_id]
+                            );
+                            if (variationRows.length > 0) {
+                                variationDetails[item.product_variation_id] = variationRows[0];
+                            }
+                        }
+                    }
+
                     // Prepare items summary for emails
                     const itemsSummary = itemsWithDiscount
-                        .map(item => `<tr>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.quantity}x ${productMap[item.product_id] || `Prodotto #${item.product_id}`}</td>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">€${item.discountedPrice.toFixed(2)}</td>
-                            <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">€${(item.discountedPrice * item.quantity).toFixed(2)}</td>
-                        </tr>`
-                        ).join('');
+                        .map(item => {
+                            // Get variation details if available
+                            const variation = item.product_variation_id ? variationDetails[item.product_variation_id] : null;
+                            const variationText = variation ?
+                                `<div style="font-size: 12px; color: #666; margin-top: 3px;">Color: ${variation.color}, Size: ${variation.size}</div>` : '';
+
+                            return `<tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                                    ${item.quantity}x ${productMap[item.product_id] || `Prodotto #${item.product_id}`}
+                                    ${variationText}
+                                </td>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">€${item.discountedPrice.toFixed(2)}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">€${(item.discountedPrice * item.quantity).toFixed(2)}</td>
+                            </tr>`;
+                        }).join('');
 
                     // Email al cliente
                     await sendEmail(
@@ -260,7 +289,7 @@ async function createOrder(req, res) {
                                         <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 5px; text-align: right;">Di cui IVA (22%):</td>
+                                        <td style="padding: 5px; text-align: right;">VAT included (22%):</td>
                                         <td style="padding: 5px; text-align: right;">€${ivaAmount.toFixed(2)}</td>
                                     </tr>
                                     ${discount > 0 ? `
@@ -350,7 +379,7 @@ async function createOrder(req, res) {
                                         <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
                                     </tr>
                                     <tr>
-                                    <td style="padding: 5px; text-align: right;">Di cui IVA (22%):</td>
+                                    <td style="padding: 5px; text-align: right;">VAT included (22%):</td>
                                     <td style="padding: 5px; text-align: right;">€${ivaAmount.toFixed(2)}</td>
                                 </tr>
                                     ${discount > 0 ? `

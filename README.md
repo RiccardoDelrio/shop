@@ -72,7 +72,10 @@ If you have questions or doubts, you can write to us in your team's channel, rem
 
 3. **Products on Sale** (coefficient: 2)  
     - Display products on sale with original and discounted prices.  
-    - Ability to filter sale products on the search page.  
+    - Ability to filter sale products on the search page.
+    - WARNING: Price calculations should be moved to backend for security and consistency.
+      Currently, pricing logic is duplicated across frontend components, creating potential
+      security and maintenance issues.
 
 4. **Welcome Popup** (coefficient: 3)  
     - Show a welcome popup only during the user's first visit.  
