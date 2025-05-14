@@ -18,7 +18,7 @@ router.get('/email/:email', OrderController.getOrdersByEmail);
 // Update order status (admin use)
 router.patch('/:id/status', OrderController.updateOrderStatus);
 
-// Replace the existing route with a simpler one without authentication middleware
-router.get('/user/:userId', OrderController.getUserOrders);
+// Replace the comment and route with a properly authenticated version
+router.get('/user/:userId', authenticateToken, OrderController.getUserOrders);
 
 module.exports = router;

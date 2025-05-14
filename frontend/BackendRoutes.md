@@ -6,6 +6,112 @@ This document provides comprehensive information about all available API endpoin
 
 All API requests should be made to: `http://localhost:3000/api/v1/`
 
+## Authentication Routes
+
+### Register New User
+
+`POST /auth/register`
+Register a new user account.
+
+**Request body:**
+
+```json
+{
+  "username": "user123",
+  "email": "user@example.com",
+  "password": "secure_password123"
+}
+```plaintext
+
+### Login
+
+`POST /auth/login`
+Authenticate a user and receive access token.
+
+**Request body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "secure_password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "jwt_token_here",
+  "user": {
+    "id": 1,
+    "username": "user123",
+    "email": "user@example.com"
+  }
+}
+```
+
+### Get User Profile
+
+`GET /auth/profile`
+Get the profile of the currently authenticated user.
+
+**Headers:**
+
+```plaintext
+Authorization: Bearer jwt_token_here
+```
+
+### Update User Profile
+
+`PUT /auth/profile`
+Update the profile of the currently authenticated user.
+
+**Headers:**
+
+```plaintext
+Authorization: Bearer jwt_token_here
+```
+
+**Request body:**
+
+```json
+{
+  "username": "updated_username",
+  "email": "updated_email@example.com"
+}
+```
+
+### Change Password
+
+`PUT /auth/change-password`
+Update the password of the currently authenticated user.
+
+**Headers:**
+
+```plaintext
+Authorization: Bearer jwt_token_here
+```
+
+**Request body:**
+
+```json
+{
+  "current_password": "current_password123",
+  "new_password": "new_password456"
+}
+```
+
+### Logout
+
+`POST /auth/logout`
+Log out the currently authenticated user.
+
+**Headers:**
+
+```plaintext
+Authorization: Bearer jwt_token_here
+```
+
 ## Wardrobe Section Routes
 
 ### Get All Wardrobe Sections
@@ -156,6 +262,17 @@ Track an order using email and order ID.
 
 `GET /orders/email/:email`
 Get all orders for a specific email address.
+
+### Get User Orders
+
+`GET /orders/user/:userId`
+Get all orders for the authenticated user.
+
+**Headers:**
+
+```plaintext
+Authorization: Bearer jwt_token_here
+```
 
 ## Newsletter Routes
 

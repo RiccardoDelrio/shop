@@ -56,6 +56,8 @@ async function createOrder(req, res) {
     const deliveryValue = total >= 500 ? '0' : '30'; // Ensure it's a string to match ENUM
     // Calculate final price
     const final_price = total - discountAmount + parseInt(deliveryValue);
+    // Calculate IVA (22%) from the total (which already includes IVA)
+    const ivaAmount = Number((total - (total / 1.22)).toFixed(2));
 
     // Check if token was provided to identify already logged in users
     const authHeader = req.headers['authorization'];
@@ -257,6 +259,10 @@ async function createOrder(req, res) {
                                         <td style="padding: 5px; text-align: right;">Subtotal:</td>
                                         <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
                                     </tr>
+                                    <tr>
+                                        <td style="padding: 5px; text-align: right;">Di cui IVA (22%):</td>
+                                        <td style="padding: 5px; text-align: right;">€${ivaAmount.toFixed(2)}</td>
+                                    </tr>
                                     ${discount > 0 ? `
                                     <tr>
                                         <td style="padding: 5px; text-align: right;">Discount (${discount}%):</td>
@@ -343,6 +349,10 @@ async function createOrder(req, res) {
                                         <td style="padding: 5px; text-align: right;">Subtotal:</td>
                                         <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
                                     </tr>
+                                    <tr>
+                                    <td style="padding: 5px; text-align: right;">Di cui IVA (22%):</td>
+                                    <td style="padding: 5px; text-align: right;">€${ivaAmount.toFixed(2)}</td>
+                                </tr>
                                     ${discount > 0 ? `
                                     <tr>
                                         <td style="padding: 5px; text-align: right;">Discount (${discount}%):</td>
