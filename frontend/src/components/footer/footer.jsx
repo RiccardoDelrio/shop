@@ -1,7 +1,15 @@
 import './footer.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom'; // Fixed import from react-router-dom
 
+/**
+ * Footer component
+ * 
+ * This component uses:
+ * - Font Awesome icons (Font Awesome Free License)
+ * - Bootstrap classes (MIT License)
+ * - React Router components (MIT License)
+ */
 export default function Footer() {
     return (
         <>

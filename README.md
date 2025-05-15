@@ -86,3 +86,36 @@ If you have questions or doubts, you can write to us in your team's channel, rem
     - Show available quantities on the detail page.  
     - Prevent out-of-stock products from being added to cart.  
     - Prevent checkout if a cart item becomes out of stock.
+
+---
+
+## Licensing Information
+
+This project contains components under multiple licenses:
+
+- Frontend components: MIT License
+- Backend dependencies: Some components use Apache License 2.0 (denque, ecdsa-sig-formatter)
+  - These are standard Node.js dependencies and their licenses do not affect the licensing of your project code
+- Third-party UI components: MIT License and Font Awesome Free License
+
+### Note for Students
+
+This is an educational project. The different licenses in dependencies are common in software development and don't pose legal issues for educational purposes. However, understanding software licensing is an important skill for professional developers.
+
+### Third-Party Components
+
+- FontAwesome (Font Awesome Free License)
+- Bootstrap (MIT License)
+- React Router (MIT License)
+
+Contributors should ensure new code is compatible with existing license requirements.
+
+### Fixing License Compatibility Issues
+
+If you see "Similar code found with 2 license types" warnings:
+
+1. Make sure all components clearly indicate which third-party libraries they use
+2. Add license attributions in comments at the top of each component file
+3. Centralize pricing calculations in the backend as specified in milestone #3
+4. When importing third-party components, use the correct package name (e.g., 'react-router-dom' not 'react-router')
+5. Check for duplicate implementations that might have been copied from sources with different licenses
