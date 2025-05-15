@@ -66,7 +66,7 @@ const Carrello = () => {
                         <h4>Oggetto</h4>
                         <hr />
                         {cartItems.map((item, index) => (
-                            <div key={item.id} className="d-flex gap-3 mb-4 border-bottom pb-3 cart-product">
+                            <div key={`${item.id}-${item.variations.id}-${index}`} className="d-flex gap-3 mb-4 border-bottom pb-3 cart-product">
                                 <div>
                                     <img src={`http://localhost:3000/imgs/${item.images[0].url}`} alt={item.name} className=" product-image" />
                                     <div className="quantity-selector">

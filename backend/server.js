@@ -1,5 +1,8 @@
+require('dotenv').config();
 const express = require('express')
+const Stripe = require('stripe');
 const app = express()
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 const PORT = process.env.PORT || 3000;
 const eCommerceRouter = require('./routers/eCommerceRouter')
 const notFound = require('./middlewares/notFound')
@@ -23,6 +26,23 @@ app.get('/', (req, res) => {
 
 // API Routes
 app.use('/api/v1', eCommerceRouter);
+
+app.post('/create-payment-intent', async (req, res) => {
+    const { amount } = req.body
+    try {
+
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount,
+            currency: 'eur',
+            payment_method_types: ['card'],
+        })
+        res.send({
+            clientSecret: paymentIntent.client_secret
+        });
+    } catch (error) {
+        res.status(500).send({ error: error.message })
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

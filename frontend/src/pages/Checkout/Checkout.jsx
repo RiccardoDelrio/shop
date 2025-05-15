@@ -3,15 +3,51 @@ import './checkout.css'
 import { useGlobal } from '../../contexts/GlobalContext'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link } from 'react-router-dom'
+import {
+    useStripe,
+    useElements,
+    CardElement,
+} from '@stripe/react-stripe-js';
+
 
 const Checkout = () => {
     const { cartItems, setCartItems } = useGlobal()
     const { currentUser, updateProfile } = useAuth()
     const isAuthenticated = !!currentUser
+    const stripe = useStripe()
+    const elements = useElements()
+    const [clientSecret, setClientSecret] = useState('')
     const [formData, setFormData] = useState({})
     const [formStatus, setFormStatus] = useState(null)
     const [formCheck, setFormCheck] = useState(null)    // Stato per il messaggio di aggiornamento del profilo
     const [updateMessage, setUpdateMessage] = useState('')    // Precompila i dati del form con le informazioni dell'utente loggato
+
+    useEffect(() => {
+        console.log("Cart items:", cartItems);
+        const totalAmount = cartItems.reduce((acc, item) => {
+            return acc + item.price * item.quantità;
+        }, 0);
+
+        console.log("Total amount:", totalAmount);
+
+        const amountInCents = Math.round(totalAmount * 100);
+        console.log("Amount in cents:", amountInCents);
+
+        if (amountInCents > 0) {
+            fetch('http://localhost:3000/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: amountInCents }),
+            })
+                .then(res => res.json())
+                .then(data => setClientSecret(data.clientSecret));
+        } else {
+            console.warn("Amount is zero or invalid, skipping payment intent creation.");
+        }
+    }, [cartItems]);
+
+
+
     useEffect(() => {
         console.log("CurrentUser:", currentUser);
 
@@ -79,73 +115,92 @@ const Checkout = () => {
     })
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        // Validazione dei campi obbligatori
-        const requiredFields = ['first_name', 'last_name', 'email', 'address', 'city', 'postal_code', 'country']
-        const missingFields = requiredFields.filter(field => !formData[field])
+        const requiredFields = ['first_name', 'last_name', 'email', 'address', 'city', 'postal_code', 'country'];
+        const missingFields = requiredFields.filter(field => !formData[field]);
 
         if (missingFields.length > 0) {
             setFormStatus({
                 error: `I seguenti campi sono obbligatori: ${missingFields.join(', ')}`
-            })
-            return
+            });
+            return;
         }
 
-        // Preparazione degli headers e dati
-        const headers = {
-            'Content-type': 'application/json'
+        if (!stripe || !elements) {
+            setFormStatus({ error: 'Stripe non è pronto' });
+            return;
         }
 
-        // Se l'utente è loggato, aggiungi il token di autenticazione
-        if (isAuthenticated) {
-            headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+        const cardElement = elements.getElement(CardElement);
+        const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: cardElement,
+                billing_details: {
+                    name: `${formData.first_name} ${formData.last_name}`,
+                    email: formData.email,
+                    address: {
+                        line1: formData.address,
+                        city: formData.city,
+                        postal_code: formData.postal_code,
+                        country: formData.country,
+                    },
+                },
+            },
+        });
+
+        if (paymentResult.error) {
+            setFormStatus({ error: paymentResult.error.message });
+            return;
         }
 
-        // Preparazione dei dati del cliente
-        const customerInfo = { ...formData }
+        if (paymentResult.paymentIntent.status === 'succeeded') {
+            console.log('Pagamento riuscito');
 
-        // Per utenti guest, aggiungi una password temporanea generata casualmente
-        if (!isAuthenticated) {
-            // Crea una password casuale per utenti guest
-            const temporaryPassword = Math.random().toString(36).slice(-8)
-            customerInfo.password = temporaryPassword
-            // Aggiungi un flag per indicare che è un utente guest
-            customerInfo.is_guest = true
-        } else {        // Per utenti autenticati, aggiungiamo l'ID utente se disponibile
-            if (currentUser && currentUser.id) {
-                customerInfo.user_id = currentUser.id
-            }
-        }
-
-        fetch('http://localhost:3000/api/v1/orders', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                "customer_info": customerInfo,
-                "items": itemsForOrder,
-                "discount": 0
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
-                setFormStatus(data);
-                if (!data.error) {
-                    setCartItems([])
-                    // Salva anche l'ordine in localStorage per permettere successivo tracking
-                    localStorage.setItem('lastOrder', JSON.stringify({
-                        order_id: data.order_id,
-                        email: formData.email
-                    }))
-                }
-            })
-            .catch(err => {
-                console.error("Errore durante l'invio dell'ordine:", err);
-                setFormStatus({
-                    error: "Si è verificato un errore durante l'invio dell'ordine"
+            // continua con invio ordine come già fai
+            const headers = {
+                'Content-type': 'application/json',
+                ...(isAuthenticated && {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 })
+            };
+
+            const customerInfo = {
+                ...formData,
+                ...(isAuthenticated
+                    ? { user_id: currentUser?.id }
+                    : {
+                        password: Math.random().toString(36).slice(-8),
+                        is_guest: true,
+                    }),
+            };
+
+            fetch('http://localhost:3000/api/v1/orders', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    customer_info: customerInfo,
+                    items: itemsForOrder,
+                    discount: 0
+                }),
             })
-    }
+                .then(res => res.json())
+                .then(data => {
+                    setFormStatus(data);
+                    if (!data.error) {
+                        setCartItems([]);
+                        localStorage.setItem('lastOrder', JSON.stringify({
+                            order_id: data.order_id,
+                            email: formData.email
+                        }));
+                    }
+                })
+                .catch(err => {
+                    setFormStatus({ error: 'Errore durante la creazione dell’ordine.' });
+                });
+        }
+    };
+
 
     if (cartItems.length === 0 && !formStatus?.message) {
         return (
@@ -252,7 +307,12 @@ const Checkout = () => {
                                 />
                             </div>
                         </div>
-
+                        <div className="mb-4">
+                            <label className="form-label">Dati di pagamento</label>
+                            <div className="p-3 border rounded bg-white">
+                                <CardElement options={{ hidePostalCode: true }} />
+                            </div>
+                        </div>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email *</label>
                             <input
@@ -326,12 +386,12 @@ const Checkout = () => {
                                     required
                                 >
                                     <option value="" disabled>Scegli il tuo paese</option>
-                                    <option value="Italy">Italia</option>
-                                    <option value="Germany">Germania</option>
-                                    <option value="France">Francia</option>
-                                    <option value="Spain">Spagna</option>
-                                    <option value="United Kingdom">Regno Unito</option>
-                                    <option value="United States">Stati Uniti</option>
+                                    <option value="IT">IT</option>
+                                    <option value="DE">DE</option>
+                                    <option value="FR">FR</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GB">GB</option>
+                                    <option value="US">US</option>
                                 </select>
                             </div>
 

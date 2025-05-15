@@ -21,8 +21,15 @@ import { AuthProvider } from './contexts/AuthContext';
 import NotFound from './pages/NotFound'; // Updated import path from components to pages
 import UnsubscribeNewsletter from './pages/UnsubscribeNewsletter';
 
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+
+
 
 function App() {
+  const stripePromise = loadStripe('pk_test_51ROydB33eARAa4FaXC0t0a9hIjtRdeWzaash0tOxyBqHvwvnq9gGN6q3WkOWc0PzSvfUsIs8rCQIEqt7AujrFJeH00AQIagCXr');
+
   return (
     <>
       <BrowserRouter>
@@ -62,7 +69,10 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="/carello" element={<Carello />} />
-            <Route path='/checkout' element={<Checkout />} />
+            <Route path='/checkout' element={
+              <Elements stripe={stripePromise}>
+                <Checkout />
+              </Elements>} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
