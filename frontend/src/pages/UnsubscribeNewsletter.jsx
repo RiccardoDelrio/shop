@@ -10,7 +10,7 @@ export default function UnsubscribeNewsletter() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         try {
             const response = await fetch(`http://localhost:3000/api/v1/newsletter/unsubscribe/${email}`, {
                 method: 'DELETE',
@@ -20,18 +20,17 @@ export default function UnsubscribeNewsletter() {
 
             if (response.ok) {
                 setStatus('success');
-                setMessage('Ti sei disiscritto con successo dalla newsletter.');
-                // Aggiungiamo un timeout per dare il tempo all'utente di leggere il messaggio
+                setMessage('You have successfully unsubscribed from our newsletter.');
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
             } else {
                 setStatus('error');
-                setMessage(data.error || 'Si è verificato un errore durante la disiscrizione.');
+                setMessage(data.error || 'An error occurred during the unsubscribe process.');
             }
         } catch (error) {
             setStatus('error');
-            setMessage('Si è verificato un errore di connessione.');
+            setMessage('A connection error occurred.');
         }
     };
 
@@ -44,14 +43,14 @@ export default function UnsubscribeNewsletter() {
                             <div className="card-body p-5">
                                 <div className="text-center mb-4">
                                     <i className="fas fa-envelope-open-text unsubscribe-icon"></i>
-                                    <h2 className="mt-3">Disiscrizione Newsletter</h2>
+                                    <h2 className="unsubscribe-title">Newsletter Unsubscribe</h2>
                                     <p className="text-muted">
-                                        Ci dispiace vederti andare via. Inserisci la tua email per confermare la disiscrizione.
+                                        We're sorry to see you go. Please enter your email to confirm unsubscription.
                                     </p>
                                 </div>
 
                                 {message && (
-                                    <div className={`alert ${status === 'success' ? 'alert-success' : 'alert-danger'} fade show`}>
+                                    <div className={`alert ${status === 'success' ? 'alert-success' : 'alert-danger'} fade show mb-4`}>
                                         <i className={`fas ${status === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2`}></i>
                                         {message}
                                     </div>
@@ -65,21 +64,21 @@ export default function UnsubscribeNewsletter() {
                                             id="emailInput"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="La tua email"
+                                            placeholder="Your email"
                                             required
                                         />
-                                        <label htmlFor="emailInput">Email</label>
+                                        <label htmlFor="emailInput">Your email</label>
                                     </div>
-                                    <button type="submit" className="btn btn-danger btn-lg w-100 unsubscribe-btn">
+                                    <button type="submit" className="btn btn-lg w-100 unsubscribe-btn">
                                         <i className="fas fa-times-circle me-2"></i>
-                                        Disiscriviti
+                                        Unsubscribe
                                     </button>
                                 </form>
 
                                 <div className="text-center mt-4">
-                                    <a href="/" className="text-muted text-decoration-none">
-                                        <i className="fas fa-arrow-left me-2"></i>
-                                        Torna alla homepage
+                                    <a href="/" className="back-link">
+                                        <i className="fas fa-arrow-left"></i>
+                                        <span>Back to homepage</span>
                                     </a>
                                 </div>
                             </div>
