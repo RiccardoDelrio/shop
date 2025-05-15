@@ -14,8 +14,7 @@
 }
 
 .popup-content {
-    background: linear-gradient(145deg, #ffffff, #f8f9fa);
-    background-image: url("/img/sfondorosso.png") !important;
+    background-image: url("/img/sfondo5.png") !important;
     padding: 3rem;
     border-radius: 15px;
     max-width: 1000px;
@@ -26,7 +25,6 @@
     /* Aggiunta altezza minima */
     position: relative;
     border: none;
-    box-shadow: 0 10px 25px rgb(65, 1, 1) 100%;
     animation: slideIn 0.4s ease;
     /* Aggiunte proprietà per centrare il contenuto */
     display: flex;
@@ -54,18 +52,21 @@
     height: 50px;
     border-radius: 50%;
     transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    color: #7DA2BC !important;
+    /* Colore della X */
 }
 
 .popup-close:hover {
-    /* color: #FFFFFF; */
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #7DA2BC;
+    color: #F8F8F8 !important;
+    /* Colore della X in hover */
     transform: rotate(90deg);
 }
 
 .newsletter-form .button {
-    background-color: rgb(205, 0, 0);
+    background-color: #E5E5E5;
     color: white;
-    border: 2px solid black;
+
     padding: 0.75rem;
     border-radius: 10px;
     font-weight: 600;
@@ -78,7 +79,7 @@
 
 
 .newsletter-form .button:hover {
-    background-color: rgb(255, 0, 0);
+    background-color: #7DA2BC;
     transform: translateY(-2px);
     padding-right: 3rem;
     /* Aumenta lo spazio per l'animazione */
@@ -99,11 +100,11 @@
 @media (prefers-color-scheme: dark) {
 
     .card-title {
-        color: #ecf0f1;
+        color: #7DA2BC;
     }
 
     .card-text {
-        color: #bdc3c7;
+        color: #7DA2BC;
     }
 }
 

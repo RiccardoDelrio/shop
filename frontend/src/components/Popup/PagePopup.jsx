@@ -24,7 +24,7 @@ export default function WelcomePopup() {
     }, []);
 
     // Rimuovi la data per far riapparire il popup
-    /* localStorage.removeItem("lastVisitDate"); */
+    /*  localStorage.removeItem("lastVisitDate"); */
     // Gestione chiusura popup
     function handleClose() {
         setIsFading(true);
@@ -57,7 +57,7 @@ export default function WelcomePopup() {
             // Modifica il messaggio di successo per includere il link di disiscrizione
             .then(() => {
                 setMessage([
-                    "Thanks for subscribing!", 
+                    "Thanks for subscribing!",
                     "Check your email for confirmation.",
                     "You can unsubscribe at any time from the footer link."
                 ]);
@@ -82,10 +82,12 @@ export default function WelcomePopup() {
                 <div className={`popup-overlay ${isFading ? 'fading' : ''}`}>
                     <div className={`popup-content card ${isFading ? 'fading' : ''}`}>
                         <button
-                            className="popup-close btn-close btn-close-white"
+                            className="popup-close"
                             onClick={handleClose}
                             aria-label="Close"
-                        />
+                        >
+                            <i className="fas fa-times"></i>
+                        </button>
                         <div className="popup-grid">
                             <div className="popup-left">
                                 <img src="/img/imgpopup.png" alt="Newsletter" className="popup-image" />
