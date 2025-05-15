@@ -103,28 +103,34 @@
 
     .product-button {
         text-decoration: none;
-        padding: 0;
-        color: gold;
-
-
+        color: var(--accent-color);
+        border: 1px solid var(--accent-color);
         border-radius: .3rem;
         padding: 5px 20px;
+        transition: all 0.3s ease;
+        font-family: 'Jost', sans-serif;
 
         i {
             margin-left: .3rem;
+            transition: transform 0.3s ease;
         }
 
         @media screen and (max-width : 768px) {
             max-height: 100%;
             font-size: .9rem;
             padding: 4px 16px;
-
         }
     }
 
     .product-button:hover {
-        background-color: gold;
+        background-color: var(--accent-color);
         color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(125, 162, 188, 0.25);
+    }
+
+    .product-button:hover i {
+        transform: translateX(3px);
     }
 
     .icon {

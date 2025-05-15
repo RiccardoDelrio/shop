@@ -5,7 +5,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: var(--bianco-avorio);
     padding: 3rem 1rem;
 }
 
@@ -18,12 +18,12 @@
 }
 
 .logo-circle {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(28, 28, 28, 0.7);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 217, 0, 0.3);
+    border: 1px solid var(--accent-color);
     border-radius: 50%;
     padding: 15px;
-    box-shadow: 0 0 20px rgba(255, 217, 0, 0.2);
+    box-shadow: 0 0 20px rgba(125, 162, 188, 0.3);
 }
 
 .logo-image {
@@ -33,10 +33,10 @@
 }
 
 .brand-title {
-    font-family: "Delius Swash Caps", cursive;
+    font-family: 'Playfair Display', serif;
     font-size: 3rem;
     position: relative;
-    color: white;
+    color: var(--bianco-avorio);
     letter-spacing: 1px;
     margin-top: 1rem;
 }
@@ -51,13 +51,14 @@
     font-size: 8rem;
     font-weight: bold;
     margin: 0;
-    background-image: linear-gradient(135deg, rgba(255, 217, 0, 1) 20%, rgba(218, 165, 32, 0.8) 80%);
+    background-image: linear-gradient(135deg, var(--accent-color) 20%, var(--grigio-perla) 80%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     letter-spacing: 0.5rem;
     text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     line-height: 1;
+    font-family: 'Playfair Display', serif;
 }
 
 .error-title {
@@ -84,8 +85,8 @@
 
 .home-button {
     background: transparent;
-    color: rgba(255, 217, 0, 0.9);
-    border: 2px solid rgba(255, 217, 0, 0.8);
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
     border-radius: 4px;
     padding: 0.75rem 2rem;
     font-size: 1.1rem;
@@ -99,16 +100,16 @@
 }
 
 .home-button:hover {
-    background: linear-gradient(135deg, rgba(255, 217, 0, 0.8), rgba(218, 165, 32, 0.9));
-    color: rgb(15, 0, 0);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+    color: white;
     border-color: transparent;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .browse-button {
-    background: linear-gradient(135deg, rgba(255, 217, 0, 0.8), rgba(218, 165, 32, 0.9));
-    color: rgb(15, 0, 0);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+    color: white;
     border: 2px solid transparent;
     border-radius: 4px;
     padding: 0.75rem 2rem;
@@ -135,12 +136,13 @@
         flex-direction: column;
         align-items: center;
     }
-    
-    .home-button, .browse-button {
+
+    .home-button,
+    .browse-button {
         width: 100%;
         min-width: 220px;
     }
-    
+
     .error-code {
         font-size: 6rem;
     }

@@ -19,18 +19,14 @@
 }
 
 .col_category h1 {
-    font-size: 3.4rem;
-    background: none;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    background-image: linear-gradient(135deg,
-            rgb(252, 230, 134) 15%,
-            /* Brown */
-            rgb(255, 215, 0) 60%);
-    /* Gold */
-
-
+    font-size: 1.8rem;
+    /* Further reduced from 2.2rem to 1.8rem */
+    font-weight: 400;
+    font-family: 'Tenor Sans', sans-serif;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .col_category .card-img-overlay {

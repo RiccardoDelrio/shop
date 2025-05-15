@@ -22,7 +22,7 @@ const Register = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
-    };    const handleSubmit = async (e) => {
+    }; const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);

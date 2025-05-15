@@ -20,8 +20,8 @@ const UserMenu = () => {
     if (!currentUser) {
         return (
             <div className="auth-buttons">
-                <Link to="/login" className="login-button">Accedi</Link>
-                <Link to="/register" className="register-button">Registrati</Link>
+                <Link to="/login" className="login-button px-3">Login</Link>
+                <Link to="/register" className="register-button px-3">Register</Link>
             </div>
         );
     }

@@ -20,6 +20,7 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import NotFound from './pages/NotFound'; // Updated import path from components to pages
 import UnsubscribeNewsletter from './pages/UnsubscribeNewsletter';
+import Fireflies from './components/Fireflies/Fireflies';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <>
+      <Fireflies />
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
