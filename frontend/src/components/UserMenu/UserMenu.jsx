@@ -31,7 +31,7 @@ const UserMenu = () => {
         <div className="user-menu-container">
             <button className="user-button" onClick={toggleMenu}>
                 <i className="fa-solid fa-user"></i>
-                <span className="user-name">{currentUser.first_name}</span>
+                <span className="user-name d-none d-sm-block">{currentUser.first_name}</span>
             </button>
 
             {menuOpen && (

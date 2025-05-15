@@ -24,7 +24,7 @@ const SearchBar = () => {
                 <i className='fa-solid fa-magnifying-glass'></i>
             ) : (
                 <input
-                    className="form-control ps-3 rounded-pill"
+                    className="form-control p-1 p-sm-2 ps-3 ps-sm-3 rounded-pill"
                     type="search"
                     placeholder="Cerca..."
                     aria-label="Search"
