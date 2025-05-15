@@ -72,11 +72,10 @@ const Jumbotron = () => {
                     </div>
                 </div>
 
-                {/* Mobile Slider */}
-            </div>
-            <div className="mobile-jumbo  d-lg-none">
+                {/* Mobile Slider */}            </div>
+            <div className="mobile-jumbo d-lg-none">
                 <img src="./img/jumbo-mobile.jpeg" alt="Mobile Jumbotron" />
-                <h1 className="text-center ">Boolean</h1>
+                <h1>Boolique</h1>
             </div>
         </div>
     );
