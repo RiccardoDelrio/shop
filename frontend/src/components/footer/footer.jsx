@@ -34,6 +34,9 @@ export default function Footer() {
                                         <li className="nav-item mb-2">
                                             < NavLink to="/contacts" className="nav-link p-0 footer-nav-link ">Contataci</NavLink>
                                         </li>
+                                        <li className="nav-item mb-2">
+                                            < NavLink to="/unsubscribe-newsletter" className="nav-link p-0 footer-nav-link ">Disiscrizione Newsletter</NavLink>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -41,9 +44,6 @@ export default function Footer() {
                                 <div className="col-6 ">
                                     <h5 className="text-center">Prodotti</h5>
                                     <ul className="nav flex-column text-center info-list">
-                                        <li className="nav-item mb-2">
-
-                                        </li>
                                         <li className="nav-item mb-2">
                                             < NavLink to="/" className="nav-link p-0 footer-nav-link ">Sconti</NavLink>
                                         </li>
