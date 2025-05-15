@@ -27,7 +27,10 @@
     letter-spacing: 0.01em;
 }
 
-
+.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
 
 .main-container {
     width: 100%;
@@ -272,6 +275,16 @@ table {
     font-family: 'Raleway', sans-serif;
     border-radius: 4px;
     transition: all 0.3s ease;
+}
+
+.button-view {
+    color: var(--testo-principale);
+    border: 1px solid var(--grigio-perla);
+
+    &:hover {
+        background-color: var(--rosa-cipria);
+        border: 1px solid var(--grigio-perla);
+    }
 }
 
 .filter-sidebar .form-control:focus,

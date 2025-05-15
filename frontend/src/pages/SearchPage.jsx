@@ -163,7 +163,7 @@ export default function SearchPage() {
                             <option value="name_desc">Name: Z to A</option>
                             <option value="new_arrivals">New Arrivals</option>
                         </select>
-                        <button className="btn btn-outline-light" onClick={toggleView}>
+                        <button className="btn btn-outline-light button-view" onClick={toggleView}>
                             <i className={`bi ${isGridView ? 'bi-grid-3x3-gap' : 'bi-list'}`}></i>
                         </button>
                     </div>

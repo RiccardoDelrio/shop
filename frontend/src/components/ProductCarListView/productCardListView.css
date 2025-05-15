@@ -3,8 +3,10 @@
     width: 100%;
     margin: .4rem auto;
     max-height: 160px;
-    background: linear-gradient(-135deg, rgba(255, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+    /*     background: linear-gradient(-135deg, rgba(255, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+ */
     border-radius: .4rem;
+    background-color: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     padding-left: 0 !important;
@@ -66,8 +68,9 @@
     .product-name {
         font-size: 1.5rem;
         margin-bottom: 0.75rem;
-        color: white;
+        color: var(--testo-principale);
         margin: 0;
+
 
         @media screen and (max-width : 768px) {
             font-size: 1.2rem;
@@ -77,7 +80,7 @@
 
     .product-description {
         font-size: 1rem;
-        color: white;
+        color: var(--testo-principale);
         margin-bottom: 1rem;
         margin: 0;
         margin-right: 1rem;

@@ -237,16 +237,23 @@ const ProductDetails = () => {
                             <h3>SELECT A SIZE</h3>
                             <ul className="size-list">
                                 {getVariationsForColor(product.variations, selectedColor).map((variation) => (
-                                    <li
-                                        key={variation.id}
-                                        className={selectedVariation?.id === variation.id ? 'active' : ''}
-                                        onClick={() => setSelectedVariation(variation)}
-                                    >
-                                        {variation.size}
-                                    </li>
+                                    <div key={variation.id}>
+                                        <li
+
+                                            className={selectedVariation?.id === variation.id ? 'active' : ''}
+                                            onClick={() => setSelectedVariation(variation)}
+                                        >
+                                            {variation.size}
+                                        </li>
+                                        {selectedVariation === variation && (
+
+                                            <div className="small text-secondary">{variation.stock > 0 ? `${variation.stock} left` : 'Out of stock'}  </div>
+                                        )}
+
+                                    </div>
                                 ))}
                             </ul>
-                            <Link to={'/size-table'} className="m-0 text-secondary  small">Guida alle taglie </Link>
+                            <Link to={'/size-table'} className="m-0 text-secondary  small">Size guide </Link>
                         </>
                     )}
                 </div>

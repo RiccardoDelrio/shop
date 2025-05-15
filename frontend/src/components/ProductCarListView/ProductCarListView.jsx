@@ -25,7 +25,7 @@ const ProductCardListView = ({ name, description, price, image, slug, discount }
                 <p className="product-description">{description}</p>
                 {discount > 0 ? (
                     <>
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex ">
                             <span className="original-price text-decoration-line-through text-secondary">
                                 €{formatPrice(numericPrice)}</span>
                             <span className="discounted-price ps-3">

@@ -15,6 +15,17 @@ const Navbar = () => {
     useEffect(() => {
         fetchWardrobeSections();
     }, []);
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+
+        // Clean up quando il componente si smonta
+        return () => document.body.classList.remove('no-scroll');
+    }, [isMenuOpen]);
+
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
