@@ -19,11 +19,13 @@ import OrdersHistory from './pages/Profile/OrdersHistory';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import NotFound from './pages/NotFound'; // Updated import path from components to pages
+import Fireflies from './components/Fireflies/Fireflies';
 
 
 function App() {
   return (
     <>
+      <Fireflies />
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>

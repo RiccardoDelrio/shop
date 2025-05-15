@@ -21,15 +21,33 @@ const Navbar = () => {
     };
 
     return (
-        <div className="navbar">
-            {/* Right nav */}
-            <div className="rightnav">
-                <div className="logo">
-                    <img src="/img/logo.svg" alt="" />
-                    <h1 className="header_title text-white">Boolique</h1>
+        <div className="navbar ">
+            {/* Top row - Logo, search and user controls */}
+            <div className="navbar-top-row">
+                {/* Logo on the left */}
+                <div className="navbar-left">
+                    <Link to="/">
+                        <div className="logo">
+                            <img src="/img/logo.svg" alt="Boolique Logo" />
+                            <h1 className="header_title">Boolique</h1>
+                        </div>
+                    </Link>
                 </div>
 
-                <ul className={`ul ${isMenuOpen ? 'menuOpen' : ''}`}>
+                {/* Search and user controls on the right */}
+                <div className="navbar-right">
+                    <SearchBar />
+                    <UserMenu />
+                    <Cart />
+                    <div className="hamburgerMenu" onClick={toggleMenu}>
+                        <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom row with centered navigation links */}
+            <div className="navbar-bottom-row">
+                <ul className={`nav-links ${isMenuOpen ? 'menuOpen' : ''}`}>
                     <li className="navlink"><Link to="/">Home</Link></li>
                     {wardrobeSections.map(section => (
                         <li key={section.id} className="navlink">
@@ -38,14 +56,6 @@ const Navbar = () => {
                     ))}
                     <li className="navlink"><Link to="/catalogo">Catalog</Link></li>
                 </ul>
-            </div>            {/* Left nav */}
-            <div className="leftnav">
-                <SearchBar />
-                <UserMenu />
-                <Cart />
-                <div className="hamburgerMenu" onClick={toggleMenu}>
-                    <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
-                </div>
             </div>
         </div>
     );
