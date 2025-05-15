@@ -2,63 +2,62 @@ export default function PrivacyPolicy() {
     return (
         <div className="main-container">
             <section className="container py-5">
-                <div className="policy" >
-                    {/* Titolo */}
+                <div className="policy">
+                    {/* Title */}
                     <h2 className="text-center fw-semibold display-6 mb-3">Privacy Policy</h2>
-                    <p className="text-center fst-italic text-white mb-4">
+                    <p className="text-center fst-italic text-black mb-4">
                         Transparency is part of our elegance. The following policy describes how we handle your data with respect and responsibility.
                     </p>
 
-                    {/* Paragrafi */}
-                    <div className="lh-lg fs-6 text-light">
-                        <h5 className="mt-5 fw-bold">1. Introduzione</h5>
+                    {/* Paragraphs */}
+                    <div className="lh-lg fs-6 text-black">
+                        <h5 className="mt-5 fw-bold">1. Introduction</h5>
                         <p>
-                            Boolean si impegna a tutelare la privacy dei propri utenti nel rispetto del Regolamento (UE) 2016/679 (“GDPR”).
-                            Personal data is processed with care, confidentiality and only for specific and legitimate purposes.
+                            Boolean is committed to protecting the privacy of its users in compliance with Regulation (EU) 2016/679 (“GDPR”).
+                            Personal data is processed with care, confidentiality, and only for specific and legitimate purposes.
                         </p>
 
-                        <h5 className="mt-4 fw-bold">2. Titolare del trattamento</h5>
+                        <h5 className="mt-4 fw-bold">2. Data Controller</h5>
                         <p>
-                            Il titolare del trattamento è Boolean S.r.l., con sede legale in Via della Moda 12, Milano. Puoi contattarci all’indirizzo
-                            <a href="mailto:privacy@boolean.com" className="text-decoration-underline text-light"> privacy@boolean.com</a>.
+                            The data controller is Boolean S.r.l., with its registered office at Via della Moda 12, Milan. You can contact us at
+                            <a href="mailto:privacy@boolean.com" className="text-decoration-underline text-black"> privacy@boolean.com</a>.
                         </p>
 
-                        <h5 className="mt-4 fw-bold">3. Quali dati raccogliamo</h5>
+                        <h5 className="mt-4 fw-bold">3. What Data We Collect</h5>
                         <ul>
-                            <li>Dati identificativi (nome, cognome, email, numero di telefono)</li>
-                            <li>Dati necessari alla spedizione e alla fatturazione</li>
-                            <li>Dati di navigazione raccolti tramite cookie tecnici e analitici</li>
+                            <li>Identification data (name, surname, email, phone number)</li>
+                            <li>Data necessary for shipping and billing</li>
+                            <li>Browsing data collected through technical and analytical cookies</li>
                         </ul>
 
-                        <h5 className="mt-4 fw-bold">4. Finalità del trattamento</h5>
-                        <p>I tuoi dati vengono trattati per:</p>
+                        <h5 className="mt-4 fw-bold">4. Purpose of Data Processing</h5>
+                        <p>Your data is processed to:</p>
                         <ul>
-                            <li>Gestire gli ordini e le consegne</li>
-                            <li>Offrire assistenza e supporto</li>
-                            <li>Inviare aggiornamenti e comunicazioni promozionali (solo previo consenso)</li>
-                            <li>Analizzare in forma aggregata l’uso del sito per migliorarne la qualità</li>
+                            <li>Manage orders and deliveries</li>
+                            <li>Provide assistance and support</li>
+                            <li>Send updates and promotional communications (only with prior consent)</li>
+                            <li>Analyze site usage in aggregate form to improve its quality</li>
                         </ul>
 
-                        <h5 className="mt-4 fw-bold">5. Conservazione</h5>
+                        <h5 className="mt-4 fw-bold">5. Data Retention</h5>
                         <p>
-                            I dati personali sono conservati solo per il tempo necessario a garantire il servizio o adempiere agli obblighi di legge.
-                            I dati per finalità promozionali sono conservati fino a revoca del consenso.
+                            Personal data is retained only for the time necessary to provide the service or comply with legal obligations.
+                            Data for promotional purposes is retained until consent is withdrawn.
                         </p>
 
-                        <h5 className="mt-4 fw-bold">6. I tuoi diritti</h5>
+                        <h5 className="mt-4 fw-bold">6. Your Rights</h5>
                         <p>
-                            Puoi richiedere in qualsiasi momento: accesso, rettifica, cancellazione, opposizione o limitazione del trattamento.
-                            Hai inoltre diritto alla portabilità dei dati. Le richieste vanno inviate a <a href="mailto:privacy@boolean.com" className="text-decoration-underline text-light">privacy@boolean.com</a>.
+                            You can request at any time: access, rectification, deletion, objection, or restriction of processing.
+                            You also have the right to data portability. Requests should be sent to <a href="mailto:privacy@boolean.com" className="text-decoration-underline text-black">privacy@boolean.com</a>.
                         </p>
 
-                        <h5 className="mt-4 fw-bold">7. Minori</h5>
+                        <h5 className="mt-4 fw-bold">7. Minors</h5>
                         <p>
-                            I nostri servizi non sono destinati a utenti di età inferiore ai 16 anni e non raccogliamo intenzionalmente dati da minori.
+                            Our services are not intended for users under the age of 16, and we do not knowingly collect data from minors.
                         </p>
                     </div>
                 </div>
             </section>
-
         </div>
     );
 }
