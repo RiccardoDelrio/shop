@@ -11,6 +11,7 @@ const orderRouter = require('./orderRouter');
 const newsletterRouter = require('./newsletterRouter');
 const wardrobeSectionRouter = require('./wardrobeSectionRouter');
 const authRouter = require('./authRouter');
+const wishlistRouter = require('./wishlistRouter'); // Add this line
 
 // Generalist route for dynamic product filtering
 router.get('/products/filter', dynamicFilteringController.dynamicFiltering);
@@ -22,6 +23,7 @@ router.use('/orders', orderRouter);
 router.use('/newsletter', newsletterRouter);
 router.use('/wardrobe-sections', wardrobeSectionRouter);
 router.use('/auth', authRouter);
+router.use('/wishlist', wishlistRouter); // Add this line
 
 // Legacy compatibility - redirect root to products
 router.get('/', (req, res) => {

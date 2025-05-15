@@ -13,19 +13,19 @@ Questo sistema implementa una gestione avanzata dei token di autenticazione con 
 
 1. Esegui lo script per creare la tabella dei token:
 
-```bash
-node scripts/create_token_table.js
-```
+   ```bash
+   node scripts/create_token_table.js
+   ```
 
 2. Riavvia il server backend:
 
-```bash
-node server.js
-```
+   ```bash
+   node server.js
+   ```
 
 ## Come funziona
 
-1. **Login**: 
+1. **Login**:
    - Quando un utente effettua il login, viene creato un token JWT
    - Il token viene salvato nel database con la data di scadenza
    - Il token viene restituito al frontend

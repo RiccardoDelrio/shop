@@ -1208,6 +1208,172 @@
             ]
         },
         {
+            "name": "Wishlist Routes",
+            "item": [
+                {
+                    "name": "Get Wishlist Items",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wishlist",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wishlist"
+                            ]
+                        },
+                        "description": "Retrieve all wishlist items for the logged-in user. Returns product details including images."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add to Wishlist",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"productId\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wishlist",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wishlist"
+                            ]
+                        },
+                        "description": "Add a product to the user's wishlist. Requires authentication and product ID in request body."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Remove from Wishlist",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wishlist/:productId",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wishlist",
+                                ":productId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "1",
+                                    "description": "The ID of the product to remove from the wishlist"
+                                }
+                            ]
+                        },
+                        "description": "Remove a specific product from the user's wishlist using the product ID in the URL parameter."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Check if Product is in Wishlist",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wishlist/check/:productId",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wishlist",
+                                "check",
+                                ":productId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "1",
+                                    "description": "The ID of the product to check in the wishlist"
+                                }
+                            ]
+                        },
+                        "description": "Check if a specific product is in the user's wishlist. Returns { inWishlist: true/false }."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Clear Wishlist",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:3000/api/v1/wishlist",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "api",
+                                "v1",
+                                "wishlist"
+                            ]
+                        },
+                        "description": "Remove all items from the user's wishlist. This operation cannot be undone."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Routes for managing user wishlist functionality. All routes require authentication with a valid JWT token."
+        },
+        {
             "name": "Outdated Routes",
             "description": "These routes have been replaced by the /products/filter endpoint for dynamic filtering.",
             "item": [
