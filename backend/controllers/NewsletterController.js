@@ -26,33 +26,32 @@ const submitEmail = async (req, res) => {
 
     try {
       console.log("Email inviata a:", email);
-      await sendEmail(
-        email,
-        "Welcome to Boolean Shop Newsletter",
-        `<div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-          <h2>Dear Customer,</h2>
-          
-          <p>✨ <strong>Thank you for subscribing to the Boolean Shop newsletter!</strong> ✨</p>
-          
-          <p>Here's what you'll receive:</p>
-          <ul>
-            <li>Exclusive offers</li>
-            <li>Product updates</li>
-            <li>Special discounts</li>
-            <li>Personalized content</li>
-          </ul>
-          
-          <p>Best regards,<br>
-          The Boolean Shop Team</p>
-          
-          <hr style="border: 1px solid #eee; margin: 20px 0;">
-          
-          <p style="font-size: 12px; color: #777;">
-            If you no longer wish to receive our emails, you can unsubscribe at any time.<br>
-            © ${new Date().getFullYear()} Boolean Shop. All rights reserved.
-          </p>
-        </div>`
-      );
+      const htmlContent = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+            <h2>Dear Customer,</h2>
+            
+            <p>✨ <strong>Thank you for subscribing to the Boolean Shop newsletter!</strong> ✨</p>
+            
+            <p>Here's what you'll receive:</p>
+            <ul>
+                <li>Exclusive offers</li>
+                <li>Product updates</li>
+                <li>Special discounts</li>
+                <li>Personalized content</li>
+            </ul>
+            
+            <p>Best regards,<br>
+            The Boolean Shop Team</p>
+            
+            <hr style="border: 1px solid #eee; margin: 20px 0;">
+            
+            <p style="font-size: 12px; color: #777;">
+                If you wish to unsubscribe from our newsletter, <a href="http://localhost:5173/unsubscribe-newsletter">click here</a>.<br>
+                © ${new Date().getFullYear()} Boolean Shop. All rights reserved.
+            </p>
+        </div>
+      `;
+      await sendEmail(email, "Welcome to Boolean Shop Newsletter", htmlContent);
 
       res.status(201).json({
         message: "Email registrata con successo!",
