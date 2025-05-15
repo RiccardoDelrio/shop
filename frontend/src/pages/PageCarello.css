@@ -6,17 +6,20 @@
 }
 
 .cart-header {
-    color: white;
+    color: var(--testo-principale);
     margin-bottom: 1.5rem;
 }
 
 .cart-title {
-    font-family: "Delius Swash Caps", cursive;
+    font-family: 'Tenor Sans', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     margin-bottom: 1rem;
 }
 
 .cart-divider {
-    border-color: rgba(255, 217, 0, 0.3);
+    border-color: rgba(125, 162, 188, 0.2);
     margin: 1rem 0;
 }
 
