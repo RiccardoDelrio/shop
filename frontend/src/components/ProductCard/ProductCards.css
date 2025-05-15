@@ -21,7 +21,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: transform .5s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     .custom-card:hover .card-imges {
@@ -36,9 +36,17 @@
         height: 60%;
         background: linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
         color: var(--testo-principale);
-        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: all .7s cubic-bezier(0.25, 1, 0.5, 1);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
+
+        &:hover {
+            .card-hover-content {
+                padding-top: 1.25rem;
+                transition: all .7s cubic-bezier(0.25, 1, 0.5, 1);
+                ;
+            }
+        }
     }
 
     .custom-card:hover .card-hover {
@@ -48,6 +56,7 @@
 
     .card-hover-content {
         padding: 1.25rem;
+        padding-top: 0;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -106,7 +115,7 @@
         letter-spacing: 0.05em;
         text-transform: uppercase;
         transition: all 0.3s ease;
-        align-self: center;
+
         position: relative;
         overflow: hidden;
         line-clamp: 1;

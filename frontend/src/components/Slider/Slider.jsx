@@ -32,14 +32,14 @@ const Slider = ({ children }) => {
 
     return (
         <div className="slider-container">
-            <button className="slider-button left" onClick={() => slide("left")}>
-                &#8249;
+            <button className="slider-button left " onClick={() => slide("left")}>
+                <i className="fa-solid fa-chevron-left"></i>
             </button>
             <div className="slider-content" ref={rowRef}>
                 {children}
             </div>
             <button className="slider-button right" onClick={() => slide("right")}>
-                &#8250;
+                <i className="fa-solid fa-chevron-right"></i>
             </button>
         </div>
     );

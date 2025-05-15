@@ -27,7 +27,7 @@ const ProductCards = ({ name, description, price, image, slug, discount }) => {
                 />
                 <div className="card-hover">
                     <div className="card-hover-content ">
-                        <h5 className="card-title px-3 ">{name}</h5>
+                        <h5 className="card-title py-2 ">{name}</h5>
                         <p className="card-description">{description}</p>
                         {discount > 0 ? (
                             <>
