@@ -177,31 +177,51 @@ async function createOrder(req, res) {
     }
 
     function createOrderForUser(user_id) {
-        // Insert the order with the user ID
-        const orderSql = `
-            INSERT INTO Orders (user_id, status, delivery, total, discount, final_price)
-            VALUES (?, 'Pending', ?, ?, ?, ?)
-        `;
-
-        connection.query(orderSql, [user_id, deliveryValue, total, discount, final_price], (err, orderResults) => {
+        connection.beginTransaction(async (err) => {
             if (err) return res.status(500).json({ error: err.message });
 
-            const order_id = orderResults.insertId;
+            try {
+                // Insert the order with the user ID
+                const [orderResults] = await connection.promise().query(
+                    `INSERT INTO Orders (user_id, status, delivery, total, discount, final_price)
+                VALUES (?, 'Completed', ?, ?, ?, ?)`,
+                    [user_id, deliveryValue, total, discount, final_price]
+                );
 
-            // Then insert all order items
-            const orderItemsValues = itemsWithDiscount.map(item => [
-                order_id,
-                item.product_id,
-                item.product_variation_id || null,
-                item.quantity,
-                item.discountedPrice
-            ]);
+                const order_id = orderResults.insertId;
 
-            const orderItemsSql = `
-                INSERT INTO Order_Items (order_id, product_id, product_variation_id, quantity, price)
-                VALUES ?
-            `; connection.query(orderItemsSql, [orderItemsValues], async (err) => {
-                if (err) return res.status(500).json({ error: err.message });
+                // Then insert all order items
+                const orderItemsValues = itemsWithDiscount.map(item => [
+                    order_id,
+                    item.product_id,
+                    item.product_variation_id || null,
+                    item.quantity,
+                    item.discountedPrice
+                ]);
+
+                await connection.promise().query(
+                    `INSERT INTO Order_Items (order_id, product_id, product_variation_id, quantity, price)
+                VALUES ?`,
+                    [orderItemsValues]
+                );
+
+                // Update stock levels for each product variation
+                for (const item of itemsWithDiscount) {
+                    if (item.product_variation_id) {
+                        const [updateResult] = await connection.promise().query(
+                            'UPDATE Product_Variations SET stock = stock - ? WHERE id = ? AND stock >= ?',
+                            [item.quantity, item.product_variation_id, item.quantity]
+                        );
+
+                        // Check if the update was successful (stock was sufficient)
+                        if (updateResult.affectedRows === 0) {
+                            throw new Error(`Insufficient stock for product variation ${item.product_variation_id}`);
+                        }
+                    }
+                }
+
+                // Commit the transaction after all operations succeed
+                await connection.promise().query('COMMIT');
 
                 try {
                     // Generate a numeric customer-facing ID
@@ -419,18 +439,21 @@ async function createOrder(req, res) {
                         order_id: numericOrderId,
                         tracking_email: email
                     });
-                } catch (error) {
-                    console.error('Errore invio email:', error);
-                    // L'ordine è stato creato ma l'invio email è fallito
-                    res.status(201).json({
-                        message: 'Ordine creato ma invio email fallito',
-                        order_id: order_id,
-                        tracking_email: email
-                    });
-                }
-            });
-        });
-    }
+                } catch (emailError) {
+                console.error('Errore invio email:', emailError);
+                res.status(201).json({
+                    message: 'Ordine creato ma invio email fallito',
+                    order_id: order_id,
+                    tracking_email: email
+                });
+            }
+            
+        } catch (error) {
+            // If any error occurs, rollback the transaction
+            await connection.promise().query('ROLLBACK');
+            return res.status(400).json({ error: error.message });
+        }
+    })};  // Added the missing closing parenthesis here
 }
 
 // Get order by ID

@@ -12,7 +12,7 @@ function dynamicFiltering(req, res) {
     // whitelist to avoid sql injections
     // These are parameters used for filtering products
     const ALLOWED_FILTERS = [
-        'category', 'wardrobe_section', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock'
+        'category', 'wardrobe_section', 'color', 'size', 'discounted', 'search', 'minPrice', 'maxPrice', 'inStock', 'available'
     ];
 
     // These are parameters used for controlling result presentation (not filtering)
@@ -89,6 +89,9 @@ function dynamicFiltering(req, res) {
     }
     if (filters.inStock === 'true') {
         sql += ' AND pv.stock > 0';
+    }
+    if (filters.available === 'true') {
+        sql += ' AND EXISTS (SELECT 1 FROM product_variations pv2 WHERE pv2.product_id = p.id AND pv2.stock > 0)';
     }
     if (filters.search) {
         sql += ' AND (p.name LIKE ? OR p.description LIKE ?)';

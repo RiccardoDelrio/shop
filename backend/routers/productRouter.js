@@ -24,6 +24,9 @@ router.get('/product-images/:productId', ImageController.getProductColorImages);
 // Get all images for a product
 router.get('/images/:productId', ImageController.getAllProductImages);
 
+// Add a new route to check product availability
+router.post('/check-availability', ProductController.checkAvailability);
+
 // Get product by slug (must be last to avoid conflicts with other routes)
 router.get('/:slug', ProductController.getProductBySlug);
 

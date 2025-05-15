@@ -61,7 +61,8 @@ function getProductBySlug(req, res) {
                     'color', pv.color,
                     'color_hex', pv.color_hex,
                     'size', pv.size,
-                    'stock', pv.stock
+                    'stock', pv.stock,
+                    'in_stock', pv.stock > 0
                 )
             ) AS variations
         FROM Products p
@@ -232,11 +233,62 @@ function getBestsellers(req, res) {
     });
 }
 
+// Check product availability
+function checkAvailability(req, res) {
+    const { items } = req.body;
+    
+    if (!items || !Array.isArray(items)) {
+        return res.status(400).json({ error: 'Invalid request format. Expected array of items.' });
+    }
+    
+    const promises = items.map(item => {
+        return new Promise((resolve, reject) => {
+            if (!item.product_variation_id || !item.quantity) {
+                return resolve({
+                    product_variation_id: item.product_variation_id,
+                    available: false,
+                    error: 'Missing product_variation_id or quantity'
+                });
+            }
+            
+            const query = 'SELECT stock >= ? AS available FROM Product_Variations WHERE id = ?';
+            connection.query(query, [item.quantity, item.product_variation_id], (err, results) => {
+                if (err) return reject(err);
+                if (results.length === 0) {
+                    return resolve({
+                        product_variation_id: item.product_variation_id,
+                        available: false,
+                        error: 'Product variation not found'
+                    });
+                }
+                resolve({
+                    product_variation_id: item.product_variation_id,
+                    available: results[0].available === 1,
+                    requested: item.quantity
+                });
+            });
+        });
+    });
+    
+    Promise.all(promises)
+        .then(results => {
+            const allAvailable = results.every(item => item.available);
+            res.json({
+                allAvailable,
+                items: results
+            });
+        })
+        .catch(error => {
+            res.status(500).json({ error: error.message });
+        });
+}
+
 module.exports = {
     getAllProducts,
     getProductBySlug,
     getRandomProducts,
     getDiscountedProducts,
     searchProducts,
-    getBestsellers
+    getBestsellers,
+    checkAvailability
 };
