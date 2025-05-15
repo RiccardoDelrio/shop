@@ -121,36 +121,58 @@
 
 .mobile-jumbo {
     width: 100%;
-    height: 400px;
+    max-height: 400px;
     position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0;
+    box-shadow: var(--card-shadow);
 
     h1 {
-        font-family: "Delius Swash Caps", cursive;
-
-
+        font-family: "Tenor Sans", sans-serif;
         font-weight: 400;
-        font-style: normal;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
         background-clip: text;
         -webkit-background-clip: text;
         color: transparent;
         background-image: linear-gradient(135deg,
-                rgb(252, 230, 134) 15%,
-                /* Brown */
-                rgb(255, 215, 0) 60%);
+                var(--nero-carbone) 15%,
+                var(--accent-color) 85%);
         position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 12rem;
+        bottom: 25px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 3rem;
         background-size: 300%;
-        animation: shimmer-color 4s linear infinite;
-        animation: fadeIn 1s ease-in-out forwards;
+        animation: shimmer-color 4s linear infinite, fadeIn 1s ease-in-out forwards;
+        margin: 0;
+        padding: 0 1rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        position: relative;
 
-        @media screen and (max-width : 478px) {
-            font-size: 10rem;
-
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background-color: var(--accent-color);
+            opacity: 0.8;
         }
 
+        @media screen and (max-width: 768px) {
+            font-size: 2.5rem;
+        }
+
+        @media screen and (max-width: 478px) {
+            font-size: 2rem;
+            bottom: 15px;
+        }
     }
 }
 
@@ -168,6 +190,22 @@
     }
 }
 
+/* Aggiungiamo un overlay per migliorare la leggibilità del testo */
+.mobile-jumbo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+    z-index: 1;
+}
+
+.mobile-jumbo h1 {
+    z-index: 2;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -179,10 +217,13 @@
 }
 
 .mobile-jumbo img {
-    height: 100%;
     width: 100%;
+    height: auto;
+    max-height: 400px;
     object-fit: cover;
     object-position: center;
-    aspect-ratio: 16 / 9;
-
+    display: block;
+    border: 1px solid var(--grigio-perla);
+    transition: all 0.4s ease;
+    filter: saturate(0.95);
 }

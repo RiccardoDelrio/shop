@@ -9,8 +9,7 @@
     border: 1px solid var(--grigio-perla);
     border-radius: 4px;
     padding: 20px;
-    background-color: rgba(28, 28, 28, 0.8);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    background-color: var(--accent-color) box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
 
     &:hover {
@@ -33,7 +32,7 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50px;
+            width: 230px;
             height: 1px;
             background-color: var(--accent-color);
         }

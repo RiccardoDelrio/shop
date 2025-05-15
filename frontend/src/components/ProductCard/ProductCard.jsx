@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom"; // Import Link for navigation
 import "./ProductCards.css";
 
-const ProductCards = ({ name, description, price, image, slug, discount }) => {
-
-    /*     { console.log(`Product ${name} - discount:`, discount, typeof discount); } */
+const ProductCards = ({ name, description, price, image, slug, discount }) => {    /*     { console.log(`Product ${name} - discount:`, discount, typeof discount); } */
 
     const discountedPrice = discount ? price - (price * discount / 100) : price;
     const numericPrice = Number(price);
@@ -13,13 +11,17 @@ const ProductCards = ({ name, description, price, image, slug, discount }) => {
         return num % 1 === 0 ? num.toString() : num.toFixed(2);
     };
 
+    const formatDiscount = (discount) => {
+        const num = Number(discount);
+        return Number.isInteger(num) ? num : num.toFixed(0);
+    };
+
     return (
 
         <div className="col card-container d-flex justify-content-center align-items-center">
-            <div className="card custom-card">
-                {discount > 0 && (
-                    <p className="position-absolute discounted-tag rounded-pill bg-warning px-3"><span className="h6">- </span>{discount}%</p>
-                )}
+            <div className="card custom-card">                {discount > 0 && (
+                <p className="position-absolute discounted-tag rounded-pill bg-warning px-3"><span className="h6">- </span>{formatDiscount(discount)}%</p>
+            )}
                 <img
                     src={image}
                     alt={name}

@@ -2,12 +2,12 @@
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
-    background-color: rgba(28, 28, 28, 0.8);
+    background-color: var(--light-bg);
     backdrop-filter: blur(10px);
     border: 1px solid var(--grigio-perla);
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    color: var(--bianco-avorio);
+    box-shadow: var(--card-shadow);
+    color: var(--testo-principale);
 
     h3 {
         font-family: 'Playfair Display', serif;
@@ -30,48 +30,68 @@
     }
 
     .form-label {
-        color: var(--bianco-avorio);
+        color: var(--testo-principale);
         font-family: 'Raleway', sans-serif;
         font-weight: 500;
     }
 
     .form-control,
     .form-select {
-        background: var(--nero-carbone);
+        background-color: rgba(255, 255, 255, 0.8);
         border: 1px solid var(--grigio-perla);
         border-radius: 4px;
-        color: var(--bianco-avorio);
+        color: var(--testo-principale);
         transition: all 0.3s ease;
     }
 
     .form-control:focus,
     .form-select:focus {
-        background-color: rgba(28, 28, 28, 0.95);
+        background-color: rgba(255, 255, 255, 0.95);
         border-color: var(--accent-color);
         box-shadow: 0 0 0 0.2rem rgba(125, 162, 188, 0.25);
         outline: none;
     }
 
     .form-button {
-        padding: 0.75rem 1.5rem;
-        border-radius: 4px;
+        padding: 12px 28px;
+        border-radius: 0;
         border: none;
-        background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
-        color: rgb(15, 0, 0);
+        background-color: var(--accent-color);
+        color: white;
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: .5rem;
-        font-weight: 600;
+        font-weight: 400;
+        font-family: 'Jost', sans-serif;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: all 0.3s ease;
+        letter-spacing: 0.05em;
+        font-size: 0.9rem;
+        transition: var(--transition-smooth);
+        overflow: hidden;
+        z-index: 1;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bianco-avorio);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
 
         &:hover {
-            background: linear-gradient(135deg, rgba(255, 217, 0, 1), rgba(218, 165, 32, 1));
+            color: var(--nero-carbone);
+            box-shadow: 0 5px 15px rgba(125, 162, 188, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        &:hover::before {
+            left: 0;
         }
 
         .icon-button {
@@ -81,18 +101,19 @@
     }
 
     .order-summary {
-        background-color: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 217, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(125, 162, 188, 0.2);
         border-radius: 6px;
         padding: 1.5rem;
         margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
     }
 
     .summary-title {
         font-family: "Delius Swash Caps", cursive;
         font-size: 1.2rem;
         margin-bottom: 1rem;
-        color: rgba(255, 217, 0, 0.9);
+        color: var(--accent-color);
     }
 
     .summary-item {
@@ -100,7 +121,7 @@
         justify-content: space-between;
         margin-bottom: 0.5rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(125, 162, 188, 0.1);
     }
 
     .summary-total {
@@ -110,7 +131,7 @@
         font-size: 1.1rem;
         margin-top: 1rem;
         padding-top: 1rem;
-        border-top: 1px solid rgba(255, 217, 0, 0.2);
+        border-top: 1px solid rgba(125, 162, 188, 0.2);
     }
 
     .alert {
@@ -121,63 +142,65 @@
     }
 
     .alert-success {
-        background-color: rgba(25, 135, 84, 0.2);
-        color: #98ffc1;
-        border: 1px solid rgba(25, 135, 84, 0.4);
+        background-color: rgba(25, 135, 84, 0.1);
+        color: #198754;
+        border: 1px solid rgba(25, 135, 84, 0.2);
     }
 
     .alert-danger {
-        background-color: rgba(220, 53, 69, 0.2);
-        color: #ff8888;
-        border: 1px solid rgba(220, 53, 69, 0.4);
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
     }
 
     .order-details {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(255, 255, 255, 0.5);
         border-radius: 6px;
         padding: 1.5rem;
-        border: 1px solid rgba(255, 217, 0, 0.2);
+        border: 1px solid rgba(125, 162, 188, 0.2);
+        box-shadow: var(--card-shadow);
     }
 
     .btn-outline-secondary {
-        color: rgba(255, 217, 0, 0.9);
+        color: var(--accent-color);
         background: transparent;
-        border: 1px solid rgba(255, 217, 0, 0.5);
+        border: 1px solid var(--accent-color);
         transition: all 0.3s ease;
     }
 
     .btn-outline-secondary:hover {
-        background-color: rgba(255, 217, 0, 0.1);
-        color: rgba(255, 217, 0, 1);
-        border-color: rgba(255, 217, 0, 0.8);
+        background-color: rgba(125, 162, 188, 0.1);
+        color: var(--accent-color);
+        border-color: var(--accent-color);
     }
 
     .btn-outline-primary {
-        color: rgba(255, 217, 0, 0.9);
+        color: var(--accent-color);
         background: transparent;
-        border: 1px solid rgba(255, 217, 0, 0.5);
+        border: 1px solid var(--accent-color);
         transition: all 0.3s ease;
     }
 
     .btn-outline-primary:hover {
-        background-color: rgba(255, 217, 0, 0.1);
-        color: rgba(255, 217, 0, 1);
-        border-color: rgba(255, 217, 0, 0.8);
+        background-color: rgba(125, 162, 188, 0.1);
+        color: var(--accent-color);
+        border-color: var(--accent-color);
     }
 
     .form-section {
         margin-bottom: 2rem;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.5);
         padding: 1.5rem;
         border-radius: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--grigio-perla);
+        box-shadow: var(--card-shadow);
     }
 
     .section-title {
         font-size: 1.2rem;
         margin-bottom: 1rem;
-        color: rgba(255, 217, 0, 0.9);
-        border-bottom: 1px solid rgba(255, 217, 0, 0.2);
+        color: var(--accent-color);
+        border-bottom: 1px solid rgba(125, 162, 188, 0.2);
         padding-bottom: 0.5rem;
     }
 }

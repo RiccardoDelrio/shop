@@ -175,12 +175,11 @@ export default function SearchPage() {
                 <div className="row g-4">
                     {/* Filters Sidebar */}
                     <div className="col-lg-3">
-                        <div className="filter-sidebar p-3 rounded">
-                            <div className='d-flex justify-content-between'>
+                        <div className="filter-sidebar p-3 rounded">                            <div className='d-flex justify-content-between'>
 
-                                <h4 className="mb-3">Filters</h4>
-                                <p onClick={() => setSearchParams()} className='text-secondary'>Reset filters</p>
-                            </div>
+                            <h4 className="mb-3">Filters</h4>
+                            <p onClick={() => setSearchParams()} className='text-secondary' style={{ cursor: 'pointer' }}>Reset filters</p>
+                        </div>
 
 
                             <div className="mb-3">

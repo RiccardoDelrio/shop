@@ -20,17 +20,19 @@ const NotFound = () => {
 
             <div className="not-found-content">
                 <h2 className="error-code">404</h2>
-                <h3 className="error-title">Page Not Found</h3>
-                <p className="error-message">The page you are looking for does not exist or has been moved.</p>
+                <h3 className="error-title">Pagina Non Trovata</h3>
+                <p className="error-message">La pagina che stai cercando non esiste o è stata spostata.</p>
             </div>
+
+            <div className="gold-divider"></div>
 
             <div className="action-buttons">
                 <Link to="/" className="home-button">
-                    Return to Homepage
+                    <i className="bi bi-house me-2"></i>Torna alla Home
                 </Link>
 
                 <Link to="/catalogo" className="browse-button">
-                    Browse Products
+                    <i className="bi bi-bag me-2"></i>Sfoglia Catalogo
                 </Link>
             </div>
         </div>
