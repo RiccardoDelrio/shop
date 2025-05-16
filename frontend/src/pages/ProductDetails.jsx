@@ -5,7 +5,7 @@ import { useGlobal } from "../contexts/GlobalContext";
 
 const ProductDetails = () => {
     const { slug } = useParams();
-    const { cartItems, setCartItems } = useGlobal()
+    const { cartItems, setCartItems, wishlistItems, toggleWishlist } = useGlobal()
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
@@ -154,6 +154,28 @@ const ProductDetails = () => {
 
     const availableColors = getUniqueColors(product.variations);
 
+    const isInWishlist = wishlistItems.some(item => item.id === product?.id);
+
+    const handleWishlistAdd = () => {
+        if (!selectedColor) {
+            alert('Please select a color first');
+            return;
+        }
+        if (!selectedVariation) {
+            alert('Please select a size first');
+            return;
+        }
+
+        const wishlistProduct = {
+            ...product,
+            selectedColor,
+            selectedVariation,
+            selectedImage: currentImage
+        };
+
+        toggleWishlist(wishlistProduct);
+    };
+
     return (
         <section className="product position-relative">
             {addToCart && (
@@ -164,8 +186,12 @@ const ProductDetails = () => {
                 <div className="photo-container">
                     <div className="photo-main">
                         <div className="controls">
-                            <button className="btn ">
-                                <i className="bi bi-heart"></i>
+                            <button
+                                className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
+                                onClick={handleWishlistAdd}
+                                aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                            >
+                                <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
                             </button>
                         </div>
                         <img
