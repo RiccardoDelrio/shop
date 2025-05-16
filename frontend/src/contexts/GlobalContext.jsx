@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
+
 
 const GlobalContext = createContext()
 
@@ -17,6 +19,26 @@ function GlobalProvider({ children }) {
     const [wishlistItems, setWishlistItems] = useState(
         JSON.parse(localStorage.getItem('wishlist')) || []
     );
+    const user = JSON.parse(localStorage.getItem('user'))
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+        if (user?.id && token) {
+            fetch('http://localhost:3000/api/v1/wishlist', {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => setWishlistItems(data.reverse()))
+        }
+
+
+    }, [])
+
+
+
 
     // Fetch 10 random products
     function fetchBestSellers() {
@@ -69,8 +91,15 @@ function GlobalProvider({ children }) {
 
     // Salva wishlist nel localStorage quando cambia
     useEffect(() => {
-        localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
+        if (!user) {
+
+            localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
+        }
+
+
     }, [wishlistItems]);
+    console.log(wishlistItems);
+
 
     // Funzione semplificata per gestire la wishlist
     const toggleWishlist = (product) => {

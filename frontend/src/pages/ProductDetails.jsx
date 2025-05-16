@@ -5,6 +5,8 @@ import { useGlobal } from "../contexts/GlobalContext";
 
 const ProductDetails = () => {
     const { slug } = useParams();
+
+
     const { cartItems, setCartItems, wishlistItems, toggleWishlist } = useGlobal()
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
@@ -157,6 +159,8 @@ const ProductDetails = () => {
     const isInWishlist = wishlistItems.some(item => item.id === product?.id);
 
     const handleWishlistAdd = () => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        const token = localStorage.getItem('token')
         if (!selectedColor) {
             alert('Please select a color first');
             return;
@@ -174,6 +178,23 @@ const ProductDetails = () => {
         };
 
         toggleWishlist(wishlistProduct);
+        if (user.id && token) {
+            fetch('http://localhost:3000/api/v1/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    "productId": wishlistProduct.id
+                })
+
+            })
+                .then(res => res.json())
+                .then(data => console.log(data.message)
+                )
+        }
+
     };
 
     return (
