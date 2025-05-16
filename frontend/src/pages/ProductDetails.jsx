@@ -13,6 +13,7 @@ const ProductDetails = () => {
     const [selectedVariation, setSelectedVariation] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [addToCart, setAddToCart] = useState(false)
+    const [showTooltip, setShowTooltip] = useState(false);
     console.log('cart items', cartItems);
 
 
@@ -207,13 +208,24 @@ const ProductDetails = () => {
                 <div className="photo-container">
                     <div className="photo-main">
                         <div className="controls">
-                            <button
-                                className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
-                                onClick={handleWishlistAdd}
-                                aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                            >
-                                <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
-                            </button>
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
+                                    onClick={handleWishlistClick}
+                                    aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                                >
+                                    <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
+                                </button>
+                                {showTooltip && (
+                                    <div className="wishlist-tooltip">
+                                        {!selectedColor
+                                            ? 'Please select a color first'
+                                            : !selectedVariation
+                                                ? 'Please select a size first'
+                                                : ''}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <img
                             className="img_main"

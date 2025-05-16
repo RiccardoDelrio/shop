@@ -211,6 +211,13 @@ export default function SearchPage() {
                                     name="minPrice"
                                     value={filters.minPrice}
                                     onChange={handleFilterChange}
+                                    min="0"
+                                    step="1"
+                                    onKeyDown={(e) => {
+                                        if (e.key === '-' || e.key === 'e') {
+                                            e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
 
@@ -222,6 +229,13 @@ export default function SearchPage() {
                                     name="maxPrice"
                                     value={filters.maxPrice}
                                     onChange={handleFilterChange}
+                                    min={filters.minPrice || 0}
+                                    step="1"
+                                    onKeyDown={(e) => {
+                                        if (e.key === '-' || e.key === 'e') {
+                                            e.preventDefault();
+                                        }
+                                    }}
                                 />
                             </div>
 
