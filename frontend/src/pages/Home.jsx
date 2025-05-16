@@ -1,4 +1,4 @@
-import Jumbotron from "../components/Jumbotron/jumbotron";
+import Jumbotron from "../components/jumbotron/jumbotron";
 import CategoryCards from "../components/CategoryCards/CategoryCards";
 import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router";
