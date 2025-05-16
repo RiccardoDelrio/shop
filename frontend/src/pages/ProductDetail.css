@@ -357,16 +357,66 @@
 }
 
 .wishlist-btn.in-wishlist i {
-    color: #dc3545 !important; /* Forziamo il colore rosso */
+    color: #dc3545 !important;
+    /* Forziamo il colore rosso */
 }
 
 .wishlist-btn:hover i {
     transform: scale(1.1);
-    color: #dc3545; /* Colore rosso anche all'hover */
+    color: #dc3545;
+    /* Colore rosso anche all'hover */
+}
+
+.wishlist-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.wishlist-btn:disabled:hover {
+    transform: none;
 }
 
 /* Override any Bootstrap or FontAwesome default styles */
-.bi-heart, 
+.bi-heart,
 .bi-heart-fill {
     color: inherit !important;
+}
+
+/* Add these new styles */
+.wishlist-tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -10px;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        right: 15px;
+        width: 12px;
+        height: 12px;
+        background-color: var(--accent-color);
+        transform: rotate(45deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

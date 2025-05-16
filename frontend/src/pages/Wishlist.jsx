@@ -18,7 +18,7 @@ export default function Wishlist() {
                 </div>
             ) : (
                 <div className="row row-cols-1 row-cols-md-4 g-4">
-                    {wishlistItems.map((item) => (
+                    {wishlistItems?.map((item) => (
                         <div key={item.id} className="col">
                             <div className="card h-100 wishlist-card">
                                 <div className="wishlist-img-container">
@@ -35,7 +35,7 @@ export default function Wishlist() {
                                             Color: {item.selectedColor}
                                         </span>
                                         <span className="badge bg-light text-dark">
-                                            Size: {item.selectedVariation.size}
+                                            Size: {item?.selectedVariation?.size}
                                         </span>
                                     </div>
                                     <p className="card-text">€ {item.price}</p>

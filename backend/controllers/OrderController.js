@@ -1,5 +1,7 @@
 const connection = require("../database/db");
 const sendEmail = require("../utils/sendEmail");
+const { isValidEmail, isPositiveInteger, isValidLength, isValidPhone } = require('../utils/validation');
+
 // Add the new utility instead of the encoder
 const { generateNumericId, extractDatabaseId } = require("../utils/numericIdGenerator");
 const jwt = require('jsonwebtoken');
@@ -25,12 +27,69 @@ async function createOrder(req, res) {
         discount = 0
     } = req.body;
 
-    // Validate required customer info
-    if (!customer_info || !customer_info.email) {
-        return res.status(400).json({ error: 'Customer email is required for orders' });
+    // Validation errors array
+    const errors = [];
+
+    // Validate customer info
+    if (!customer_info) {
+        return res.status(400).json({ error: 'Customer information is required' });
     }
 
     const { first_name, last_name, email, phone, address, city, state, postal_code, country, is_guest } = customer_info;
+
+    if (!email) errors.push('Email is required');
+    else if (!isValidEmail(email)) errors.push('Invalid email format');
+
+    if (!first_name) errors.push('First name is required');
+    else if (!isValidLength(first_name, 2, 50)) errors.push('First name must be between 2-50 characters');
+
+    if (!last_name) errors.push('Last name is required');
+    else if (!isValidLength(last_name, 2, 50)) errors.push('Last name must be between 2-50 characters');
+
+    if (!address) errors.push('Address is required');
+    if (!city) errors.push('City is required');
+    if (!postal_code) errors.push('Postal code is required');
+    if (!country) errors.push('Country is required');
+    if (phone && !isValidPhone(phone)) {
+        errors.push('Invalid phone number format');
+    }
+    if (state && !isValidLength(state, 1, 50)) {
+        errors.push('State must be between 1-50 characters');
+    }
+    if (is_guest !== undefined && typeof is_guest !== 'boolean') {
+        errors.push('is_guest must be a boolean value');
+    }
+
+    // Validate items array
+    if (!items || !Array.isArray(items)) {
+        errors.push('Items must be an array');
+    } else if (items.length === 0) {
+        errors.push('Order must contain at least one item');
+    } else {
+        items.forEach((item, index) => {
+            if (!item.product_id) {
+                errors.push(`Item ${index}: Product ID is required`);
+            } else if (!isPositiveInteger(item.product_id)) {
+                errors.push(`Item ${index}: Product ID must be a positive integer`);
+            }
+
+            if (!item.quantity) {
+                errors.push(`Item ${index}: Quantity is required`);
+            } else if (!isPositiveInteger(item.quantity)) {
+                errors.push(`Item ${index}: Quantity must be a positive integer`);
+            }
+        });
+    }
+
+    // Validate discount
+    if (discount && (!Number.isFinite(Number(discount)) || Number(discount) < 0 || Number(discount) > 100)) {
+        errors.push('Discount must be a number between 0 and 100');
+    }
+
+    // Return all validation errors
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
 
     // Calculate total (sum of item.price * item.quantity), applying product-level discounts
     let total = 0;

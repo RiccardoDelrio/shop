@@ -5,12 +5,15 @@ import { useGlobal } from "../contexts/GlobalContext";
 
 const ProductDetails = () => {
     const { slug } = useParams();
+
+
     const { cartItems, setCartItems, wishlistItems, toggleWishlist } = useGlobal()
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [addToCart, setAddToCart] = useState(false)
+    const [showTooltip, setShowTooltip] = useState(false);
     console.log('cart items', cartItems);
 
 
@@ -157,6 +160,8 @@ const ProductDetails = () => {
     const isInWishlist = wishlistItems.some(item => item.id === product?.id);
 
     const handleWishlistAdd = () => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        const token = localStorage.getItem('token')
         if (!selectedColor) {
             alert('Please select a color first');
             return;
@@ -174,6 +179,23 @@ const ProductDetails = () => {
         };
 
         toggleWishlist(wishlistProduct);
+        if (user.id && token) {
+            fetch('http://localhost:3000/api/v1/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    "productId": wishlistProduct.id
+                })
+
+            })
+                .then(res => res.json())
+                .then(data => console.log(data.message)
+                )
+        }
+
     };
 
     return (
@@ -186,13 +208,24 @@ const ProductDetails = () => {
                 <div className="photo-container">
                     <div className="photo-main">
                         <div className="controls">
-                            <button
-                                className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
-                                onClick={handleWishlistAdd}
-                                aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                            >
-                                <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
-                            </button>
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
+                                    onClick={handleWishlistClick}
+                                    aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                                >
+                                    <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
+                                </button>
+                                {showTooltip && (
+                                    <div className="wishlist-tooltip">
+                                        {!selectedColor
+                                            ? 'Please select a color first'
+                                            : !selectedVariation
+                                                ? 'Please select a size first'
+                                                : ''}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <img
                             className="img_main"
