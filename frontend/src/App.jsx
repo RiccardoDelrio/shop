@@ -21,6 +21,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import NotFound from './pages/NotFound'; // Updated import path from components to pages
 import UnsubscribeNewsletter from './pages/UnsubscribeNewsletter';
 import Fireflies from './components/Fireflies/Fireflies';
+import Wishlist from './pages/Wishlist';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -49,6 +50,7 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/search/:query" element={<SearchPage />} />
             <Route path="/unsubscribe-newsletter" element={<UnsubscribeNewsletter />} />
+            <Route path="/wishlist" element={<Wishlist />} />
 
             {/* Pagine di autenticazione */}
             <Route path="/login" element={<Login />} />

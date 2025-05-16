@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useGlobal } from '../../contexts/GlobalContext';
 import { useAuth } from '../../contexts/AuthContext';
 
+
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { wardrobeSections, fetchWardrobeSections } = useGlobal();
@@ -66,6 +67,13 @@ const Navbar = () => {
                         </li>
                     ))}
                     <li className="navlink"><Link to="/catalogo">Catalog</Link></li>
+                    {/* Aggiunto il link della wishlist come elemento della navbar */}
+                    <li className="navlink">
+                        <Link to="/wishlist" className="d-flex align-items-center">
+                            <i className="bi bi-heart"></i>
+                            <span className="ms-2">Wishlist</span>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </div>
