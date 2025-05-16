@@ -21,6 +21,8 @@ const Checkout = () => {
     const [formCheck, setFormCheck] = useState(null)    // Stato per il messaggio di aggiornamento del profilo
     const [updateMessage, setUpdateMessage] = useState('')    // Precompila i dati del form con le informazioni dell'utente loggato
     const [isLoading, setIsLoading] = useState(false)
+    const [cartSummary, setCartSummary] = useState([]) // Stato per memorizzare i dati del carrello dal localStorage
+    const [isAccordionOpen, setIsAccordionOpen] = useState(false) // Stato per il toggle dell'accordion
 
 
     useEffect(() => {
@@ -215,7 +217,10 @@ const Checkout = () => {
     };
     console.log('Loading', isLoading);
 
-
+    // Funzione per calcolare il totale del carrello
+    const calculateCartTotal = () => {
+        return cartItems.reduce((total, item) => total + (item.price * item.quantità), 0).toFixed(2);
+    }
 
     if (cartItems.length === 0 && !formStatus?.message) {
         return (
@@ -225,7 +230,25 @@ const Checkout = () => {
                 <Link to="/search" className="btn btn-primary">Continua lo shopping</Link>
             </div>
         )
-    }
+    }// Carica il carrello da localStorage
+    useEffect(() => {
+        try {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const parsedCart = JSON.parse(savedCart);
+                if (parsedCart && Array.isArray(parsedCart) && parsedCart.length > 0) {
+                    setCartSummary(parsedCart);
+                    // Se cartItems è vuoto, carica anche lì i dati
+                    if (cartItems.length === 0) {
+                        setCartItems(parsedCart);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Errore nel caricare il carrello da localStorage:', error);
+        }
+    }, []);
+
     useEffect(() => {
         if (formStatus?.order_id) {
             const handleFormCheck = async () => {
@@ -238,10 +261,62 @@ const Checkout = () => {
             handleFormCheck()
         }
     }, [formStatus])
-
-
     return (
         <div className="checkout-container my-5">
+            {/* Accordion Cart Summary */}
+            <div className="cart-accordion mb-4">
+                <div
+                    className="accordion-header"
+                    onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                >
+                    <div className="d-flex justify-content-between align-items-center">
+                        <h5 className="mb-0">
+                            <i className="fa-solid fa-shopping-cart me-2"></i>
+                            Riepilogo ordine ({cartItems.length} articoli)
+                        </h5>
+                        <span className="accordion-toggle">
+                            <i className={`fa-solid ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                        </span>
+                    </div>
+                    <div className="d-flex justify-content-between mt-2">
+                        <span>Totale:</span>
+                        <strong>{calculateCartTotal()}€</strong>
+                    </div>
+                </div>
+
+                <div className={`accordion-content ${isAccordionOpen ? 'open' : ''}`}>
+                    {cartItems.map((item, index) => (
+                        <div key={index} className="cart-item-row">
+                            <div className="cart-item-details">
+                                <div className="cart-item-title">{item.name}</div>
+                                <div className="cart-item-variant">
+                                    <small>Colore: {item.variations.color}, Taglia: {item.variations.size}</small>
+                                </div>
+                            </div>
+                            <div className="cart-item-price">
+                                <div className="quantity">{item.quantità} x {item.price.toFixed(2)}€</div>
+                                <div className="subtotal">{(item.price * item.quantità).toFixed(2)}€</div>
+                            </div>
+                        </div>
+                    ))}
+
+                    <div className="cart-summary-footer">
+                        <div className="d-flex justify-content-between">
+                            <span>Subtotale:</span>
+                            <span>{calculateCartTotal()}€</span>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                            <span>Spedizione:</span>
+                            <span>Gratuita</span>
+                        </div>
+                        <div className="d-flex justify-content-between total-row">
+                            <strong>Totale:</strong>
+                            <strong>{calculateCartTotal()}€</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {!isAuthenticated && (
                 <div className="mb-4 p-3 border rounded bg-light">
                     <p>Sei già registrato? <Link to="/login?redirect=checkout">Accedi</Link> per un checkout più veloce e per salvare i tuoi dati di spedizione.</p>

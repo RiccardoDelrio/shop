@@ -221,7 +221,97 @@
         padding-bottom: 0.5rem;
     }
 
+    /* Cart Accordion Styles */
+    .cart-accordion {
+        border: 1px solid var(--grigio-perla);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: white;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+    }
 
+    .accordion-header {
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .accordion-header:hover {
+        background-color: rgba(245, 245, 245, 0.9);
+    }
+
+    .accordion-toggle {
+        color: var(--accent-color);
+        transition: transform 0.3s ease;
+    }
+
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background-color: rgba(250, 250, 250, 0.7);
+    }
+
+    .accordion-content.open {
+        max-height: 500px;
+        padding: 1rem;
+    }
+
+    .cart-item-row {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--grigio-perla);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .cart-item-row:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item-details {
+        flex: 1;
+    }
+
+    .cart-item-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .cart-item-variant {
+        margin-top: 0.25rem;
+        color: var(--grigio-scuro);
+    }
+
+    .cart-item-price {
+        text-align: right;
+        min-width: 100px;
+    }
+
+    .cart-item-price .quantity {
+        color: var(--grigio-scuro);
+        font-size: 0.85rem;
+    }
+
+    .cart-item-price .subtotal {
+        font-weight: 600;
+        margin-top: 0.25rem;
+    }
+
+    .cart-summary-footer {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 2px dashed var(--grigio-perla);
+    }
+
+    .total-row {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--grigio-perla);
+        color: var(--accent-color);
+    }
 
     .spinner {
         width: 48px;

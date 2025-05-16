@@ -47,7 +47,7 @@ export default function Jumbotron() {
                     <span>{display}</span>
                     <span className="caret">|</span>
                 </div>
-                <a href="#shop" className="btn btn-reveal btn-lg mt-4">Discover the Collection</a>
+                <a href="/search" className="btn btn-reveal btn-lg mt-4">Discover the Collection</a>
             </div>
         </section>
     );
