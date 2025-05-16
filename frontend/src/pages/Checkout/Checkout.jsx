@@ -9,7 +9,6 @@ import {
     CardElement,
 } from '@stripe/react-stripe-js';
 
-
 const Checkout = () => {
     const { cartItems, setCartItems } = useGlobal()
     const { currentUser, updateProfile } = useAuth()
@@ -21,6 +20,8 @@ const Checkout = () => {
     const [formStatus, setFormStatus] = useState(null)
     const [formCheck, setFormCheck] = useState(null)    // Stato per il messaggio di aggiornamento del profilo
     const [updateMessage, setUpdateMessage] = useState('')    // Precompila i dati del form con le informazioni dell'utente loggato
+    const [isLoading, setIsLoading] = useState(false)
+
 
     useEffect(() => {
         console.log("Cart items:", cartItems);
@@ -117,6 +118,7 @@ const Checkout = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+
         const requiredFields = ['first_name', 'last_name', 'email', 'address', 'city', 'postal_code', 'country'];
         const missingFields = requiredFields.filter(field => !formData[field]);
 
@@ -156,6 +158,7 @@ const Checkout = () => {
 
         if (paymentResult.paymentIntent.status === 'succeeded') {
             console.log('Pagamento riuscito');
+            setIsLoading(true)
 
             // continua con invio ordine come già fai
             const headers = {
@@ -187,11 +190,13 @@ const Checkout = () => {
                 .then(res => res.json())
                 .then(data => {
                     setFormStatus(data);
+                    setIsLoading(false)
                     if (!data.error) {
                         setCartItems([]);
                         localStorage.setItem('lastOrder', JSON.stringify({
                             order_id: data.order_id,
                             email: formData.email
+
                         }));
                     }
                 })
@@ -234,7 +239,7 @@ const Checkout = () => {
 
             <form>
                 {formStatus ? (
-                    <div className={`${formStatus.error ? 'bg-danger' : 'bg-success'} rounded-4 m-auto p-5 text-center h5 position-relative`}>
+                    <div className={`${formStatus.error ? 'bg-danger' : 'bg-success'}  m-auto p-5 text-center text-white h5 position-relative`}>
                         {formStatus.error ? (
                             <>
                                 <div onClick={() => setFormStatus(null)} className="position-absolute start-0 top-0 p-3 text-white">
@@ -244,31 +249,40 @@ const Checkout = () => {
                             </>
                         ) : (
                             <>
-                                <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
-                                <p className='h4'>{formStatus.message}</p>
-                                {formCheck?.id && (
-                                    <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
-                                        <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
-                                        <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
-                                        <p><strong>Email:</strong> {formCheck.email}</p>
-                                        <p><strong>Telefono:</strong> {formCheck.phone}</p>
-                                        <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
-                                        <hr />
-                                        <h6 className="mt-3 mb-2">📦 Prodotti</h6>
-                                        <ul className="list-unstyled">
-                                            {formCheck.items.map((item, index) => (
-                                                <li key={index} className="mb-2">
-                                                    <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
-                                                    <small>Variante: {item.color}, Taglia: {item.size}</small>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <hr />
-                                        <p><strong>Totale:</strong> {formCheck.total}€</p>
-                                        {parseFloat(formCheck.discount) > 0 && (
-                                            <p><strong>Sconto:</strong> {formCheck.discount}€</p>
+                                {isLoading ? (
+                                    <div className="loader-container">
+                                        <div className="spinner"></div>
+                                    </div>
+                                ) : (
+                                    <div>
+
+                                        <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
+                                        <p className='h4'>{formStatus.message}</p>
+                                        {formCheck?.id && (
+                                            <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
+                                                <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
+                                                <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
+                                                <p><strong>Email:</strong> {formCheck.email}</p>
+                                                <p><strong>Telefono:</strong> {formCheck.phone}</p>
+                                                <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
+                                                <hr />
+                                                <h6 className="mt-3 mb-2">📦 Prodotti</h6>
+                                                <ul className="list-unstyled">
+                                                    {formCheck.items.map((item, index) => (
+                                                        <li key={index} className="mb-2">
+                                                            <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
+                                                            <small>Variante: {item.color}, Taglia: {item.size}</small>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                                <hr />
+                                                <p><strong>Totale:</strong> {formCheck.total}€</p>
+                                                {parseFloat(formCheck.discount) > 0 && (
+                                                    <p><strong>Sconto:</strong> {formCheck.discount}€</p>
+                                                )}
+                                                <p><strong>Stato ordine:</strong> {formCheck.status}</p>
+                                            </div>
                                         )}
-                                        <p><strong>Stato ordine:</strong> {formCheck.status}</p>
                                     </div>
                                 )}
                             </>
@@ -451,6 +465,7 @@ const Checkout = () => {
 
                             <button
                                 onClick={handleSubmit}
+                                disabled={isLoading}
                                 className='form-button'
                                 type="submit"
                             >
@@ -465,6 +480,8 @@ const Checkout = () => {
             </form>
         </div>
     )
+
+
 }
 
 export default Checkout
