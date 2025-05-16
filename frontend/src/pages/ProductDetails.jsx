@@ -11,6 +11,7 @@ const ProductDetails = () => {
     const [selectedVariation, setSelectedVariation] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [addToCart, setAddToCart] = useState(false)
+    const [showTooltip, setShowTooltip] = useState(false);
     console.log('cart items', cartItems);
 
 
@@ -156,24 +157,29 @@ const ProductDetails = () => {
 
     const isInWishlist = wishlistItems.some(item => item.id === product?.id);
 
-    const handleWishlistAdd = () => {
-        if (!selectedColor) {
-            alert('Please select a color first');
-            return;
+    const handleWishlistClick = () => {
+        if (isInWishlist) {
+            // If item is already in wishlist, allow removal without checks
+            toggleWishlist(product);
+        } else {
+            // Only check for color and size when adding to wishlist
+            if (!selectedColor || !selectedVariation) {
+                handleDisabledClick();
+                return;
+            }
+            const wishlistProduct = {
+                ...product,
+                selectedColor,
+                selectedVariation,
+                selectedImage: currentImage
+            };
+            toggleWishlist(wishlistProduct);
         }
-        if (!selectedVariation) {
-            alert('Please select a size first');
-            return;
-        }
+    };
 
-        const wishlistProduct = {
-            ...product,
-            selectedColor,
-            selectedVariation,
-            selectedImage: currentImage
-        };
-
-        toggleWishlist(wishlistProduct);
+    const handleDisabledClick = () => {
+        setShowTooltip(true);
+        setTimeout(() => setShowTooltip(false), 2000);
     };
 
     return (
@@ -186,13 +192,24 @@ const ProductDetails = () => {
                 <div className="photo-container">
                     <div className="photo-main">
                         <div className="controls">
-                            <button
-                                className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
-                                onClick={handleWishlistAdd}
-                                aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                            >
-                                <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
-                            </button>
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
+                                    onClick={handleWishlistClick}
+                                    aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                                >
+                                    <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
+                                </button>
+                                {showTooltip && (
+                                    <div className="wishlist-tooltip">
+                                        {!selectedColor
+                                            ? 'Please select a color first'
+                                            : !selectedVariation
+                                                ? 'Please select a size first'
+                                                : ''}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <img
                             className="img_main"

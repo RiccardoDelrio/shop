@@ -74,11 +74,6 @@ function GlobalProvider({ children }) {
 
     // Funzione semplificata per gestire la wishlist
     const toggleWishlist = (product) => {
-        if (!product.selectedColor || !product.selectedVariation) {
-            alert('Please select color and size first');
-            return;
-        }
-
         setWishlistItems(prev => {
             const isInWishlist = prev.some(item => item.id === product.id);
             if (isInWishlist) {
