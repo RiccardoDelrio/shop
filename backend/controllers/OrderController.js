@@ -146,10 +146,9 @@ async function createOrder(req, res) {
                 [first_name, last_name, email, phone, address, city, state, postal_code, country, hashedPassword],
                 (err, userResults) => {
                     if (err) {
-                        // Se email duplicata, crea un utente specifico per l'ordine
-                        if (err.code === 'ER_DUP_ENTRY') {                            // Aggiungi timestamp per garantire l'unicità
+                        if (err.code === 'ER_DUP_ENTRY') {
                             const uniqueEmail = `${email}_${Date.now()}`;
-                            // Rigenera la query SQL per assicurarsi che venga usato il ruolo corretto
+
                             const uniqueUserSql = `
                                 INSERT INTO Users (
                                     first_name, last_name, email, phone, 
@@ -440,20 +439,21 @@ async function createOrder(req, res) {
                         tracking_email: email
                     });
                 } catch (emailError) {
-                console.error('Errore invio email:', emailError);
-                res.status(201).json({
-                    message: 'Ordine creato ma invio email fallito',
-                    order_id: order_id,
-                    tracking_email: email
-                });
+                    console.error('Errore invio email:', emailError);
+                    res.status(201).json({
+                        message: 'Ordine creato ma invio email fallito',
+                        order_id: order_id,
+                        tracking_email: email
+                    });
+                }
+
+            } catch (error) {
+                // If any error occurs, rollback the transaction
+                await connection.promise().query('ROLLBACK');
+                return res.status(400).json({ error: error.message });
             }
-            
-        } catch (error) {
-            // If any error occurs, rollback the transaction
-            await connection.promise().query('ROLLBACK');
-            return res.status(400).json({ error: error.message });
-        }
-    })};  // Added the missing closing parenthesis here
+        })
+    };  // Added the missing closing parenthesis here
 }
 
 // Get order by ID
@@ -571,86 +571,150 @@ function updateOrderStatus(req, res) {
 
 
 
-/**
- * Ottiene tutti gli ordini dell'utente specificato tramite ID
- */
-function getUserOrders(req, res) {
-    // Ottieni l'ID utente direttamente dai parametri dell'URL
-    const userId = req.params.userId;
 
-    if (!userId) {
-        return res.status(400).json({
-            success: false,
-            error: 'ID utente mancante'
-        });
-    }
+async function getUserOrders(req, res) {
+    try {
+        const { userId } = req.params;
 
-    // Query per ottenere tutti gli ordini dell'utente con i relativi items
-    const sql = `
-        SELECT 
-            o.id,
-            o.status,
-            o.total,
-            o.discount,
-            o.delivery,
-            o.final_price,
-            o.created_at,
-            o.updated_at,
-            JSON_ARRAYAGG(
-                JSON_OBJECT(
-                    'id', oi.id,
-                    'product_id', oi.product_id,
-                    'product_name', p.name,
-                    'product_variation_id', oi.product_variation_id,
-                    'color', pv.color,
-                    'size', pv.size,
-                    'quantity', oi.quantity,
-                    'price', oi.price,
-                    'image', (SELECT pi.image_url FROM Product_Images pi WHERE pi.product_id = p.id AND pi.is_primary = 1 LIMIT 1)
-                )
-            ) AS items
-        FROM Orders o
-        JOIN Order_Items oi ON o.id = oi.order_id
-        JOIN Products p ON oi.product_id = p.id
-        LEFT JOIN Product_Variations pv ON oi.product_variation_id = pv.id
-        WHERE o.user_id = ?
-        GROUP BY o.id
-        ORDER BY o.created_at DESC
-    `;
-
-    connection.query(sql, [userId], (err, results) => {
-        if (err) {
-            console.error('Errore nel recupero degli ordini:', err);
-            return res.status(500).json({
+        // Verifica che l'utente autenticato stia richiedendo i propri ordini
+        // Il token JWT contiene user_id invece di id
+        if (req.user.user_id != userId) {
+            return res.status(403).json({
                 success: false,
-                error: 'Errore durante il recupero degli ordini'
+                error: 'Non sei autorizzato a visualizzare gli ordini di un altro utente'
             });
         }
 
-        // Formatta il risultato per ciascun ordine
-        const formattedResults = results.map(order => {
-            // Se items è una stringa (può succedere con JSON_ARRAYAGG), convertiamo in array
-            let items = order.items;
-            if (typeof items === 'string') {
-                try {
-                    items = JSON.parse(items);
-                } catch {
-                    items = [];
-                }
-            }
+        // Query per ottenere gli ordini con il conteggio degli articoli per ogni ordine
+        const [orders] = await connection.promise().query(`
+            SELECT 
+                o.id AS order_id,
+                o.status,
+                o.delivery,
+                o.total,
+                o.discount,
+                o.final_price,
+                o.created_at AS order_date,
+                COUNT(oi.id) AS total_items
+            FROM 
+                Orders o
+            JOIN 
+                Order_Items oi ON o.id = oi.order_id
+            WHERE 
+                o.user_id = ?
+            GROUP BY 
+                o.id, o.status, o.delivery, o.total, o.discount, o.final_price, o.created_at
+            ORDER BY 
+                o.created_at DESC
+        `, [userId]);
 
-            return {
-                ...order,
-                items
-            };
-        });
+        // Aggiunta degli ID numerici per mostrare agli utenti
+        const formattedOrders = orders.map(order => ({
+            ...order,
+            numeric_id: generateNumericId(order.order_id)
+        }));
 
+        // Risposta con successo
         res.status(200).json({
             success: true,
-            count: formattedResults.length,
-            orders: formattedResults
+            count: formattedOrders.length,
+            orders: formattedOrders
         });
-    });
+
+    } catch (err) {
+        console.error('Errore durante il recupero degli ordini:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Errore durante il recupero degli ordini'
+        });
+    }
+}
+
+// Funzione per ottenere i dettagli completi di un singolo ordine
+async function getOrderDetails(req, res) {
+    try {
+        const { orderId } = req.params;
+        const userId = req.user.user_id;
+
+        // Prima verifichiamo che l'ordine appartenga all'utente
+        const [orderCheck] = await connection.promise().query(
+            'SELECT id FROM Orders WHERE id = ? AND user_id = ?',
+            [orderId, userId]
+        );
+
+        if (orderCheck.length === 0) {
+            return res.status(403).json({
+                success: false,
+                error: 'Non sei autorizzato a visualizzare questo ordine'
+            });
+        }
+
+        // Query per ottenere i dettagli dell'ordine
+        const [orderDetails] = await connection.promise().query(`
+            SELECT 
+                o.id AS order_id,
+                o.status,
+                o.delivery,
+                o.total,
+                o.discount,
+                o.final_price,
+                o.created_at AS order_date
+            FROM 
+                Orders o
+            WHERE 
+                o.id = ?
+        `, [orderId]);
+
+        if (orderDetails.length === 0) {
+            return res.status(404).json({
+                success: false,
+                error: 'Ordine non trovato'
+            });
+        }
+
+        // Aggiungere l'ID numerico
+        orderDetails[0].numeric_id = generateNumericId(orderDetails[0].order_id);
+
+        // Query per ottenere gli elementi dell'ordine con dettagli dei prodotti
+        const [orderItems] = await connection.promise().query(`
+            SELECT 
+                oi.id,
+                oi.price,
+                oi.quantity,
+                p.id AS product_id,
+                p.name AS product_name,
+                p.image AS product_image,
+                pv.color,
+                pv.size
+            FROM 
+                Order_Items oi
+            JOIN 
+                Products p ON oi.product_id = p.id
+            LEFT JOIN 
+                Product_Variations pv ON oi.variation_id = pv.id
+            WHERE 
+                oi.order_id = ?
+        `, [orderId]);
+
+        // Unire i dettagli dell'ordine con gli elementi
+        const fullOrderDetails = {
+            ...orderDetails[0],
+            items: orderItems
+        };
+
+        // Risposta con successo
+        res.status(200).json({
+            success: true,
+            order: fullOrderDetails
+        });
+
+    } catch (err) {
+        console.error('Errore durante il recupero dei dettagli dell\'ordine:', err);
+        res.status(500).json({
+            success: false,
+            error: 'Errore durante il recupero dei dettagli dell\'ordine'
+        });
+    }
 }
 
 // Get orders by email

@@ -1,84 +1,54 @@
-import './jumbotron.css';
-import React, { useState, useEffect } from "react";
+// 4. Hero Testo Animato: Split Reveal Typewriter
+import React, { useEffect, useState } from "react";
+import "./jumbotron.css";
 
-const slidesData = [
-    {
-        id: 1,
-        imgPrev: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img1.1.jpg",
-        imgNext: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img1.jpg",
-        alt: "Gallery Slide - 1",
-    },
-    {
-        id: 2,
-        imgPrev: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img2.1.jpg",
-        imgNext: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img2.jpg",
-        alt: "Gallery Slide - 2",
-    },
-    {
-        id: 3,
-        imgPrev: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img3.1.jpg",
-        imgNext: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img3.jpg",
-        alt: "Gallery Slide - 3",
-    },
-    {
-        id: 4,
-        imgPrev: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img4.1.jpg",
-        imgNext: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img4.jpg",
-        alt: "Gallery Slide - 4",
-    },
-    {
-        id: 5,
-        imgPrev: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img5.1.jpg",
-        imgNext: "https://bato-web-agency.github.io/bato-shared/img/gallery-slider/img5.jpg",
-        alt: "Gallery Slide - 5",
-    },
+const phrases = [
+    "Timeless elegance.",
+    "Luxury you can feel.",
+    "Reveal your uniqueness."
 ];
 
-const Jumbotron = () => {
-    const [activeSlide, setActiveSlide] = useState(1);
+export default function Jumbotron() {
+    const [index, setIndex] = useState(0);
+    const [display, setDisplay] = useState("");
+    const [phase, setPhase] = useState("typing");
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveSlide((prev) => (prev % slidesData.length) + 1);
-        }, 3000); // Auto-scroll every 3 seconds
-        return () => clearInterval(interval);
-    }, []);
+        let timeout;
+        if (phase === "typing" && display.length < phrases[index].length) {
+            timeout = setTimeout(() => {
+                setDisplay(phrases[index].slice(0, display.length + 1));
+            }, 70);
+        } else if (phase === "typing" && display.length === phrases[index].length) {
+            timeout = setTimeout(() => setPhase("pause"), 1200);
+        } else if (phase === "pause") {
+            timeout = setTimeout(() => setPhase("deleting"), 700);
+        } else if (phase === "deleting" && display.length > 0) {
+            timeout = setTimeout(() => {
+                setDisplay(display.slice(0, -1));
+            }, 30);
+        } else if (phase === "deleting" && display.length === 0) {
+            timeout = setTimeout(() => {
+                setIndex((index + 1) % phrases.length);
+                setPhase("typing");
+            }, 300);
+        }
+        return () => clearTimeout(timeout);
+    }, [display, phase, index]);
 
     return (
-        <div className="">
-            <div className="jumbotron row d-none d-lg-flex ">
-                {/* Desktop Gallery */}
-                <div className="gallery-slider col  ">
-                    <div className="gallery-slider__wrapper ">
-                        {slidesData.map((slide) => (
-                            <div
-                                key={slide.id}
-                                className={`gallery-slider__slide ${slide.id === activeSlide ? "active" : ""}`}
-                            >
-                                <div className="gallery-slider__image">
-                                    <img
-                                        className="gallery-slider__img-prev"
-                                        src={slide.imgPrev}
-                                        alt={slide.alt}
-                                    />
-                                    <img
-                                        className="gallery-slider__img-next"
-                                        src={slide.imgNext}
-                                        alt={slide.alt}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+        <section className="hero-text-reveal d-flex align-items-center justify-content-center">
+            <div className="hero-text-content text-center">
+                <h1 className="split-headline">
+                    <span className="luxury-word">DRESS </span>
+                    <span className="luxury-word highlight"> THE EMOTION</span>
+                </h1>
+                <div className="typewriter">
+                    <span>{display}</span>
+                    <span className="caret">|</span>
                 </div>
-
-                {/* Mobile Slider */}            </div>
-            <div className="mobile-jumbo d-lg-none">
-                <img src="./img/jumbo-mobile.jpeg" alt="Mobile Jumbotron" />
-                <h1>Boolique</h1>
+                <a href="#shop" className="btn btn-reveal btn-lg mt-4">Discover the Collection</a>
             </div>
-        </div>
+        </section>
     );
-};
-
-export default Jumbotron;
+}

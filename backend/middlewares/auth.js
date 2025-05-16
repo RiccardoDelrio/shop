@@ -19,8 +19,31 @@ async function authenticateToken(req, res, next) {
             });
         }
 
-        // Verifica che il token sia valido a livello di JWT
-        const user = jwt.verify(token, JWT_SECRET);
+        let user;
+        try {
+            // Verifica che il token sia valido a livello di JWT
+            user = jwt.verify(token, JWT_SECRET);
+        } catch (err) {
+            if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+                return res.status(403).json({
+                    success: false,
+                    error: 'Token non valido o scaduto'
+                });
+            }
+            console.error('Errore durante la verifica del token:', err);
+            return res.status(500).json({
+                success: false,
+                error: 'Errore durante l\'autenticazione'
+            });
+        }
+
+        // Controlla che user abbia user_id
+        if (!user || !user.user_id) {
+            return res.status(403).json({
+                success: false,
+                error: 'Token non valido: user_id mancante'
+            });
+        }
 
         // Verifica che il token sia presente e valido nel database
         const [tokenRecords] = await connection.promise().query(
@@ -44,13 +67,6 @@ async function authenticateToken(req, res, next) {
         req.token = token;
         next();
     } catch (err) {
-        if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-            return res.status(403).json({
-                success: false,
-                error: 'Token non valido o scaduto'
-            });
-        }
-
         console.error('Errore durante la verifica del token:', err);
         return res.status(500).json({
             success: false,

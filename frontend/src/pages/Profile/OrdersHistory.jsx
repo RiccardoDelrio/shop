@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './OrdersHistory.css';
@@ -11,6 +11,7 @@ const OrdersHistory = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        console.log('Current user:', currentUser);
         if (currentUser) {
             fetchOrders();
         }
@@ -18,23 +19,30 @@ const OrdersHistory = () => {
 
     const fetchOrders = () => {
         const user = JSON.parse(localStorage.getItem('user'));
+        const token = localStorage.getItem('token');
 
-        // Verifica che l'utente esista
+        console.log('User:', user);
+        // Check if user exists
         if (user && user.id) {
-            // Modifica l'URL per utilizzare il parametro nell'URL invece che come query parameter
-            fetch(`/api/orders/user/${user.id}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
+            fetch(`http://localhost:3000/api/v1/orders/user/${user.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => response.json()).then(data => {
+                    console.log('Orders retrieved:', data);
+                    if (data.success && data.orders) {
                         setOrders(data.orders);
                     } else {
-                        setError(data.error || 'Errore nel recuperare gli ordini');
+                        setError('Invalid data format');
                     }
                     setLoading(false);
                 })
                 .catch(error => {
-                    console.error('Errore nel recupero degli ordini:', error);
-                    setError('Errore durante la connessione al server');
+                    console.error('Error retrieving orders:', error);
+                    setError('Error connecting to the server');
                     setLoading(false);
                 });
         } else {
@@ -43,68 +51,48 @@ const OrdersHistory = () => {
         }
     };
 
-    // Formatta la data in formato italiano
+    // Format the date in English format
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(dateString).toLocaleDateString('it-IT', options);
-    };
-
-    // Calcola lo stato dell'ordine con il colore corrispondente
+        return new Date(dateString).toLocaleDateString('en-US', options);
+    };    // Calculate the order status with the corresponding color
     const getOrderStatus = (status) => {
+        // Convert status to lowercase to handle values uniformly
+        const statusLower = status ? status.toLowerCase() : '';
+
         const statusMap = {
-            'pending': { text: 'In attesa', class: 'status-pending' },
-            'processing': { text: 'In lavorazione', class: 'status-processing' },
-            'shipped': { text: 'Spedito', class: 'status-shipped' },
-            'delivered': { text: 'Consegnato', class: 'status-delivered' },
-            'cancelled': { text: 'Annullato', class: 'status-cancelled' }
+            'pending': { text: 'Pending', class: 'status-pending' },
+            'processing': { text: 'Processing', class: 'status-processing' },
+            'completed': { text: 'Completed', class: 'status-delivered' },
+            'cancelled': { text: 'Cancelled', class: 'status-cancelled' }
         };
 
-        return statusMap[status] || { text: status, class: '' };
+        return statusMap[statusLower] || { text: status, class: '' };
     };
 
-    // Utility per convertire lo stato dell'ordine in un colore di badge
-    const getStatusBadge = (status) => {
-        switch (status) {
-            case 'Pending': return 'warning';
-            case 'Processing': return 'info';
-            case 'Completed': return 'success';
-            case 'Cancelled': return 'danger';
-            default: return 'secondary';
-        }
-    };
-
-    // Utility per mostrare lo stato in italiano
-    const getStatusLabel = (status) => {
-        switch (status) {
-            case 'Pending': return 'In attesa';
-            case 'Processing': return 'In lavorazione';
-            case 'Completed': return 'Completato';
-            case 'Cancelled': return 'Annullato';
-            default: return status;
-        }
-    };
+    // (Unused functions removed)
 
     return (
         <div className="orders-container">
             <div className="orders-content">
-                <h2>I miei ordini</h2>
+                <h2>My Orders</h2>
 
                 {loading ? (
                     <div className="text-center my-5">
                         <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Caricamento...</span>
+                            <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 ) : error ? (
                     <div className="alert alert-danger">{error}</div>
                 ) : orders.length === 0 ? (
                     <div className="orders-empty">
-                        <p>Non hai ancora effettuato ordini.</p>
+                        <p>You haven't placed any orders yet.</p>
                         <button
                             className="btn btn-primary"
                             onClick={() => navigate('/catalogo')}
                         >
-                            Inizia a fare acquisti
+                            Start Shopping
                         </button>
                     </div>
                 ) : (
@@ -112,44 +100,26 @@ const OrdersHistory = () => {
                         {orders.map(order => {
                             const statusInfo = getOrderStatus(order.status);
 
-                            return (
-                                <div key={order.id} className="order-card">
-                                    <div className="order-header">
-                                        <div>
-                                            <h5>Ordine #{order.id}</h5>
-                                            <p className="order-date">{formatDate(order.created_at)}</p>
-                                        </div>
-                                        <div className={`order-status ${statusInfo.class}`}>
-                                            {statusInfo.text}
-                                        </div>
+                            return (<div key={order.order_id} className="order-card">
+                                <div className="order-header">
+                                    <div>
+                                        <h5>Order #{order.numeric_id || order.order_id}</h5>
+                                        <p className="order-date">{formatDate(order.order_date)}</p>
                                     </div>
-
-                                    <div className="order-details">
-                                        <p>Data: {new Date(order.created_at).toLocaleDateString('it-IT')}</p>
-                                        <p>Totale: €{order.final_price}</p>
-                                    </div>
-
-                                    <div className="order-items">
-                                        {order.items.map(item => (
-                                            <div key={item.id} className="order-item">
-                                                {item.image && (
-                                                    <img
-                                                        src={`http://localhost:3000/imgs/${item.image}`}
-                                                        alt={item.product_name}
-                                                        width="50"
-                                                    />
-                                                )}
-                                                <span>{item.product_name}</span>
-                                                <span>
-                                                    {item.color && `Colore: ${item.color}`}
-                                                    {item.size && ` - Taglia: ${item.size}`}
-                                                </span>
-                                                <span>Quantità: {item.quantity}</span>
-                                                <span>€{item.price}</span>
-                                            </div>
-                                        ))}
+                                    <div className={`order-status ${statusInfo.class}`}>
+                                        {statusInfo.text}
                                     </div>
                                 </div>
+
+                                <div className="order-details p-3">
+                                    <p>Date: {new Date(order.order_date).toLocaleDateString('en-US')}</p>
+                                    <p>Total: €{order.final_price}</p>
+                                </div>                                    <div className="order-items">
+                                    <div className="order-item-summary">
+                                        <span>Total items: {order.total_items}</span>
+                                    </div>
+                                </div>
+                            </div>
                             );
                         })}
                     </div>
@@ -160,7 +130,7 @@ const OrdersHistory = () => {
                         className="btn btn-link"
                         onClick={() => navigate('/profile')}
                     >
-                        Torna al profilo
+                        Back to Profile
                     </button>
                 </div>
             </div>

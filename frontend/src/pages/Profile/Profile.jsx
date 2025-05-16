@@ -21,7 +21,7 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', content: '' });
 
-    // Popola i dati del form quando l'utente è disponibile
+    // Populate form data when user is available
     useEffect(() => {
         if (currentUser) {
             setFormData(prevData => ({
@@ -55,10 +55,10 @@ const Profile = () => {
 
             setMessage({
                 type: 'success',
-                content: 'Profilo aggiornato con successo!'
+                content: 'Profile updated successfully!'
             });
 
-            // Ripulisci il messaggio dopo 3 secondi
+            // Clear message after 3 seconds
             setTimeout(() => {
                 setMessage({ type: '', content: '' });
             }, 3000);
@@ -66,7 +66,7 @@ const Profile = () => {
         } catch (error) {
             setMessage({
                 type: 'danger',
-                content: `Errore: ${error.message}`
+                content: `Error: ${error.message}`
             });
         } finally {
             setLoading(false);
@@ -79,13 +79,13 @@ const Profile = () => {
     };
 
     if (!currentUser) {
-        return <div className="profile-container">Caricamento in corso...</div>;
+        return <div className="profile-container">Loading...</div>;
     }
 
     return (
         <div className="profile-container">
             <div className="profile-content">
-                <h2>Il mio profilo</h2>
+                <h2>My Profile</h2>
 
                 {message.content && (
                     <div className={`alert alert-${message.type}`}>
@@ -97,13 +97,13 @@ const Profile = () => {
                     <p><strong>Email:</strong> {currentUser.email}</p>
                 </div>
 
-                <h4>Informazioni personali</h4>
+                <h4>Personal Information</h4>
 
                 <form onSubmit={handleSubmit} className="profile-form">
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="first_name">Nome</label>
+                                <label htmlFor="first_name">First Name</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -117,7 +117,7 @@ const Profile = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="last_name">Cognome</label>
+                                <label htmlFor="last_name">Last Name</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -131,7 +131,7 @@ const Profile = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="address">Indirizzo</label>
+                        <label htmlFor="address">Address</label>
                         <input
                             type="text"
                             className="form-control"
@@ -145,7 +145,7 @@ const Profile = () => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="city">Città</label>
+                                <label htmlFor="city">City</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -159,7 +159,7 @@ const Profile = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="state">Provincia</label>
+                                <label htmlFor="state">State/Province</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -175,7 +175,7 @@ const Profile = () => {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="postal_code">CAP</label>
+                                <label htmlFor="postal_code">Postal Code</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -189,7 +189,7 @@ const Profile = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="country">Paese</label>
+                                <label htmlFor="country">Country</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -203,7 +203,7 @@ const Profile = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">Telefono</label>
+                        <label htmlFor="phone">Phone</label>
                         <input
                             type="tel"
                             className="form-control"
@@ -228,7 +228,7 @@ const Profile = () => {
                             className="btn btn-link change-password-link"
                             onClick={() => navigate('/change-password')}
                         >
-                            Cambia Password
+                            Change Password
                         </button>
                     </div>
                 </form>
