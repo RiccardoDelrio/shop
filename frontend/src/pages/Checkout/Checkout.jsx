@@ -105,6 +105,8 @@ const Checkout = () => {
             }, 3000)
         }
     }
+    console.log('Form status', formStatus);
+
 
     const itemsForOrder = cartItems.map(item => {
         return {
@@ -134,6 +136,7 @@ const Checkout = () => {
             return;
         }
 
+        setIsLoading(true)
         const cardElement = elements.getElement(CardElement);
         const paymentResult = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
@@ -158,7 +161,7 @@ const Checkout = () => {
 
         if (paymentResult.paymentIntent.status === 'succeeded') {
             console.log('Pagamento riuscito');
-            setIsLoading(true)
+
 
             // continua con invio ordine come già fai
             const headers = {
@@ -198,13 +201,20 @@ const Checkout = () => {
                             email: formData.email
 
                         }));
+                        setIsLoading(false)
                     }
                 })
                 .catch(err => {
                     setFormStatus({ error: 'Errore durante la creazione dell’ordine.' });
+                    if (isLoading) {
+                        setIsLoading(false)
+                    }
                 });
+
         }
     };
+    console.log('Loading', isLoading);
+
 
 
     if (cartItems.length === 0 && !formStatus?.message) {
@@ -229,6 +239,7 @@ const Checkout = () => {
         }
     }, [formStatus])
 
+
     return (
         <div className="checkout-container my-5">
             {!isAuthenticated && (
@@ -238,6 +249,193 @@ const Checkout = () => {
             )}
 
             <form>
+                <div className={`${!formStatus && !isLoading ? '' : 'd-none'}`}>
+                    <h3 className="mb-4">Dati di spedizione</h3>
+                    <div className="row">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="first_name" className="form-label">Nome *</label>
+                            <input
+                                onChange={handleFormData}
+                                type="text"
+                                className="form-control"
+                                name="first_name"
+                                id="first_name"
+                                aria-describedby="emailHelpId"
+                                placeholder="Il tuo nome..."
+                                value={formData.first_name || ''}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="last_name" className="form-label">Cognome *</label>
+                            <input
+                                onChange={handleFormData}
+                                type="text"
+                                className="form-control"
+                                name="last_name"
+                                id="last_name"
+                                aria-describedby="emailHelpId"
+                                placeholder="Il tuo cognome..."
+                                value={formData.last_name || ''}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <label className="form-label">Dati di pagamento</label>
+                        <div className="p-3 border rounded bg-white">
+                            <CardElement options={{ hidePostalCode: true }} />
+                        </div>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email *</label>
+                        <input
+                            onChange={handleFormData}
+                            type="email"
+                            className="form-control"
+                            name="email"
+                            id="email"
+                            aria-describedby="emailHelpId"
+                            placeholder="example@email.com"
+                            value={formData.email || ''}
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="address" className="form-label">Indirizzo *</label>
+                        <input
+                            onChange={handleFormData}
+                            type="text"
+                            className="form-control"
+                            name="address"
+                            id="address"
+                            aria-describedby="emailHelpId"
+                            placeholder="Il tuo indirizzo..."
+                            value={formData.address || ''}
+                            required
+                        />
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="postal_code" className="form-label">CAP *</label>
+                            <input
+                                onChange={handleFormData}
+                                type="text"
+                                className="form-control"
+                                name="postal_code"
+                                id="postal_code"
+                                aria-describedby="emailHelpId"
+                                placeholder="CAP"
+                                value={formData.postal_code || ''}
+                                required
+                            />
+                        </div>
+
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="phone" className="form-label">Telefono</label>
+                            <input
+                                onChange={handleFormData}
+                                type="tel"
+                                className="form-control"
+                                name="phone"
+                                id="phone"
+                                aria-describedby="emailHelpId"
+                                placeholder="+39 333 3333333"
+                                value={formData.phone || ''}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="country" className="form-label">Paese *</label>
+                            <select
+                                onChange={handleFormData}
+                                className="form-select"
+                                name="country"
+                                id="country"
+                                value={formData.country || ''}
+                                required
+                            >
+                                <option value="" disabled>Scegli il tuo paese</option>
+                                <option value="IT">IT</option>
+                                <option value="DE">DE</option>
+                                <option value="FR">FR</option>
+                                <option value="ES">ES</option>
+                                <option value="GB">GB</option>
+                                <option value="US">US</option>
+                            </select>
+                        </div>
+
+                        <div className="col-md-6 mb-3">
+                            <label htmlFor="city" className="form-label">Città *</label>
+                            <input
+                                onChange={handleFormData}
+                                type="text"
+                                className="form-control"
+                                name="city"
+                                id="city"
+                                aria-describedby="emailHelpId"
+                                placeholder="La tua città..."
+                                value={formData.city || ''}
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="state" className="form-label">Provincia</label>
+                        <input
+                            onChange={handleFormData}
+                            type="text"
+                            className="form-control"
+                            name="state"
+                            id="state"
+                            aria-describedby="emailHelpId"
+                            placeholder="La tua provincia..."
+                            value={formData.state || ''}
+                        />
+                    </div>
+
+                    {isAuthenticated && (
+                        <div className="mt-3 mb-4 text-center">
+                            <button
+                                type="button"
+                                className="btn btn-outline-primary"
+                                onClick={handleUpdateProfile}
+                            >
+                                <i className="fa-solid fa-user me-2"></i>
+                                Salva questi dati nel tuo profilo
+                            </button>
+                            {updateMessage && (
+                                <div className="alert mt-2 p-2 alert-success">
+                                    {updateMessage}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    <div className='w-100 d-flex justify-content-between'>
+                        <Link to="/carello" className="btn btn-outline-secondary">
+                            <i className="fa-solid fa-arrow-left me-2"></i>
+                            Torna al carrello
+                        </Link>
+
+                        <button
+                            onClick={handleSubmit}
+                            disabled={isLoading}
+                            className='form-button'
+                            type="submit"
+                        >
+                            Conferma ordine
+                            <div className='icon-button'>
+                                <i className='fa-solid fa-arrow-right'></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
                 {formStatus ? (
                     <div className={`${formStatus.error ? 'bg-danger' : 'bg-success'}  m-auto p-5 text-center text-white h5 position-relative`}>
                         {formStatus.error ? (
@@ -249,232 +447,49 @@ const Checkout = () => {
                             </>
                         ) : (
                             <>
-                                {isLoading ? (
-                                    <div className="loader-container">
-                                        <div className="spinner"></div>
-                                    </div>
-                                ) : (
-                                    <div>
 
-                                        <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
-                                        <p className='h4'>{formStatus.message}</p>
-                                        {formCheck?.id && (
-                                            <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
-                                                <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
-                                                <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
-                                                <p><strong>Email:</strong> {formCheck.email}</p>
-                                                <p><strong>Telefono:</strong> {formCheck.phone}</p>
-                                                <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
-                                                <hr />
-                                                <h6 className="mt-3 mb-2">📦 Prodotti</h6>
-                                                <ul className="list-unstyled">
-                                                    {formCheck.items.map((item, index) => (
-                                                        <li key={index} className="mb-2">
-                                                            <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
-                                                            <small>Variante: {item.color}, Taglia: {item.size}</small>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <hr />
-                                                <p><strong>Totale:</strong> {formCheck.total}€</p>
-                                                {parseFloat(formCheck.discount) > 0 && (
-                                                    <p><strong>Sconto:</strong> {formCheck.discount}€</p>
-                                                )}
-                                                <p><strong>Stato ordine:</strong> {formCheck.status}</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                                <div>
+
+                                    <i className="fa-solid fa-check-circle fs-1 mb-3"></i>
+                                    <p className='h4'>{formStatus.message}</p>
+                                    {formCheck?.id && (
+                                        <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
+                                            <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
+                                            <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
+                                            <p><strong>Email:</strong> {formCheck.email}</p>
+                                            <p><strong>Telefono:</strong> {formCheck.phone}</p>
+                                            <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
+                                            <hr />
+                                            <h6 className="mt-3 mb-2">📦 Prodotti</h6>
+                                            <ul className="list-unstyled">
+                                                {formCheck.items.map((item, index) => (
+                                                    <li key={index} className="mb-2">
+                                                        <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
+                                                        <small>Variante: {item.color}, Taglia: {item.size}</small>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            <hr />
+                                            <p><strong>Totale:</strong> {formCheck.total}€</p>
+                                            {parseFloat(formCheck.discount) > 0 && (
+                                                <p><strong>Sconto:</strong> {formCheck.discount}€</p>
+                                            )}
+                                            <p><strong>Stato ordine:</strong> {formCheck.status}</p>
+                                        </div>
+                                    )}
+                                </div>
+
                             </>
                         )}
                     </div>
+                ) : isLoading ? (
+                    <div className="loader-container">
+                        <div className="spinner "></div>
+                        <p className='text-center d-block'>Stiamo processando il tuo ordine...</p>
+                    </div>
+
                 ) : (
                     <>
-                        <h3 className="mb-4">Dati di spedizione</h3>
-                        <div className="row">
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="first_name" className="form-label">Nome *</label>
-                                <input
-                                    onChange={handleFormData}
-                                    type="text"
-                                    className="form-control"
-                                    name="first_name"
-                                    id="first_name"
-                                    aria-describedby="emailHelpId"
-                                    placeholder="Il tuo nome..."
-                                    value={formData.first_name || ''}
-                                    required
-                                />
-                            </div>
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="last_name" className="form-label">Cognome *</label>
-                                <input
-                                    onChange={handleFormData}
-                                    type="text"
-                                    className="form-control"
-                                    name="last_name"
-                                    id="last_name"
-                                    aria-describedby="emailHelpId"
-                                    placeholder="Il tuo cognome..."
-                                    value={formData.last_name || ''}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-4">
-                            <label className="form-label">Dati di pagamento</label>
-                            <div className="p-3 border rounded bg-white">
-                                <CardElement options={{ hidePostalCode: true }} />
-                            </div>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="email" className="form-label">Email *</label>
-                            <input
-                                onChange={handleFormData}
-                                type="email"
-                                className="form-control"
-                                name="email"
-                                id="email"
-                                aria-describedby="emailHelpId"
-                                placeholder="example@email.com"
-                                value={formData.email || ''}
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <label htmlFor="address" className="form-label">Indirizzo *</label>
-                            <input
-                                onChange={handleFormData}
-                                type="text"
-                                className="form-control"
-                                name="address"
-                                id="address"
-                                aria-describedby="emailHelpId"
-                                placeholder="Il tuo indirizzo..."
-                                value={formData.address || ''}
-                                required
-                            />
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="postal_code" className="form-label">CAP *</label>
-                                <input
-                                    onChange={handleFormData}
-                                    type="text"
-                                    className="form-control"
-                                    name="postal_code"
-                                    id="postal_code"
-                                    aria-describedby="emailHelpId"
-                                    placeholder="CAP"
-                                    value={formData.postal_code || ''}
-                                    required
-                                />
-                            </div>
-
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="phone" className="form-label">Telefono</label>
-                                <input
-                                    onChange={handleFormData}
-                                    type="tel"
-                                    className="form-control"
-                                    name="phone"
-                                    id="phone"
-                                    aria-describedby="emailHelpId"
-                                    placeholder="+39 333 3333333"
-                                    value={formData.phone || ''}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="country" className="form-label">Paese *</label>
-                                <select
-                                    onChange={handleFormData}
-                                    className="form-select"
-                                    name="country"
-                                    id="country"
-                                    value={formData.country || ''}
-                                    required
-                                >
-                                    <option value="" disabled>Scegli il tuo paese</option>
-                                    <option value="IT">IT</option>
-                                    <option value="DE">DE</option>
-                                    <option value="FR">FR</option>
-                                    <option value="ES">ES</option>
-                                    <option value="GB">GB</option>
-                                    <option value="US">US</option>
-                                </select>
-                            </div>
-
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="city" className="form-label">Città *</label>
-                                <input
-                                    onChange={handleFormData}
-                                    type="text"
-                                    className="form-control"
-                                    name="city"
-                                    id="city"
-                                    aria-describedby="emailHelpId"
-                                    placeholder="La tua città..."
-                                    value={formData.city || ''}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="mb-3">
-                            <label htmlFor="state" className="form-label">Provincia</label>
-                            <input
-                                onChange={handleFormData}
-                                type="text"
-                                className="form-control"
-                                name="state"
-                                id="state"
-                                aria-describedby="emailHelpId"
-                                placeholder="La tua provincia..."
-                                value={formData.state || ''}
-                            />
-                        </div>
-
-                        {isAuthenticated && (
-                            <div className="mt-3 mb-4 text-center">
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-primary"
-                                    onClick={handleUpdateProfile}
-                                >
-                                    <i className="fa-solid fa-user me-2"></i>
-                                    Salva questi dati nel tuo profilo
-                                </button>
-                                {updateMessage && (
-                                    <div className="alert mt-2 p-2 alert-success">
-                                        {updateMessage}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        <div className='w-100 d-flex justify-content-between'>
-                            <Link to="/carello" className="btn btn-outline-secondary">
-                                <i className="fa-solid fa-arrow-left me-2"></i>
-                                Torna al carrello
-                            </Link>
-
-                            <button
-                                onClick={handleSubmit}
-                                disabled={isLoading}
-                                className='form-button'
-                                type="submit"
-                            >
-                                Conferma ordine
-                                <div className='icon-button'>
-                                    <i className='fa-solid fa-arrow-right'></i>
-                                </div>
-                            </button>
-                        </div>
                     </>
                 )}
             </form>
