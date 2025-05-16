@@ -16,6 +16,7 @@ function GlobalProvider({ children }) {
     const [wardrobeSections, setWardrobeSections] = useState([]); // this is the main state
     const [categoryProducts, setCategoryProducts] = useState({});
     const [discount, setDiscount] = useState([]); // State for discount products
+    const [isInWishlist, setIsInWishlist] = useState()
     const [wishlistItems, setWishlistItems] = useState(
         JSON.parse(localStorage.getItem('wishlist')) || []
     );
@@ -35,7 +36,7 @@ function GlobalProvider({ children }) {
         }
 
 
-    }, [])
+    }, [isInWishlist])
 
 
 
@@ -136,7 +137,9 @@ function GlobalProvider({ children }) {
                 fetchCategoryProducts,
                 discount,
                 wishlistItems,
-                toggleWishlist
+                toggleWishlist,
+                isInWishlist,
+                setIsInWishlist,
             }}
         >
             {children}

@@ -7,14 +7,33 @@ const ProductDetails = () => {
     const { slug } = useParams();
 
 
-    const { cartItems, setCartItems, wishlistItems, toggleWishlist } = useGlobal()
+    const { cartItems, setCartItems, wishlistItems, toggleWishlist, isInWishlist, setIsInWishlist } = useGlobal()
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [addToCart, setAddToCart] = useState(false)
     const [showTooltip, setShowTooltip] = useState(false);
+
     console.log('cart items', cartItems);
+    const user = JSON.parse(localStorage.getItem('user'))
+    const token = localStorage.getItem('token')
+    console.log(wishlistItems);
+
+
+    useEffect(() => {
+        const isInWishlist = wishlistItems?.find(item => item.product_id === product?.id)
+        if (isInWishlist) {
+            setIsInWishlist(true)
+            console.log('è vero');
+
+        } else {
+            setIsInWishlist(false)
+            console.log('è falso');
+        }
+
+
+    }, [wishlistItems])
 
 
     const thisProductInCart = cartItems.find(item =>
@@ -67,6 +86,7 @@ const ProductDetails = () => {
         setCartItems(cartItems.filter((item, idx) => idx !== index));
     };
     console.log(cartItems.indexOf(thisProductInCart), 'index');
+    console.log(isInWishlist, 'isInWishlist');
 
 
 
@@ -157,19 +177,38 @@ const ProductDetails = () => {
 
     const availableColors = getUniqueColors(product.variations);
 
-    const isInWishlist = wishlistItems.some(item => item.id === product?.id);
+
+    /* useEffect(() => {
+
+        
+
+
+    }, [wishlistItems]) */
+    const handleRemoveWishList = () => {
+        const itemId = wishlistItems.find(item => item.product_id === product?.id)?.product_id
+        fetch(`http://localhost:3000/api/v1/wishlist/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.message || data.error)
+                setIsInWishlist(false)
+
+            }
+            )
+
+    }
+
+
+
 
     const handleWishlistAdd = () => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        const token = localStorage.getItem('token')
-        if (!selectedColor) {
-            alert('Please select a color first');
-            return;
-        }
-        if (!selectedVariation) {
-            alert('Please select a size first');
-            return;
-        }
+
+
 
         const wishlistProduct = {
             ...product,
@@ -192,11 +231,23 @@ const ProductDetails = () => {
 
             })
                 .then(res => res.json())
-                .then(data => console.log(data.message)
+                .then(data => setIsInWishlist(true)
                 )
         }
 
     };
+
+
+    const handleWishlist = () => {
+        if (isInWishlist) {
+            handleRemoveWishList()
+        }
+        else {
+            handleWishlistAdd()
+        }
+    }
+
+
 
     return (
         <section className="product position-relative">
@@ -211,7 +262,7 @@ const ProductDetails = () => {
                             <div style={{ position: 'relative' }}>
                                 <button
                                     className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
-                                    onClick={handleWishlistClick}
+                                    onClick={handleWishlist}
                                     aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                                 >
                                     <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
