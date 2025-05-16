@@ -719,3 +719,13 @@ body {
         transform: translateX(-30vw) translateY(-20vh) scale(0.4);
     }
 }
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

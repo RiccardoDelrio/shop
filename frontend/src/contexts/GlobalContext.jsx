@@ -14,7 +14,9 @@ function GlobalProvider({ children }) {
     const [wardrobeSections, setWardrobeSections] = useState([]); // this is the main state
     const [categoryProducts, setCategoryProducts] = useState({});
     const [discount, setDiscount] = useState([]); // State for discount products
-
+    const [wishlistItems, setWishlistItems] = useState(
+        JSON.parse(localStorage.getItem('wishlist')) || []
+    );
 
     // Fetch 10 random products
     function fetchBestSellers() {
@@ -65,6 +67,26 @@ function GlobalProvider({ children }) {
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
     }, [cartItems])
 
+    // Salva wishlist nel localStorage quando cambia
+    useEffect(() => {
+        localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
+    }, [wishlistItems]);
+
+    // Funzione semplificata per gestire la wishlist
+    const toggleWishlist = (product) => {
+        if (!product.selectedColor || !product.selectedVariation) {
+            alert('Please select color and size first');
+            return;
+        }
+
+        setWishlistItems(prev => {
+            const isInWishlist = prev.some(item => item.id === product.id);
+            if (isInWishlist) {
+                return prev.filter(item => item.id !== product.id);
+            }
+            return [...prev, product];
+        });
+    };
 
     return (
         <GlobalContext.Provider
@@ -88,7 +110,9 @@ function GlobalProvider({ children }) {
                 categoryProducts,
                 fetchWardrobeSections,
                 fetchCategoryProducts,
-                discount
+                discount,
+                wishlistItems,
+                toggleWishlist
             }}
         >
             {children}

@@ -342,3 +342,31 @@
     border: 1px solid var(--accent-color);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+
+.wishlist-btn {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.wishlist-btn i {
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    color: var(--accent-color);
+}
+
+.wishlist-btn.in-wishlist i {
+    color: #dc3545 !important; /* Forziamo il colore rosso */
+}
+
+.wishlist-btn:hover i {
+    transform: scale(1.1);
+    color: #dc3545; /* Colore rosso anche all'hover */
+}
+
+/* Override any Bootstrap or FontAwesome default styles */
+.bi-heart, 
+.bi-heart-fill {
+    color: inherit !important;
+}
