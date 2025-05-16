@@ -1,13 +1,24 @@
 const connection = require("../database/db");
 const sendEmail = require("../utils/sendEmail");
+const { isvalidEmail } = require("../utils/validation");
 
 // Add email to newsletter list
 const submitEmail = async (req, res) => {
   const { email } = req.body;
 
-  // Validate email format
-  if (!email || !validateEmail(email)) {
-    return res.status(400).json({ error: "Valid email address is required" });
+  // Validate email
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  // Use the validation function
+  if (!validateEmail(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  // Add length validation
+  if (email.length > 100) {
+    return res.status(400).json({ error: "Email is too long" });
   }
 
   const sql = `
@@ -100,12 +111,6 @@ function unsubscribeEmail(req, res) {
 
     res.json({ message: "Successfully unsubscribed" });
   });
-}
-
-// Utility function to validate email format
-function validateEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
 }
 
 module.exports = {

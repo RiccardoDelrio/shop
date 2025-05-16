@@ -1,4 +1,5 @@
 const connection = require('../database/db');
+const { isPositiveInteger, sanitizeString } = require('../utils/validation');
 
 // Get all products
 function getAllProducts(req, res) {
@@ -33,6 +34,14 @@ function getAllProducts(req, res) {
 // Get product by slug
 function getProductBySlug(req, res) {
     const { slug } = req.params;
+
+    if (!slug) {
+        return res.status(400).json({ error: 'Product slug is required' });
+    }
+
+    // Sanitize slug
+    const sanitizedSlug = sanitizeString(slug);
+
     const sql = `
         SELECT 
             p.id,
@@ -71,7 +80,7 @@ function getProductBySlug(req, res) {
         GROUP BY p.id
     `;
 
-    connection.query(sql, [slug], (err, results) => {
+    connection.query(sql, [sanitizedSlug], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(404).json({ error: 'Product not found' });
 
@@ -157,10 +166,18 @@ function getDiscountedProducts(req, res) {
 
 function searchProducts(req, res) {
     const { query } = req.query;
-    console.log(query, "query");
+
+    // Validate search query
     if (!query) {
         return res.status(400).json({ error: 'Query parameter is required' });
     }
+
+    if (query.length < 2) {
+        return res.status(400).json({ error: 'Search query must be at least 2 characters' });
+    }
+
+    // Sanitize the search query
+    const sanitizedQuery = sanitizeString(query);
 
     const sql = `
         SELECT 
@@ -189,7 +206,7 @@ function searchProducts(req, res) {
         GROUP BY p.id
     `;
 
-    connection.query(sql, [`%${query}%`, `%${query}%`], (err, results) => {
+    connection.query(sql, [`%${sanitizedQuery}%`, `%${sanitizedQuery}%`], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.json([]);
 
@@ -236,22 +253,35 @@ function getBestsellers(req, res) {
 // Check product availability
 function checkAvailability(req, res) {
     const { items } = req.body;
-    
+
+    // Validate items array
     if (!items || !Array.isArray(items)) {
         return res.status(400).json({ error: 'Invalid request format. Expected array of items.' });
     }
-    
+
+    // Validate each item in the array
+    const validationErrors = [];
+    items.forEach((item, index) => {
+        if (!item.product_variation_id) {
+            validationErrors.push(`Item at index ${index}: Missing product_variation_id`);
+        } else if (!isPositiveInteger(item.product_variation_id)) {
+            validationErrors.push(`Item at index ${index}: product_variation_id must be a positive integer`);
+        }
+
+        if (!item.quantity) {
+            validationErrors.push(`Item at index ${index}: Missing quantity`);
+        } else if (!isPositiveInteger(item.quantity)) {
+            validationErrors.push(`Item at index ${index}: quantity must be a positive integer`);
+        }
+    });
+
+    if (validationErrors.length > 0) {
+        return res.status(400).json({ errors: validationErrors });
+    }
+
     const promises = items.map(item => {
         return new Promise((resolve, reject) => {
-            if (!item.product_variation_id || !item.quantity) {
-                return resolve({
-                    product_variation_id: item.product_variation_id,
-                    available: false,
-                    error: 'Missing product_variation_id or quantity'
-                });
-            }
-            
-            const query = 'SELECT stock >= ? AS available FROM Product_Variations WHERE id = ?';
+            const query = 'SELECT stock >= ? AS available, stock FROM Product_Variations WHERE id = ?';
             connection.query(query, [item.quantity, item.product_variation_id], (err, results) => {
                 if (err) return reject(err);
                 if (results.length === 0) {
@@ -264,12 +294,13 @@ function checkAvailability(req, res) {
                 resolve({
                     product_variation_id: item.product_variation_id,
                     available: results[0].available === 1,
-                    requested: item.quantity
+                    requested: item.quantity,
+                    current_stock: results[0].stock
                 });
             });
         });
     });
-    
+
     Promise.all(promises)
         .then(results => {
             const allAvailable = results.every(item => item.available);
