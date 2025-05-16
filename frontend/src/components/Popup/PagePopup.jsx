@@ -57,9 +57,9 @@ export default function WelcomePopup() {
             // Modifica il messaggio di successo per includere il link di disiscrizione
             .then(() => {
                 setMessage([
-                    "Thanks for subscribing!",
-                    "Check your email for confirmation.",
-                    "You can unsubscribe at any time from the footer link."
+                    "We're delighted to welcome you to our curated selections.",
+                    "A confirmation has been delivered to your specified address.",
+                    "Subscription management is available in your welcome correspondence."
                 ]);
                 setTimeout(() => {
                     setIsFading(true);
