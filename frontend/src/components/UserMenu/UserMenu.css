@@ -10,16 +10,20 @@
     color: var(--testo-principale);
     font-size: 1rem;
     cursor: pointer;
-    padding: 0.25rem 0.5rem;
+    padding: 0.4rem 0.7rem;
     transition: all 0.3s ease;
+    border-radius: 4px;
+    border: 1px solid transparent;
 }
 
 .user-button:hover {
     color: var(--accent-color);
+    border-color: rgba(125, 162, 188, 0.2);
+    background-color: rgba(125, 162, 188, 0.05);
 }
 
 .user-name {
-    margin-left: 0.5rem;
+    margin-left: 0.7rem;
     font-weight: 500;
     font-family: 'Jost', sans-serif;
     letter-spacing: 0.01em;
@@ -27,31 +31,48 @@
 
 .user-dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 10px);
     right: 0;
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    border-radius: 8px;
     border: 1px solid var(--accent-color);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    min-width: 220px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    min-width: 240px;
     z-index: 1000;
     overflow: hidden;
+    transform-origin: top right;
+    animation: dropdownFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .user-info {
-    padding: 1rem;
+    padding: 1.25rem;
     background-color: var(--accent-color);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .user-info h6 {
     font-family: 'Tenor Sans', sans-serif;
     color: white;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
     letter-spacing: 0.02em;
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 .user-email {
@@ -60,19 +81,21 @@
     margin-top: 0.25rem;
     font-family: 'Jost', sans-serif;
     letter-spacing: 0.01em;
+    opacity: 0.9;
 }
 
 .dropdown-divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--accent-secondary), transparent);
-    margin: 0;
+    margin: 0.3rem 0;
     opacity: 0.5;
 }
 
 .dropdown-item {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 0.9rem 1.2rem;
     color: var(--testo-principale);
     text-decoration: none;
     text-align: left;
@@ -82,29 +105,36 @@
     white-space: nowrap;
     font-family: 'Jost', sans-serif;
     transition: var(--transition-smooth);
+    font-size: 0.95rem;
 }
 
 .dropdown-item:hover {
     background-color: rgba(125, 162, 188, 0.1);
     color: var(--accent-color);
-    padding-left: 1.25rem;
+    padding-left: 1.5rem;
 }
 
 .dropdown-item i {
     width: 24px;
     text-align: center;
-    margin-right: 8px;
+    margin-right: 12px;
     color: var(--accent-color);
+    font-size: 0.9rem;
 }
 
 .logout-item {
     color: #d95c67;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
-    margin-top: 4px;
+    margin-top: 6px;
+    font-weight: 500;
 }
 
 .logout-item:hover {
     background-color: rgba(217, 92, 103, 0.1);
+    color: #d95c67;
+}
+
+.logout-item i {
     color: #d95c67;
 }
 

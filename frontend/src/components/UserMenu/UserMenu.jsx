@@ -34,27 +34,26 @@ const UserMenu = () => {
                 <span className="user-name d-none d-sm-block">{currentUser.first_name}</span>
             </button>
 
-            {menuOpen && (
-                <div className="user-dropdown">
-                    <div className="user-info  text-black">
-                        <>{`${currentUser.first_name} ${currentUser.last_name}`}</>
-                        <span className="user-email">{currentUser.email}</span>
-                    </div>
-                    <div className="dropdown-divider"></div>
-                    <Link to="/profile" className="dropdown-item text-black" onClick={() => setMenuOpen(false)}>
-                        <i className="fa-solid fa-user-gear me-2 "></i>
-                        Profile
-                    </Link>
-                    <Link to="/orders" className="dropdown-item  text-black" onClick={() => setMenuOpen(false)}>
-                        <i className="fa-solid fa-box me-2"></i>
-                        My Orders
-                    </Link>
-                    <div className="dropdown-divider"></div>
-                    <button onClick={handleLogout} className="dropdown-item logout-item">
-                        <i className="fa-solid fa-sign-out-alt me-2"></i>
-                        Logout
-                    </button>
+            {menuOpen && (<div className="user-dropdown">
+                <div className="user-info">
+                    <h6>{`${currentUser.first_name} ${currentUser.last_name}`}</h6>
+                    <span className="user-email">{currentUser.email}</span>
                 </div>
+                <div className="dropdown-divider"></div>
+                <Link to="/profile" className="dropdown-item" onClick={() => setMenuOpen(false)}>
+                    <i className="fa-solid fa-user-gear"></i>
+                    Profile
+                </Link>
+                <Link to="/orders" className="dropdown-item" onClick={() => setMenuOpen(false)}>
+                    <i className="fa-solid fa-box"></i>
+                    My Orders
+                </Link>
+                <div className="dropdown-divider"></div>
+                <button onClick={handleLogout} className="dropdown-item logout-item">
+                    <i className="fa-solid fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
             )}
         </div>
     );
