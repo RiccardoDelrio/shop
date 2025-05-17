@@ -268,182 +268,184 @@ const ProductDetails = () => {
     console.log("Product with category:", product);
     console.log("Related products:", relatedProducts);
     return (
-        <section className="product row position-relative">
-            {addToCart && (
-                <div className="position-absolute end-0 bottom-0 bg-success p-3 rounded-4">Aggiunto al carrello <span className="ms-2"><i className="fa-solid fa-check"></i></span></div>
-            )}
+        <div className="container">
+            <section className="product row position-relative justify-content-center mx-auto">
+                {addToCart && (
+                    <div className="position-absolute end-0 bottom-0 bg-success p-3 rounded-4">Aggiunto al carrello <span className="ms-2"><i className="fa-solid fa-check"></i></span></div>
+                )}
 
-            <div className="product__photo">
-                <div className="photo-container">
-                    <div className="photo-main">
-                        <div className="controls">
-                            <div style={{ position: 'relative' }}>
-                                <button
-                                    className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
-                                    onClick={handleWishlist}
-                                    aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                                >
-                                    <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
-                                </button>
-                                {showTooltip && (
-                                    <div className="wishlist-tooltip">
-                                        {!selectedColor
-                                            ? 'Please select a color first'
-                                            : !selectedVariation
-                                                ? 'Please select a size first'
-                                                : ''}
-                                    </div>
-                                )}
+                <div className="product__photo">
+                    <div className="photo-container">
+                        <div className="photo-main">
+                            <div className="controls">
+                                <div style={{ position: 'relative' }}>
+                                    <button
+                                        className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
+                                        onClick={handleWishlist}
+                                        aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                                    >
+                                        <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
+                                    </button>
+                                    {showTooltip && (
+                                        <div className="wishlist-tooltip">
+                                            {!selectedColor
+                                                ? 'Please select a color first'
+                                                : !selectedVariation
+                                                    ? 'Please select a size first'
+                                                    : ''}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
+                            <img
+                                className="img_main"
+                                src={currentImage}
+                                alt={product.name}
+                            />
                         </div>
-                        <img
-                            className="img_main"
-                            src={currentImage}
-                            alt={product.name}
-                        />
+                        <div className="photo-album">
+                            <ul>
+                                {product.images.map((image, index) => (
+                                    <li key={index} onClick={() => setCurrentImage(`http://localhost:3000/imgs/${image.url}`)}>
+                                        <img
+                                            src={`http://localhost:3000/imgs/${image.url}`}
+                                            alt={`${product.name} view ${index + 1}`}
+                                            className={currentImage === `http://localhost:3000/imgs/${image.url}` ? 'active' : ''}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="photo-album">
-                        <ul>
-                            {product.images.map((image, index) => (
-                                <li key={index} onClick={() => setCurrentImage(`http://localhost:3000/imgs/${image.url}`)}>
-                                    <img
-                                        src={`http://localhost:3000/imgs/${image.url}`}
-                                        alt={`${product.name} view ${index + 1}`}
-                                        className={currentImage === `http://localhost:3000/imgs/${image.url}` ? 'active' : ''}
+                </div>
+                <div className="product__info">
+                    <div className="title">
+                        <h1>{product.name}</h1>
+                    </div>
+                    {/* // Replace the current price display with this */}
+                    <div className="price d-flex align-items-center">
+                        {product.discount > 0 ? (
+                            <>
+                                <span style={{ textDecoration: 'line-through', color: '#999', marginRight: '10px' }}>
+                                    € {formatPrice(product.price)}
+                                </span>
+                                <span style={{ color: '#c00' }}>
+                                    € {formatPrice(product.price - (product.price * Number(product.discount) / 100))}
+                                </span>
+                                <span style={{ fontSize: '0.85rem', marginLeft: '8px', backgroundColor: '#c00', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>
+                                    &minus; {formatPrice(product.discount)} %
+                                </span>
+                            </>
+                        ) : (
+                            <>€ <span className="ms-2">{formatPrice(product.price)}</span></>
+                        )}
+                    </div>
+                    <div className="variant">
+                        <h3>SELECT A COLOR</h3>
+                        <ul className="color-list">
+                            {availableColors.map((colorOption) => (
+                                <li
+                                    key={colorOption.color}
+                                    className={selectedColor === colorOption.color ? 'active' : ''}
+                                    onClick={() => {
+                                        setSelectedColor(colorOption.color);
+                                        setSelectedVariation(null);
+                                    }}
+                                >
+                                    <div
+                                        className="color-preview"
+                                        style={{ backgroundColor: colorOption.color_hex }}
                                     />
+                                    <span>{colorOption.color}</span>
                                 </li>
                             ))}
                         </ul>
+
+                        {selectedColor && (
+                            <>
+                                <h3>SELECT A SIZE</h3>
+                                <ul className="size-list">
+                                    {getVariationsForColor(product.variations, selectedColor).map((variation) => (
+                                        <div key={variation.id}>
+                                            <li
+
+                                                className={selectedVariation?.id === variation.id ? 'active' : ''}
+                                                onClick={() => setSelectedVariation(variation)}
+                                            >
+                                                {variation.size}
+                                            </li>
+                                            {selectedVariation === variation && (
+
+                                                <div className="small text-secondary">{variation.stock > 0 ? `${variation.stock} left` : 'Out of stock'}  </div>
+                                            )}
+
+                                        </div>
+                                    ))}
+                                </ul>
+                                <Link to={'/size-table'} className="m-0 text-secondary  small">Size guide </Link>
+                            </>
+                        )}
                     </div>
-                </div>
-            </div>
-            <div className="product__info">
-                <div className="title">
-                    <h1>{product.name}</h1>
-                </div>
-                {/* // Replace the current price display with this */}
-                <div className="price d-flex align-items-center">
-                    {product.discount > 0 ? (
-                        <>
-                            <span style={{ textDecoration: 'line-through', color: '#999', marginRight: '10px' }}>
-                                € {formatPrice(product.price)}
-                            </span>
-                            <span style={{ color: '#c00' }}>
-                                € {formatPrice(product.price - (product.price * Number(product.discount) / 100))}
-                            </span>
-                            <span style={{ fontSize: '0.85rem', marginLeft: '8px', backgroundColor: '#c00', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>
-                                &minus; {formatPrice(product.discount)} %
-                            </span>
-                        </>
-                    ) : (
-                        <>€ <span className="ms-2">{formatPrice(product.price)}</span></>
-                    )}
-                </div>
-                <div className="variant">
-                    <h3>SELECT A COLOR</h3>
-                    <ul className="color-list">
-                        {availableColors.map((colorOption) => (
-                            <li
-                                key={colorOption.color}
-                                className={selectedColor === colorOption.color ? 'active' : ''}
-                                onClick={() => {
-                                    setSelectedColor(colorOption.color);
-                                    setSelectedVariation(null);
-                                }}
-                            >
-                                <div
-                                    className="color-preview"
-                                    style={{ backgroundColor: colorOption.color_hex }}
-                                />
-                                <span>{colorOption.color}</span>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="description">
+                        <h3>DESCRIPTION</h3>
+                        <p>{product.description}</p>
+                        <p>{product.long_description}</p>
 
-                    {selectedColor && (
-                        <>
-                            <h3>SELECT A SIZE</h3>
-                            <ul className="size-list">
-                                {getVariationsForColor(product.variations, selectedColor).map((variation) => (
-                                    <div key={variation.id}>
-                                        <li
+                    </div>
+                    {alredyInCart() ? (
+                        <div className="quantity-selector">
+                            {thisProductInCart?.quantità === 1 ? (
+                                <button onClick={() => handleRemoveItems(cartItems.indexOf(thisProductInCart))} className="icon-quantity">
+                                    <i className="fa-solid fa-trash"></i>
 
-                                            className={selectedVariation?.id === variation.id ? 'active' : ''}
-                                            onClick={() => setSelectedVariation(variation)}
-                                        >
-                                            {variation.size}
-                                        </li>
-                                        {selectedVariation === variation && (
+                                </button>
 
-                                            <div className="small text-secondary">{variation.stock > 0 ? `${variation.stock} left` : 'Out of stock'}  </div>
-                                        )}
+                            ) : (
+                                <button onClick={() => handleIncrement('minus')} className="icon-quantity">
+                                    <i className="fa-solid fa-minus"></i>
+                                </button>)}
 
-                                    </div>
-                                ))}
-                            </ul>
-                            <Link to={'/size-table'} className="m-0 text-secondary  small">Size guide </Link>
-                        </>
-                    )}
-                </div>
-                <div className="description">
-                    <h3>DESCRIPTION</h3>
-                    <p>{product.description}</p>
-                    <p>{product.long_description}</p>
-
-                </div>
-                {alredyInCart() ? (
-                    <div className="quantity-selector">
-                        {thisProductInCart?.quantità === 1 ? (
-                            <button onClick={() => handleRemoveItems(cartItems.indexOf(thisProductInCart))} className="icon-quantity">
-                                <i className="fa-solid fa-trash"></i>
-
+                            <div>{thisProductInCart?.quantità}</div>
+                            <button disabled={isButtonDisabled} onClick={() => handleIncrement('add')} className={`icon-quantity ${isButtonDisabled ? 'disabled' : ''}`}>
+                                <i className="fa-solid fa-plus"> </i>
                             </button>
-
-                        ) : (
-                            <button onClick={() => handleIncrement('minus')} className="icon-quantity">
-                                <i className="fa-solid fa-minus"></i>
-                            </button>)}
-
-                        <div>{thisProductInCart?.quantità}</div>
-                        <button disabled={isButtonDisabled} onClick={() => handleIncrement('add')} className={`icon-quantity ${isButtonDisabled ? 'disabled' : ''}`}>
-                            <i className="fa-solid fa-plus"> </i>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={() => handleAddCart(product)}
+                            className="buy--btn"
+                            disabled={!selectedVariation || selectedVariation.stock === 0}
+                        >
+                            {!selectedColor ? 'SELECT A COLOR' :
+                                !selectedVariation ? 'SELECT A SIZE' :
+                                    selectedVariation.stock === 0 ? 'OUT OF STOCK' :
+                                        'ADD TO CART'}
                         </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => handleAddCart(product)}
-                        className="buy--btn"
-                        disabled={!selectedVariation || selectedVariation.stock === 0}
-                    >
-                        {!selectedColor ? 'SELECT A COLOR' :
-                            !selectedVariation ? 'SELECT A SIZE' :
-                                selectedVariation.stock === 0 ? 'OUT OF STOCK' :
-                                    'ADD TO CART'}
-                    </button>
-                )}
-            </div>
-
-            {/* Related Products Section */}
-            {relatedProducts.length > 0 && (
-                <div className="related-products mt-5">
-                    <h2 className="text-center mb-4">You May Also Like</h2>
-                    <Slider>
-                        {relatedProducts.map((product) => (
-                            <ProductCards
-                                key={product.id}
-                                name={product.name}
-                                description={product.description}
-                                price={product.price}
-                                image={`http://localhost:3000/imgs/${product.images[0].url}`}
-                                slug={product.slug}
-                                {...(product.discount > 0 ? { discount: product.discount } : {})}
-                            />
-                        ))}
-                    </Slider>
+                    )}
                 </div>
-            )}
 
-        </section >
+                {/* Related Products Section */}
+                {relatedProducts.length > 0 && (
+                    <div className="related-products mt-5">
+                        <h2 className="text-center mb-4">You May Also Like</h2>
+                        <Slider>
+                            {relatedProducts.map((product) => (
+                                <ProductCards
+                                    key={product.id}
+                                    name={product.name}
+                                    description={product.description}
+                                    price={product.price}
+                                    image={`http://localhost:3000/imgs/${product.images[0].url}`}
+                                    slug={product.slug}
+                                    {...(product.discount > 0 ? { discount: product.discount } : {})}
+                                />
+                            ))}
+                        </Slider>
+                    </div>
+                )}
+
+            </section >
+        </div>
     );
 };
 
