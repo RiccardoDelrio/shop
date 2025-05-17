@@ -1,5 +1,5 @@
 .product {
-    display: flex;
+    /* display: flex; */
     max-width: 1200px;
     margin: 2rem auto;
     padding: 25px;
@@ -419,4 +419,18 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.related-products {
+    border-top: 1px solid var(--grigio-perla);
+    padding-top: 3rem;
+    margin-top: 3rem;
+}
+
+.related-products h2 {
+    font-family: 'Tenor Sans', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--testo-principale);
 }

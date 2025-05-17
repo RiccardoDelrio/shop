@@ -52,6 +52,7 @@ function getProductBySlug(req, res) {
             p.price,
             p.discount,
             p.created_at,
+            p.category_id,
             (
                 SELECT JSON_ARRAYAGG(
                     JSON_OBJECT(
@@ -88,9 +89,11 @@ function getProductBySlug(req, res) {
     });
 }
 
-// Get random products
+// Get random products - updated for suggested products
 function getRandomProducts(req, res) {
-    const sql = `
+    const { exclude, category_id, limit = 10 } = req.query;
+
+    let sql = `
         SELECT 
             p.id,
             p.slug,
@@ -113,14 +116,33 @@ function getRandomProducts(req, res) {
                 WHERE pi.product_id = p.id
             ) AS images
         FROM Products p
-        GROUP BY p.id
-        ORDER BY RAND()
-        LIMIT 10
+        WHERE 1=1
     `;
 
-    connection.query(sql, (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+    const params = [];
 
+    // Add conditions if parameters are provided
+    if (exclude) {
+        sql += ` AND p.id != ?`;
+        params.push(exclude);
+    }
+
+    if (category_id) {
+        sql += ` AND p.category_id = ?`;
+        params.push(category_id);
+    }
+
+    // Complete the query
+    sql += `
+        GROUP BY p.id
+        ORDER BY RAND()
+        LIMIT ?
+    `;
+
+    params.push(parseInt(limit) || 10);
+
+    connection.query(sql, params, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
 }

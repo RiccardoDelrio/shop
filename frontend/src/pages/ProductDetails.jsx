@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./ProductDetail.css";
 import { useGlobal } from "../contexts/GlobalContext";
+import Slider from "../components/Slider/Slider";
+import ProductCards from "../components/ProductCard/ProductCard";
 
 const ProductDetails = () => {
     const { slug } = useParams();
-
-
     const { cartItems, setCartItems, wishlistItems, toggleWishlist, isInWishlist, setIsInWishlist } = useGlobal()
+
     const [product, setProduct] = useState(null);
     const [currentImage, setCurrentImage] = useState("");
     const [selectedVariation, setSelectedVariation] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [addToCart, setAddToCart] = useState(false)
     const [showTooltip, setShowTooltip] = useState(false);
+    const [relatedProducts, setRelatedProducts] = useState([]);
 
     console.log('cart items', cartItems);
     const user = JSON.parse(localStorage.getItem('user'))
@@ -31,9 +33,37 @@ const ProductDetails = () => {
             setIsInWishlist(false)
             console.log('è falso');
         }
-
-
     }, [wishlistItems])
+
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/api/v1/products/${slug}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setProduct(data);
+                // Imposta l'immagine corrente con il primo URL dell'array
+                if (data.images && data.images.length > 0) {
+                    setCurrentImage(`http://localhost:3000/imgs/${data.images[0].url}`);
+                }
+            })
+            .catch((err) => console.error("Error:", err));
+    }, [slug]);
+    console.log(product);
+
+
+    useEffect(() => {
+        if (product && product.id) {
+            // Fetch related products from the same category, excluding current product
+            fetch(`http://localhost:3000/api/v1/products/random?exclude=${product.id}&category_id=${product.category_id}&limit=8`)
+                .then(res => res.json())
+                // Add after the fetch
+                .then(data => {
+                    console.log("Related products data:", data);
+                    setRelatedProducts(data);
+                })
+                .catch(error => console.error("Error fetching related products:", error));
+        }
+    }, [product]);
 
 
     const thisProductInCart = cartItems.find(item =>
@@ -88,22 +118,6 @@ const ProductDetails = () => {
     console.log(cartItems.indexOf(thisProductInCart), 'index');
     console.log(isInWishlist, 'isInWishlist');
 
-
-
-
-    useEffect(() => {
-        fetch(`http://localhost:3000/api/v1/products/${slug}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setProduct(data);
-                // Imposta l'immagine corrente con il primo URL dell'array
-                if (data.images && data.images.length > 0) {
-                    setCurrentImage(`http://localhost:3000/imgs/${data.images[0].url}`);
-                }
-            })
-            .catch((err) => console.error("Error:", err));
-    }, [slug]);
-    console.log(product);
 
     // Raggruppa le variazioni per colore
     const getUniqueColors = (variations) => {
@@ -206,6 +220,8 @@ const ProductDetails = () => {
 
 
 
+
+
     const handleWishlistAdd = () => {
 
 
@@ -248,9 +264,11 @@ const ProductDetails = () => {
     }
 
 
-
+    // Right before your return statement
+    console.log("Product with category:", product);
+    console.log("Related products:", relatedProducts);
     return (
-        <section className="product position-relative">
+        <section className="product row position-relative">
             {addToCart && (
                 <div className="position-absolute end-0 bottom-0 bg-success p-3 rounded-4">Aggiunto al carrello <span className="ms-2"><i className="fa-solid fa-check"></i></span></div>
             )}
@@ -403,8 +421,28 @@ const ProductDetails = () => {
                                     'ADD TO CART'}
                     </button>
                 )}
-
             </div>
+
+            {/* Related Products Section */}
+            {relatedProducts.length > 0 && (
+                <div className="related-products mt-5">
+                    <h2 className="text-center mb-4">You May Also Like</h2>
+                    <Slider>
+                        {relatedProducts.map((product) => (
+                            <ProductCards
+                                key={product.id}
+                                name={product.name}
+                                description={product.description}
+                                price={product.price}
+                                image={`http://localhost:3000/imgs/${product.images[0].url}`}
+                                slug={product.slug}
+                                {...(product.discount > 0 ? { discount: product.discount } : {})}
+                            />
+                        ))}
+                    </Slider>
+                </div>
+            )}
+
         </section >
     );
 };
