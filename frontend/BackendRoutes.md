@@ -284,7 +284,44 @@ Returns all products.
 ### Get Random Products
 
 `GET /products/random`
-Returns a random selection of products.
+Returns a random selection of products. Useful for related products on product detail pages.
+
+**Query Parameters:**
+
+- `exclude` (optional): ID of a product to exclude (useful for related products)
+- `category_id` (optional): Filter by category ID to get products from the same category
+- `limit` (optional): Maximum number of products to return (default: 10)
+
+**Example:**
+`GET /products/random?exclude=1&category_id=5&limit=4`
+
+Returns up to 4 random products from category ID 5, excluding the product with ID 1.
+
+**Response:**
+
+```json
+[
+  {
+    "id": 8,
+    "slug": "cashmere-cardigan",
+    "name": "Cashmere Cardigan",
+    "description": "Luxurious cashmere cardigan",
+    "long_description": "Detailed description...",
+    "price": 299.99,
+    "discount": 0,
+    "created_at": "2023-05-15T10:00:00Z",
+    "images": [
+      {
+        "url": "/images/cashmere-cardigan-1.jpg",
+        "view_type": "front",
+        "is_primary": true,
+        "product_variation_id": 24
+      }
+    ]
+  }
+  // Additional random products...
+]
+```
 
 ### Get Discounted Products
 

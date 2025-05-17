@@ -380,7 +380,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                            "raw": "http://localhost:3000/api/v1/products/random",
+                            "raw": "http://localhost:3000/api/v1/products/random?exclude=1&category_id=2&limit=5",
                             "protocol": "http",
                             "host": [
                                 "localhost"
@@ -391,9 +391,26 @@
                                 "v1",
                                 "products",
                                 "random"
+                            ],
+                            "query": [
+                                {
+                                    "key": "exclude",
+                                    "value": "1",
+                                    "description": "ID of product to exclude (useful for related products)"
+                                },
+                                {
+                                    "key": "category_id",
+                                    "value": "2",
+                                    "description": "Filter by category ID"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "5",
+                                    "description": "Maximum number of products to return"
+                                }
                             ]
                         },
-                        "description": "Returns a random selection of products."
+                        "description": "Returns a random selection of products. Useful for related products on product detail pages. Supports filtering by category and excluding specific products."
                     },
                     "response": []
                 },
@@ -1395,27 +1412,6 @@
                             ]
                         },
                         "description": "Replaced by /products/filter. Use dynamic filtering instead."
-                    }
-                },
-                {
-                    "name": "Get Random Products (Outdated)",
-                    "request": {
-                        "method": "GET",
-                        "url": {
-                            "raw": "http://localhost:3000/api/v1/products/random",
-                            "protocol": "http",
-                            "host": [
-                                "localhost"
-                            ],
-                            "port": "3000",
-                            "path": [
-                                "api",
-                                "v1",
-                                "products",
-                                "random"
-                            ]
-                        },
-                        "description": "Replaced by /products/filter with sort=random&limit=x. Use dynamic filtering instead."
                     }
                 },
                 {
