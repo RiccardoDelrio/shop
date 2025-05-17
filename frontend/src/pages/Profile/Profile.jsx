@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import './Profile.css';
 
 const Profile = () => {
-    const { currentUser, updateProfile, logout } = useAuth();
+    const { currentUser, updateProfile, logout, getProfile } = useAuth();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -18,25 +18,45 @@ const Profile = () => {
         phone: ''
     });
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState({ type: '', content: '' });
 
-    // Populate form data when user is available
+    // Fetch profile data when component mounts
     useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                // Recupera i dati completi dal profilo
+                const profileData = await getProfile();
+
+                // Aggiorna il form con i dati recuperati
+                setFormData({
+                    first_name: profileData.first_name || '',
+                    last_name: profileData.last_name || '',
+                    address: profileData.address || '',
+                    city: profileData.city || '',
+                    state: profileData.state || '',
+                    postal_code: profileData.postal_code || '',
+                    country: profileData.country || '',
+                    phone: profileData.phone || ''
+                });
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+                setMessage({
+                    type: 'danger',
+                    content: 'Errore nel recupero dei dati del profilo'
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // Se l'utente è loggato, recupera i dati del profilo
         if (currentUser) {
-            setFormData(prevData => ({
-                ...prevData,
-                first_name: currentUser.first_name || '',
-                last_name: currentUser.last_name || '',
-                address: currentUser.address || '',
-                city: currentUser.city || '',
-                state: currentUser.state || '',
-                postal_code: currentUser.postal_code || '',
-                country: currentUser.country || '',
-                phone: currentUser.phone || ''
-            }));
+            fetchUserProfile();
+        } else {
+            setLoading(false);
         }
-    }, [currentUser]);
+    }, [currentUser, getProfile]);
 
     const handleChange = (e) => {
         setFormData({
@@ -76,10 +96,18 @@ const Profile = () => {
     const handleLogout = () => {
         logout();
         navigate('/login');
-    };
-
-    if (!currentUser) {
+    }; if (!currentUser) {
         return <div className="profile-container">Loading...</div>;
+    }
+
+    if (loading) {
+        return <div className="profile-container">
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>;
     }
 
     return (

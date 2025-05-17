@@ -17,7 +17,7 @@ export default function Wishlist() {
                     </Link>
                 </div>
             ) : (
-                <div className="row row-cols-1 row-cols-md-4 g-4">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4  g-2">
                     {wishlistItems?.map((item) => (
                         <div key={item.id} className="col">
                             <div className="card h-100 wishlist-card">
@@ -39,13 +39,12 @@ export default function Wishlist() {
                                         </span>
                                     </div>
                                     <p className="card-text">€ {item.price}</p>
-                                    <div className="d-flex justify-content-between">
-                                        <Link
-                                            to={`/product/${item.slug}`}
-                                            className="btn btn-outline-primary btn-sm"
-                                        >
-                                            View Details
-                                        </Link>
+                                    <div className="d-flex justify-content-between">                                        <Link
+                                        to={`/product/${item.slug}`}
+                                        className="btn btn-primary btn-sm"
+                                    >
+                                        View Details
+                                    </Link>
                                         <button
                                             onClick={() => toggleWishlist(item)}
                                             className="btn btn-outline-danger btn-sm"

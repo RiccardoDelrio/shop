@@ -132,9 +132,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem('user');
             setCurrentUser(null);
         }
-    };
-
-    // Ottieni il profilo utente
+    };    // Ottieni il profilo utente
     const getProfile = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -154,6 +152,11 @@ export const AuthProvider = ({ children }) => {
             if (!response.ok) {
                 throw new Error(data.error || 'Si è verificato un errore nel recupero del profilo');
             }
+
+            // Aggiorniamo i dati dell'utente corrente con quelli dal server
+            const updatedUser = { ...currentUser, ...data.user };
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            setCurrentUser(updatedUser);
 
             return data.user;
         } catch (error) {

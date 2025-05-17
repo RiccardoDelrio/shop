@@ -104,9 +104,7 @@ function dynamicFiltering(req, res) {
     if (filters.maxPrice) {
         sql += ' AND p.price <= ?';
         params.push(Number(filters.maxPrice));
-    } sql += ' GROUP BY p.id';
-
-    // Handle sorting options
+    } sql += ' GROUP BY p.id';    // Handle sorting options
     const sortOption = req.query.sort;
     if (sortOption) {
         switch (sortOption) {
@@ -123,12 +121,19 @@ function dynamicFiltering(req, res) {
                 sql += ' ORDER BY p.discount ASC';
                 break;
             case 'newest':
+            case 'new_arrivals':
                 sql += ' ORDER BY p.created_at DESC';
                 break;
             case 'oldest':
                 sql += ' ORDER BY p.created_at ASC';
                 break;
-            // Default: no sorting applied
+            case 'name_asc':
+                sql += ' ORDER BY p.name ASC';
+                break;
+            case 'name_desc':
+                sql += ' ORDER BY p.name DESC';
+                break;
+
         }
     }
     if (req.query.limit) {

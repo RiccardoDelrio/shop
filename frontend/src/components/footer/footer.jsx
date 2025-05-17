@@ -43,11 +43,10 @@ export default function Footer() {
                                 <div className="col-6">
                                     <h5 className="text-center">Products</h5>
                                     <ul className="nav flex-column text-center info-list">
-                                        <li className="nav-item mb-2">
-                                            <NavLink to="/" className="nav-link p-0 footer-nav-link">Discounts</NavLink>
+                                        <li className="nav-item mb-2">                                            <NavLink to="/" className="nav-link p-0 footer-nav-link">Discounts</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
-                                            <NavLink to="/catalogo" className="nav-link p-0 footer-nav-link">Catalog</NavLink>
+                                            <NavLink to="/search" className="nav-link p-0 footer-nav-link">Catalog</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
                                             <NavLink to="/size-table" className="nav-link p-0 footer-nav-link">Size Guide</NavLink>

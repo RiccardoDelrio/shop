@@ -18,7 +18,9 @@ const ProductCardListView = ({ name, description, price, image, slug, discount }
                 <img
                     src={image}
                     alt={name}
-                />
+                />                {discount > 0 && (
+                    <span className="discount-badge">-{Math.round(discount)}%</span>
+                )}
             </div>
             <div className="product-details">
                 <h4 className="product-name">{name}</h4>

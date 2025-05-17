@@ -6,12 +6,13 @@
 
 .wishlist-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .wishlist-img-container {
     position: relative;
-    padding-top: 133.33%; /* 4:3 Aspect Ratio */
+    padding-top: 133.33%;
+    /* 4:3 Aspect Ratio */
     overflow: hidden;
 }
 
@@ -43,7 +44,11 @@
 
 
 
-}    font-weight: 500;.selected-variants .badge {}.btn-sm {
+    font-weight: 500;
+}
+
+
+.btn-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
 }

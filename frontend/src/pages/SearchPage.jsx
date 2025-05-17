@@ -60,12 +60,11 @@ export default function SearchPage() {
     const [products, setProducts] = useState([]);
     const [isGridView, setIsGridView] = useState(true);
     const [loading, setLoading] = useState(true);
-
-    // Leggi i filtri direttamente da searchParams
+    const [isFilterOpen, setIsFilterOpen] = useState(false);   // Stato per l'accordion dei filtri su mobile
     const filters = {
         category: searchParams.get('category') || '',
         wardrobeSection: searchParams.get('wardrobeSection') || '',
-        search: searchParams.get('search') || '',
+        search: searchParams.get('search') || searchParams.get('q') || '', // Controlla sia 'search' che 'q'
         minPrice: searchParams.get('minPrice') || '',
         maxPrice: searchParams.get('maxPrice') || '',
         color: searchParams.get('color') || '',
@@ -140,14 +139,14 @@ export default function SearchPage() {
 
     const toggleView = () => {
         setIsGridView(!isGridView);
-    };
-
-    return (
+    }; return (
         <div className="catalogo-container">
             <div className="catalogo-header">
                 <div className="d-flex justify-content-between align-items-center">
                     <h2 className="catalogo-title">
-                        {filters.search ? `Results for: ${filters.search}` : 'All products'}
+                        {filters.search ? `Results for: "${filters.search}"` : (
+                            filters.category ? `${filters.category.charAt(0).toUpperCase() + filters.category.slice(1)}` : 'All products'
+                        )}
                     </h2>
                     <div className="d-flex gap-2">
                         <select
@@ -168,19 +167,172 @@ export default function SearchPage() {
                         </button>
                     </div>
                 </div>
+            </div>            {/* Mobile Filter Accordion */}
+            <div className="d-lg-none mb-3">
+                <button
+                    className="w-100 d-flex justify-content-between align-items-center"
+                    onClick={() => setIsFilterOpen(!isFilterOpen)}
+                    style={{
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        border: `1px solid var(--accent-color)`,
+                        color: 'var(--accent-color)',
+                        padding: '10px 15px',
+                        fontFamily: '"Tenor Sans", sans-serif',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontSize: '0.9rem',
+                        transition: 'all 0.3s ease',
+                        borderRadius: '4px'
+                    }}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'var(--accent-color)';
+                        e.currentTarget.style.color = '#fff';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+                        e.currentTarget.style.color = 'var(--accent-color)';
+                    }}
+                >
+                    <span>Filters</span>
+                    <i className={`bi ${isFilterOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`}></i>
+                </button>
+
+                <div className={`collapse ${isFilterOpen ? 'show' : ''}`}>
+                    <div className="filter-sidebar p-3 rounded mt-2">                        <div className='d-flex justify-content-between'>
+                        <h4 className="mb-3">Filters</h4>
+                        <p onClick={() => setSearchParams()} className='text-secondary' style={{ cursor: 'pointer' }}>Reset filters</p>
+                    </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">Category</label>
+                            <select
+                                className="form-select text-black"
+                                name="category"
+                                value={filters.category}
+                                onChange={handleFilterChange}
+                            >
+                                <option value="">All</option>
+                                <option value="earrings">Earrings</option>
+                                <option value="bracelets">Bracelets</option>
+                                <option value="necklaces">Necklaces</option>
+                                <option value="jackets">Jackets</option>
+                                <option value="outerwear">Outerwear</option>
+                                <option value="shirts">Shirts</option>
+                                <option value="knits">Knitwear</option>
+                                <option value="trousers">Trousers</option>
+                                <option value="skirts">Skirts</option>
+                                <option value="dresses">Dresses</option>
+                            </select>
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">Minimum Price</label>
+                            <input
+                                type="number"
+                                className="form-control text-black"
+                                name="minPrice"
+                                value={filters.minPrice}
+                                onChange={handleFilterChange}
+                                min="0"
+                                step="1"
+                                onKeyDown={(e) => {
+                                    if (e.key === '-' || e.key === 'e') {
+                                        e.preventDefault();
+                                    }
+                                }}
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">Maximum Price</label>
+                            <input
+                                type="number"
+                                className="form-control text-black"
+                                name="maxPrice"
+                                value={filters.maxPrice}
+                                onChange={handleFilterChange}
+                                min={filters.minPrice || 0}
+                                step="1"
+                                onKeyDown={(e) => {
+                                    if (e.key === '-' || e.key === 'e') {
+                                        e.preventDefault();
+                                    }
+                                }}
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">Color</label>
+                            <select
+                                className="form-select text-black"
+                                name="color"
+                                value={filters.color}
+                                onChange={handleFilterChange}
+                            >
+                                <option value="">All Colors</option>
+                                {AVAILABLE_COLORS.map(color => (
+                                    <option key={`mobile-${color.value}`} value={color.value}>
+                                        {color.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">Size</label>
+                            <select
+                                className="form-select text-black"
+                                name="size"
+                                value={filters.size}
+                                onChange={handleFilterChange}
+                            >
+                                <option value="">All</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </select>
+                        </div>
+
+                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name="discounted"
+                                checked={filters.discounted}
+                                onChange={handleFilterChange}
+                                id="discounted-mobile"
+                            />
+                            <label className="form-check-label" htmlFor="discounted-mobile">
+                                Discounted Products Only
+                            </label>
+                        </div>                        <div className="mb-3 form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name="inStock"
+                                checked={filters.inStock}
+                                onChange={handleFilterChange}
+                                id="inStock-mobile"
+                            />
+                            <label className="form-check-label" htmlFor="inStock-mobile">
+                                In Stock Only
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Main scrollable content */}
             <div className="catalogo-content">
                 <div className="row g-4">
-                    {/* Filters Sidebar */}
-                    <div className="col-lg-3">
-                        <div className="filter-sidebar p-3 rounded">                            <div className='d-flex justify-content-between'>
-
-                            <h4 className="mb-3">Filters</h4>
-                            <p onClick={() => setSearchParams()} className='text-secondary' style={{ cursor: 'pointer' }}>Reset filters</p>
-                        </div>
-
+                    {/* Desktop Filters Sidebar - visibile solo su desktop */}
+                    <div className="col-lg-3 d-none d-lg-block">
+                        <div className="filter-sidebar p-3 rounded">
+                            <div className='d-flex justify-content-between'>
+                                <h4 className="mb-3">Filters</h4>
+                                <p onClick={() => setSearchParams()} className='text-secondary' style={{ cursor: 'pointer' }}>Reset filters</p>
+                            </div>
 
                             <div className="mb-3">
                                 <label className="form-label">Category</label>
@@ -303,7 +455,7 @@ export default function SearchPage() {
                     </div>
 
                     {/* Products Grid */}
-                    <div className="col-lg-9">
+                    <div className={`col-12 col-lg-9`}>
                         {loading ? (
                             <div className="text-center">
                                 <div className="spinner-border" role="status">
