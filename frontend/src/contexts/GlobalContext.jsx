@@ -20,6 +20,7 @@ function GlobalProvider({ children }) {
     const [wishlistItems, setWishlistItems] = useState(
         JSON.parse(localStorage.getItem('wishlist')) || []
     );
+    const [isInWishlistPage, setIsInWishlistPage] = useState()
     const user = JSON.parse(localStorage.getItem('user'))
     const token = localStorage.getItem('token')
     useEffect(() => {
@@ -35,8 +36,7 @@ function GlobalProvider({ children }) {
                 .then(data => setWishlistItems(data.reverse()))
         }
 
-
-    }, [isInWishlist])
+    }, [isInWishlist, isInWishlistPage])
 
 
 
@@ -104,6 +104,7 @@ function GlobalProvider({ children }) {
 
     // Funzione semplificata per gestire la wishlist
     const toggleWishlist = (product) => {
+
         setWishlistItems(prev => {
             const isInWishlist = prev.some(item => item.id === product.id);
             if (isInWishlist) {
@@ -140,6 +141,8 @@ function GlobalProvider({ children }) {
                 toggleWishlist,
                 isInWishlist,
                 setIsInWishlist,
+                isInWishlistPage,
+                setIsInWishlistPage,
             }}
         >
             {children}

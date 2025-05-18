@@ -1,9 +1,61 @@
 import { Link } from 'react-router-dom';
 import { useGlobal } from '../contexts/GlobalContext';
 import './Wishlist.css'; // Create this file for custom styles
+import { useEffect } from 'react';
 
 export default function Wishlist() {
-    const { wishlistItems, toggleWishlist } = useGlobal();
+    const { wishlistItems, setWishlistItems, toggleWishlist, isInWishlist, setIsInWishlist, isInWishlistPage, setIsInWishlistPage } = useGlobal()
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    const token = localStorage.getItem('token')
+    useEffect(() => {
+        setIsInWishlistPage(wishlistItems.map(item => {
+            return item.product_id || item.id
+        }))
+
+
+
+    }, [])
+
+
+
+    const handleRemoveWishList = (itemId) => {
+        const indexOfItem = wishlistItems.indexOf()
+        if (user?.id && token) {
+
+            fetch(`http://localhost:3000/api/v1/wishlist/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data.message || data.error)
+
+                    const indexOfItem = isInWishlistPage.indexOf(itemId)
+                    setIsInWishlistPage(isInWishlistPage.splice(indexOfItem, 1))
+
+
+
+                }
+
+                )
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     return (
         <div className="container py-5">
@@ -46,7 +98,7 @@ export default function Wishlist() {
                                         View Details
                                     </Link>
                                         <button
-                                            onClick={() => toggleWishlist(item)}
+                                            onClick={() => handleRemoveWishList(item.product_id || item.id)}
                                             className="btn btn-outline-danger btn-sm"
                                         >
                                             <i className="bi bi-heart-fill"></i>

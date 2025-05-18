@@ -24,16 +24,13 @@ const ProductDetails = () => {
 
 
     useEffect(() => {
-        const isInWishlist = wishlistItems?.find(item => item.product_id === product?.id)
-        if (isInWishlist) {
-            setIsInWishlist(true)
-            console.log('è vero');
+        if (!product) return;
+        const inWishlist = wishlistItems?.some(item =>
+            item.product_id === product.id || item.id === product.id
+        );
+        setIsInWishlist(inWishlist);
+    }, [wishlistItems, product]);
 
-        } else {
-            setIsInWishlist(false)
-            console.log('è falso');
-        }
-    }, [wishlistItems])
 
 
     useEffect(() => {
@@ -200,22 +197,34 @@ const ProductDetails = () => {
     }, [wishlistItems]) */
     const handleRemoveWishList = () => {
         const itemId = wishlistItems.find(item => item.product_id === product?.id)?.product_id
-        fetch(`http://localhost:3000/api/v1/wishlist/${itemId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data.message || data.error)
-                setIsInWishlist(false)
+        const wishlistProduct = {
+            ...product,
+            selectedColor,
+            selectedVariation,
+            selectedImage: currentImage
+        };
+        toggleWishlist(wishlistProduct)
+        if (user?.id && token) {
 
-            }
-            )
+            fetch(`http://localhost:3000/api/v1/wishlist/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data.message || data.error)
+                    setIsInWishlist(false)
+
+                }
+                )
+        }
+
 
     }
+    console.log('isInWishlist', isInWishlist);
 
 
 
@@ -234,7 +243,8 @@ const ProductDetails = () => {
         };
 
         toggleWishlist(wishlistProduct);
-        if (user.id && token) {
+
+        if (user?.id && token) {
             fetch('http://localhost:3000/api/v1/wishlist', {
                 method: 'POST',
                 headers: {
