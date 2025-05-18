@@ -3,11 +3,7 @@ import './checkout.css'
 import { useGlobal } from '../../contexts/GlobalContext'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link } from 'react-router-dom'
-import {
-    useStripe,
-    useElements,
-    CardElement,
-} from '@stripe/react-stripe-js';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 
 const Checkout = () => {
     const { cartItems, setCartItems } = useGlobal()
@@ -23,6 +19,8 @@ const Checkout = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [cartSummary, setCartSummary] = useState([]) // Stato per memorizzare i dati del carrello dal localStorage
     const [isAccordionOpen, setIsAccordionOpen] = useState(false) // Stato per il toggle dell'accordion
+    const [cardComplete, setCardComplete] = useState(false) // New state to track card completion
+    const [cardError, setCardError] = useState('') // New state to track card errors
 
 
     useEffect(() => {
@@ -88,20 +86,20 @@ const Checkout = () => {
             // Se ci sono campi da aggiornare
             if (Object.keys(profileData).length > 0) {
                 await updateProfile(profileData)
-                setUpdateMessage('Dati profilo aggiornati con successo!')
+                setUpdateMessage('Profile data updated successfully!')
 
                 // Resetta il messaggio dopo 3 secondi
                 setTimeout(() => {
                     setUpdateMessage('')
                 }, 3000)
             } else {
-                setUpdateMessage('Nessun dato da aggiornare')
+                setUpdateMessage('No data to update')
                 setTimeout(() => {
                     setUpdateMessage('')
                 }, 3000)
             }
         } catch (error) {
-            setUpdateMessage(`Errore durante l'aggiornamento: ${error.message}`)
+            setUpdateMessage(`Error during update: ${error.message}`)
             setTimeout(() => {
                 setUpdateMessage('')
             }, 3000)
@@ -119,22 +117,62 @@ const Checkout = () => {
         }
     })
 
+    // Handler for CardElement change events - translate Italian error messages if needed
+    const handleCardChange = (event) => {
+        setCardComplete(event.complete);
+
+        // Handle error message and translate from Italian if needed
+        if (event.error) {
+            let errorMessage = event.error.message;
+
+            // Translate common Italian error messages to English if they occur
+            if (errorMessage.includes("Il numero della carta è incompleto")) {
+                errorMessage = "The card number is incomplete";
+            } else if (errorMessage.includes("La data di scadenza è incompleta")) {
+                errorMessage = "The expiry date is incomplete";
+            } else if (errorMessage.includes("Il codice di sicurezza è incompleto")) {
+                errorMessage = "The security code is incomplete";
+            } else if (errorMessage.includes("incompleto") || errorMessage.includes("invalido")) {
+                errorMessage = "Please check your card information";
+            }
+
+            setCardError(errorMessage);
+        } else {
+            setCardError('');
+        }
+    };
+
+    // Modify the handleSubmit function to handle form validation
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Check form validity using Bootstrap validation
+        if (!e.target.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.target.classList.add('was-validated');
+            return;
+        }
 
-        const requiredFields = ['first_name', 'last_name', 'email', 'address', 'city', 'postal_code', 'country'];
+        // Check if card details are complete
+        if (!cardComplete) {
+            setCardError('Please fill in all required card information.');
+            return;
+        }
+
+        // Continue with existing submission logic
+        const requiredFields = ['first_name', 'last_name', 'email', 'address', 'city', 'postal_code', 'country', 'phone', 'state'];
         const missingFields = requiredFields.filter(field => !formData[field]);
 
         if (missingFields.length > 0) {
             setFormStatus({
-                error: `I seguenti campi sono obbligatori: ${missingFields.join(', ')}`
+                error: `The following fields are required: ${missingFields.join(', ')}`
             });
             return;
         }
 
         if (!stripe || !elements) {
-            setFormStatus({ error: 'Stripe non è pronto' });
+            setFormStatus({ error: 'Stripe is not ready' });
             return;
         }
 
@@ -163,7 +201,7 @@ const Checkout = () => {
         }
 
         if (paymentResult.paymentIntent.status === 'succeeded') {
-            console.log('Pagamento riuscito');
+            console.log('Payment successful');
 
 
             // continua con invio ordine come già fai
@@ -208,7 +246,7 @@ const Checkout = () => {
                     }
                 })
                 .catch(err => {
-                    setFormStatus({ error: 'Errore durante la creazione dell’ordine.' });
+                    setFormStatus({ error: 'Error during order creation.' });
                     if (isLoading) {
                         setIsLoading(false)
                     }
@@ -226,9 +264,9 @@ const Checkout = () => {
     if (cartItems.length === 0 && !formStatus?.message) {
         return (
             <div className="checkout-container my-5 text-center">
-                <h3>Il tuo carrello è vuoto</h3>
-                <p>Aggiungi prodotti al carrello prima di procedere al checkout.</p>
-                <Link to="/search" className="btn btn-primary">Continua lo shopping</Link>
+                <h3>Your cart is empty</h3>
+                <p>Add products to your cart before proceeding to checkout.</p>
+                <Link to="/search" className="btn btn-primary">Continue shopping</Link>
             </div>
         )
     }// Carica il carrello da localStorage
@@ -273,14 +311,14 @@ const Checkout = () => {
                     <div className="d-flex justify-content-between align-items-center">
                         <h5 className="mb-0">
                             <i className="fa-solid fa-shopping-cart me-2"></i>
-                            Riepilogo ordine ({cartItems.length} articoli)
+                            Order Summary ({cartItems.length} items)
                         </h5>
                         <span className="accordion-toggle">
                             <i className={`fa-solid ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
                         </span>
                     </div>
                     <div className="d-flex justify-content-between mt-2">
-                        <span>Totale:</span>
+                        <span>Total:</span>
                         <strong>{calculateCartTotal()}€</strong>
                     </div>
                 </div>
@@ -291,7 +329,7 @@ const Checkout = () => {
                             <div className="cart-item-details">
                                 <div className="cart-item-title">{item.name}</div>
                                 <div className="cart-item-variant">
-                                    <small>Colore: {item.variations.color}, Taglia: {item.variations.size}</small>
+                                    <small>Color: {item.variations.color}, Size: {item.variations.size}</small>
                                 </div>
                             </div>
                             <div className="cart-item-price">
@@ -303,15 +341,15 @@ const Checkout = () => {
 
                     <div className="cart-summary-footer">
                         <div className="d-flex justify-content-between">
-                            <span>Subtotale:</span>
+                            <span>Subtotal:</span>
                             <span>{calculateCartTotal()}€</span>
                         </div>
                         <div className="d-flex justify-content-between">
-                            <span>Spedizione:</span>
-                            <span>Gratuita</span>
+                            <span>Shipping:</span>
+                            <span>Free</span>
                         </div>
                         <div className="d-flex justify-content-between total-row">
-                            <strong>Totale:</strong>
+                            <strong>Total:</strong>
                             <strong>{calculateCartTotal()}€</strong>
                         </div>
                     </div>
@@ -320,113 +358,164 @@ const Checkout = () => {
 
             {!isAuthenticated && (
                 <div className="mb-4 p-3 border rounded bg-light">
-                    <p>Sei già registrato? <Link to="/login?redirect=checkout">Accedi</Link> per un checkout più veloce e per salvare i tuoi dati di spedizione.</p>
+                    <p>Already registered? <Link to="/login?redirect=checkout">Log in</Link> for faster checkout and to save your shipping information.</p>
                 </div>
             )}
 
-            <form>
+            <form className="needs-validation" noValidate onSubmit={handleSubmit}>
                 <div className={`${!formStatus && !isLoading ? '' : 'd-none'}`}>
-                    <h3 className="mb-4">Dati di spedizione</h3>
+                    <h3 className="mb-4">Shipping Information</h3>
+
+                    {/* Required fields notice */}
+                    <div className="alert alert-info py-2 mb-4">
+                        <i className="fa-solid fa-circle-info me-2"></i>
+                        All fields in this form are required
+                    </div>
+
                     <div className="row">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="first_name" className="form-label">Nome *</label>
+                            <label htmlFor="first_name" className="form-label">First Name</label>
                             <input
                                 onChange={handleFormData}
                                 type="text"
                                 className="form-control"
                                 name="first_name"
                                 id="first_name"
-                                aria-describedby="emailHelpId"
-                                placeholder="Il tuo nome..."
+                                aria-describedby="firstNameHelp"
+                                placeholder="Your first name..."
                                 value={formData.first_name || ''}
                                 required
+                                pattern="[A-Za-z\s]{2,50}"
                             />
+                            <div className="invalid-feedback">
+                                Please provide your first name (2-50 characters, letters only).
+                            </div>
                         </div>
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="last_name" className="form-label">Cognome *</label>
+                            <label htmlFor="last_name" className="form-label">Last Name</label>
                             <input
                                 onChange={handleFormData}
                                 type="text"
                                 className="form-control"
                                 name="last_name"
                                 id="last_name"
-                                aria-describedby="emailHelpId"
-                                placeholder="Il tuo cognome..."
+                                aria-describedby="lastNameHelp"
+                                placeholder="Your last name..."
                                 value={formData.last_name || ''}
                                 required
+                                pattern="[A-Za-z\s]{2,50}"
                             />
+                            <div className="invalid-feedback">
+                                Please provide your last name (2-50 characters, letters only).
+                            </div>
                         </div>
                     </div>
                     <div className="mb-4">
-                        <label className="form-label">Dati di pagamento</label>
-                        <div className="p-3 border rounded bg-white">
-                            <CardElement options={{ hidePostalCode: true }} />
+                        <label className="form-label">Payment Information</label>
+                        <div className={`p-3 border rounded bg-white ${cardError && 'border-danger'}`}>
+                            <CardElement
+                                options={{
+                                    hidePostalCode: true,
+                                    style: {
+                                        base: {
+                                            fontSize: '16px',
+                                            '::placeholder': {
+                                                color: '#aab7c4',
+                                            },
+                                        },
+                                    }
+                                }}
+                                onChange={handleCardChange}
+                            />
+                            {cardError && (
+                                <div className="text-danger mt-2 small">
+                                    <i className="fa-solid fa-exclamation-circle me-1"></i>
+                                    {cardError}
+                                </div>
+                            )}
                         </div>
+                        <small className="text-muted">All card fields are required</small>
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="email" className="form-label">Email *</label>
+                        <label htmlFor="email" className="form-label">Email</label>
                         <input
                             onChange={handleFormData}
                             type="email"
                             className="form-control"
                             name="email"
                             id="email"
-                            aria-describedby="emailHelpId"
+                            aria-describedby="emailHelp"
                             placeholder="example@email.com"
                             value={formData.email || ''}
                             required
                         />
+                        <div className="invalid-feedback">
+                            Please provide a valid email address.
+                        </div>
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="address" className="form-label">Indirizzo *</label>
+                        <label htmlFor="address" className="form-label">Address</label>
                         <input
                             onChange={handleFormData}
                             type="text"
                             className="form-control"
                             name="address"
                             id="address"
-                            aria-describedby="emailHelpId"
-                            placeholder="Il tuo indirizzo..."
+                            aria-describedby="addressHelp"
+                            placeholder="Your address..."
                             value={formData.address || ''}
                             required
+                            minLength="5"
                         />
+                        <div className="invalid-feedback">
+                            Please provide your address (minimum 5 characters).
+                        </div>
                     </div>
 
                     <div className="row">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="postal_code" className="form-label">CAP *</label>
+                            <label htmlFor="postal_code" className="form-label">ZIP Code</label>
                             <input
                                 onChange={handleFormData}
                                 type="text"
                                 className="form-control"
                                 name="postal_code"
                                 id="postal_code"
-                                aria-describedby="emailHelpId"
-                                placeholder="CAP"
+                                aria-describedby="postalCodeHelp"
+                                placeholder="ZIP Code"
                                 value={formData.postal_code || ''}
                                 required
+                                pattern="[0-9A-Za-z\s-]{3,10}"
                             />
+                            <div className="invalid-feedback">
+                                Please provide a valid ZIP/postal code.
+                            </div>
                         </div>
 
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="phone" className="form-label">Telefono</label>
+                            <label htmlFor="phone" className="form-label">Phone</label>
                             <input
                                 onChange={handleFormData}
                                 type="tel"
                                 className="form-control"
                                 name="phone"
                                 id="phone"
-                                aria-describedby="emailHelpId"
-                                placeholder="+39 333 3333333"
+                                aria-describedby="phoneHelp"
+                                placeholder="Enter phone number"
                                 value={formData.phone || ''}
+                                pattern="[0-9+\s()-]{7,20}"
+                                required
                             />
+                            <div className="invalid-feedback">
+                                Please provide a valid phone number (digits, +, spaces, and parentheses allowed).
+                            </div>
                         </div>
                     </div>
 
                     <div className="row">
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="country" className="form-label">Paese *</label>
+                            <label htmlFor="country" className="form-label">Country</label>
                             <select
                                 onChange={handleFormData}
                                 className="form-select"
@@ -435,7 +524,7 @@ const Checkout = () => {
                                 value={formData.country || ''}
                                 required
                             >
-                                <option value="" disabled>Scegli il tuo paese</option>
+                                <option value="" disabled>Select your country</option>
                                 <option value="IT">IT</option>
                                 <option value="DE">DE</option>
                                 <option value="FR">FR</option>
@@ -443,36 +532,48 @@ const Checkout = () => {
                                 <option value="GB">GB</option>
                                 <option value="US">US</option>
                             </select>
+                            <div className="invalid-feedback">
+                                Please select a country.
+                            </div>
                         </div>
 
                         <div className="col-md-6 mb-3">
-                            <label htmlFor="city" className="form-label">Città *</label>
+                            <label htmlFor="city" className="form-label">City</label>
                             <input
                                 onChange={handleFormData}
                                 type="text"
                                 className="form-control"
                                 name="city"
                                 id="city"
-                                aria-describedby="emailHelpId"
-                                placeholder="La tua città..."
+                                aria-describedby="cityHelp"
+                                placeholder="Your city..."
                                 value={formData.city || ''}
                                 required
+                                pattern="[A-Za-z\s-]{2,50}"
                             />
+                            <div className="invalid-feedback">
+                                Please provide a valid city name.
+                            </div>
                         </div>
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="state" className="form-label">Provincia</label>
+                        <label htmlFor="state" className="form-label">State/Province</label>
                         <input
                             onChange={handleFormData}
                             type="text"
                             className="form-control"
                             name="state"
                             id="state"
-                            aria-describedby="emailHelpId"
-                            placeholder="La tua provincia..."
+                            aria-describedby="stateHelp"
+                            placeholder="Enter state or province"
                             value={formData.state || ''}
+                            pattern="[A-Za-z\s-]{2,50}"
+                            required
                         />
+                        <div className="invalid-feedback">
+                            Please provide a valid state/province (letters, spaces and hyphens only).
+                        </div>
                     </div>
 
                     {isAuthenticated && (
@@ -483,7 +584,7 @@ const Checkout = () => {
                                 onClick={handleUpdateProfile}
                             >
                                 <i className="fa-solid fa-user me-2"></i>
-                                Salva questi dati nel tuo profilo
+                                Save this information to your profile
                             </button>
                             {updateMessage && (
                                 <div className="alert mt-2 p-2 alert-success">
@@ -496,16 +597,15 @@ const Checkout = () => {
                     <div className='w-100 d-flex justify-content-between'>
                         <Link to="/carello" className="btn btn-outline-secondary">
                             <i className="fa-solid fa-arrow-left me-2"></i>
-                            Torna al carrello
+                            Back to cart
                         </Link>
 
                         <button
-                            onClick={handleSubmit}
                             disabled={isLoading}
                             className='form-button'
                             type="submit"
                         >
-                            Conferma ordine
+                            Confirm order
                             <div className='icon-button'>
                                 <i className='fa-solid fa-arrow-right'></i>
                             </div>
@@ -519,7 +619,7 @@ const Checkout = () => {
                                 <div onClick={() => setFormStatus(null)} className="position-absolute start-0 top-0 p-3 text-white">
                                     <i className='fa-solid fa-arrow-left'></i>
                                 </div>
-                                <p className="h4">{formStatus.error}</p>
+                                <p className="h4">{formStatus.error.replace("Errore durante la creazione dell'ordine.", "Error during order creation.")}</p>
                             </>
                         ) : (
                             <>
@@ -530,27 +630,27 @@ const Checkout = () => {
                                     <p className='h4'>{formStatus.message}</p>
                                     {formCheck?.id && (
                                         <div className="text-start mt-5 bg-white text-dark rounded-2 p-4">
-                                            <h5 className="mb-3">🧾 Riepilogo Ordine #{formCheck.numeric_id}</h5>
-                                            <p><strong>Nome:</strong> {formCheck.first_name} {formCheck.last_name}</p>
+                                            <h5 className="mb-3">🧾 Order Summary #{formCheck.numeric_id}</h5>
+                                            <p><strong>Name:</strong> {formCheck.first_name} {formCheck.last_name}</p>
                                             <p><strong>Email:</strong> {formCheck.email}</p>
-                                            <p><strong>Telefono:</strong> {formCheck.phone}</p>
-                                            <p><strong>Indirizzo:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
+                                            <p><strong>Phone:</strong> {formCheck.phone}</p>
+                                            <p><strong>Address:</strong> {formCheck.address}, {formCheck.postal_code}, {formCheck.city}, {formCheck.state}, {formCheck.country}</p>
                                             <hr />
-                                            <h6 className="mt-3 mb-2">📦 Prodotti</h6>
+                                            <h6 className="mt-3 mb-2">📦 Products</h6>
                                             <ul className="list-unstyled">
                                                 {formCheck.items.map((item, index) => (
                                                     <li key={index} className="mb-2">
                                                         <strong>{item.product_name}</strong> - {item.quantity} × {item.price}€ <br />
-                                                        <small>Variante: {item.color}, Taglia: {item.size}</small>
+                                                        <small>Variant: {item.color}, Size: {item.size}</small>
                                                     </li>
                                                 ))}
                                             </ul>
                                             <hr />
-                                            <p><strong>Totale:</strong> {formCheck.total}€</p>
+                                            <p><strong>Total:</strong> {formCheck.total}€</p>
                                             {parseFloat(formCheck.discount) > 0 && (
-                                                <p><strong>Sconto:</strong> {formCheck.discount}€</p>
+                                                <p><strong>Discount:</strong> {formCheck.discount}€</p>
                                             )}
-                                            <p><strong>Stato ordine:</strong> {formCheck.status}</p>
+                                            <p><strong>Order status:</strong> {formCheck.status}</p>
                                         </div>
                                     )}
                                 </div>
@@ -561,7 +661,7 @@ const Checkout = () => {
                 ) : isLoading ? (
                     <div className="loader-container">
                         <div className="spinner "></div>
-                        <p className='text-center d-block'>Stiamo processando il tuo ordine...</p>
+                        <p className='text-center d-block'>We are processing your order...</p>
                     </div>
 
                 ) : (

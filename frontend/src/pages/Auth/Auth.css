@@ -158,24 +158,28 @@
 }
 
 .alert {
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem; /* Increased padding */
     margin-bottom: 1.5rem;
-    border-radius: 0;
+    border-radius: 4px; /* Added rounded corners */
     backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow for all alerts */
+    font-weight: 500; /* Slightly bolder text */
 }
 
 .alert-danger {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
-    border: 1px solid rgba(220, 53, 69, 0.2);
+    background-color: rgba(220, 53, 69, 0.15); /* Slightly more opaque background */
+    color: #c82333; /* Darker red for better contrast */
+    border: 1px solid rgba(220, 53, 69, 0.4); /* More visible border */
+    border-left: 4px solid #dc3545; /* Accent border on left */
+    animation: fadeInShake 0.6s ease; /* Special animation for errors */
 }
 
 .alert-success {
-    background-color: rgba(25, 135, 84, 0.1);
-    color: #198754;
-    border: 1px solid rgba(25, 135, 84, 0.2);
+    background-color: rgba(25, 135, 84, 0.15);
+    color: #157347; /* Darker green for better contrast */
+    border: 1px solid rgba(25, 135, 84, 0.4);
+    border-left: 4px solid #198754; /* Accent border on left */
 }
-
 
 .auth-form::before {
     content: '';
@@ -184,4 +188,27 @@
     margin: 0 auto 1.5rem;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Additional animation for error messages */
+@keyframes fadeInShake {
+    0% { 
+        opacity: 0; 
+        transform: translateX(-10px); 
+    }
+    60% { 
+        opacity: 1; 
+        transform: translateX(5px); 
+    }
+    80% { 
+        transform: translateX(-3px); 
+    }
+    100% { 
+        transform: translateX(0); 
+    }
 }

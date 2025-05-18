@@ -25,11 +25,13 @@ import Wishlist from './pages/Wishlist';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-
-
-
 function App() {
   const stripePromise = loadStripe('pk_test_51ROydB33eARAa4FaXC0t0a9hIjtRdeWzaash0tOxyBqHvwvnq9gGN6q3WkOWc0PzSvfUsIs8rCQIEqt7AujrFJeH00AQIagCXr');
+
+  // Create Stripe options object with locale set to English
+  const stripeOptions = {
+    locale: 'en' // Force English language for Stripe elements
+  };
 
   return (
     <>
@@ -72,7 +74,7 @@ function App() {
             } />
             <Route path="/carello" element={<Carello />} />
             <Route path='/checkout' element={
-              <Elements stripe={stripePromise}>
+              <Elements stripe={stripePromise} options={stripeOptions}>
                 <Checkout />
               </Elements>} />
             <Route path="*" element={<NotFound />} />
