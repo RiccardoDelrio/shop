@@ -434,3 +434,27 @@
     text-transform: uppercase;
     color: var(--testo-principale);
 }
+
+/* Aggiunti nuovi stili per i prezzi */
+.price .original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 10px;
+}
+
+.price .discounted-price {
+    color: #c00;
+}
+
+.price .discount-badge {
+    font-size: 0.85rem;
+    margin-left: 8px;
+    background-color: #c00;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.wishlist-button-container {
+    position: relative;
+}

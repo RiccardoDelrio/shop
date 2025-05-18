@@ -9,7 +9,6 @@
     border: 1px solid var(--grigio-perla);
     border-radius: 4px;
     padding: 20px;
-    background-color: var(--accent-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
 
@@ -47,7 +46,7 @@
         font-family: 'Raleway', sans-serif;
 
         a {
-            color: var(--bianco-avorio);
+            color: var(--testo-principale);
             transition: all 0.3s ease;
             position: relative;
             padding-left: 0;
@@ -106,6 +105,3 @@
 }
 
 /* Rimuove il colore azzurro dai link visitati */
-.footer-nav-link:visited {
-    color: inherit;
-}

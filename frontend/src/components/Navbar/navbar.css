@@ -145,7 +145,6 @@
             flex-direction: column;
             position: fixed;
             top: 0;
-            /* Adjusted to match the new navbar height */
             transform: translateX(110%);
 
             height: 100vh;
@@ -160,7 +159,6 @@
             justify-content: flex-start;
             border-left: 1px solid var(--accent-color);
             box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
 
             &.menuOpen {
                 transform: translateX(0);

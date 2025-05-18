@@ -40,8 +40,8 @@ export default function Jumbotron() {
         <section className="hero-text-reveal d-flex align-items-center justify-content-center">
             <div className="hero-text-content text-center">
                 <h1 className="split-headline">
-                    <span className="luxury-word">DRESS </span>
-                    <span className="luxury-word highlight"> THE EMOTION</span>
+                    <span className="luxury-word me-2">DRESS </span>
+                    <span className="luxury-word highlight">THE EMOTION</span>
                 </h1>
                 <div className="typewriter">
                     <span>{display}</span>

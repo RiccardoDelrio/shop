@@ -5,7 +5,6 @@ import { useGlobal } from '../../contexts/GlobalContext'
 import { useEffect } from 'react'
 const Cart = () => {
     const { products, cartItems, setCartItems, groupedProducts, bottom, randomProducts } = useGlobal()
-    console.log(products);
 
     const [isOpen, setIsOpen] = useState(false)
     const cartRef = useRef(null)

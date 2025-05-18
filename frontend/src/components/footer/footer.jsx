@@ -62,7 +62,7 @@ export default function Footer() {
                                 <h5>Contact Us</h5>
                                 <p className="mb-1"><strong>Phone:</strong> +39 345 678 9012</p>
                                 <p className="mb-1"><strong>Email:</strong> bulique.noreply@gmail.com</p>
-                                <p className="mb-1"><strong>VAT:</strong> IT12345678901</p>
+                                <p className="mb-1"><strong>VAT N°:</strong> IT12345678901</p>
                                 <div className="social-links mt-3">
                                     <a href="#" className="me-3 facebook">
                                         <i className="fab fa-facebook fa-lg"></i>

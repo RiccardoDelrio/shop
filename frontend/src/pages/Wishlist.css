@@ -60,3 +60,22 @@
 .selected-variants .badge {
     font-weight: 500;
 }
+
+/* Animazione per la rimozione degli elementi dalla wishlist */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.fadeOut {
+    animation: fadeOut 0.5s forwards;
+    pointer-events: none;
+    /* Previeni ulteriori click mentre si dissolve */
+}

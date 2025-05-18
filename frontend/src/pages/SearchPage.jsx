@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import ProductCards from '../components/ProductCard/ProductCard'
 import ProductCardListView from '../components/ProductCarListView/ProductCarListView'
+import './SearchPage.css'
 
 const AVAILABLE_COLORS = [
     // Metallic Colors
@@ -167,31 +168,10 @@ export default function SearchPage() {
                         </button>
                     </div>
                 </div>
-            </div>            {/* Mobile Filter Accordion */}
-            <div className="d-lg-none mb-3">
+            </div>            {/* Mobile Filter Accordion */}            <div className="d-lg-none mb-3">
                 <button
-                    className="w-100 d-flex justify-content-between align-items-center"
+                    className="w-100 d-flex justify-content-between align-items-center mobile-filter-button"
                     onClick={() => setIsFilterOpen(!isFilterOpen)}
-                    style={{
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        border: `1px solid var(--accent-color)`,
-                        color: 'var(--accent-color)',
-                        padding: '10px 15px',
-                        fontFamily: '"Tenor Sans", sans-serif',
-                        letterSpacing: '0.05em',
-                        textTransform: 'uppercase',
-                        fontSize: '0.9rem',
-                        transition: 'all 0.3s ease',
-                        borderRadius: '4px'
-                    }}
-                    onMouseOver={(e) => {
-                        e.currentTarget.style.background = 'var(--accent-color)';
-                        e.currentTarget.style.color = '#fff';
-                    }}
-                    onMouseOut={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
-                        e.currentTarget.style.color = 'var(--accent-color)';
-                    }}
                 >
                     <span>Filters</span>
                     <i className={`bi ${isFilterOpen ? 'bi-chevron-up' : 'bi-chevron-down'}`}></i>
@@ -200,98 +180,106 @@ export default function SearchPage() {
                 <div className={`collapse ${isFilterOpen ? 'show' : ''}`}>
                     <div className="filter-sidebar p-3 rounded mt-2">                        <div className='d-flex justify-content-between'>
                         <h4 className="mb-3">Filters</h4>
-                        <p onClick={() => setSearchParams()} className='text-secondary' style={{ cursor: 'pointer' }}>Reset filters</p>
-                    </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Category</label>
-                            <select
-                                className="form-select text-black"
-                                name="category"
-                                value={filters.category}
-                                onChange={handleFilterChange}
-                            >
-                                <option value="">All</option>
-                                <option value="earrings">Earrings</option>
-                                <option value="bracelets">Bracelets</option>
-                                <option value="necklaces">Necklaces</option>
-                                <option value="jackets">Jackets</option>
-                                <option value="outerwear">Outerwear</option>
-                                <option value="shirts">Shirts</option>
-                                <option value="knits">Knitwear</option>
-                                <option value="trousers">Trousers</option>
-                                <option value="skirts">Skirts</option>
-                                <option value="dresses">Dresses</option>
-                            </select>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Minimum Price</label>
-                            <input
-                                type="number"
-                                className="form-control text-black"
-                                name="minPrice"
-                                value={filters.minPrice}
-                                onChange={handleFilterChange}
-                                min="0"
-                                step="1"
-                                onKeyDown={(e) => {
-                                    if (e.key === '-' || e.key === 'e') {
-                                        e.preventDefault();
-                                    }
-                                }}
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Maximum Price</label>
-                            <input
-                                type="number"
-                                className="form-control text-black"
-                                name="maxPrice"
-                                value={filters.maxPrice}
-                                onChange={handleFilterChange}
-                                min={filters.minPrice || 0}
-                                step="1"
-                                onKeyDown={(e) => {
-                                    if (e.key === '-' || e.key === 'e') {
-                                        e.preventDefault();
-                                    }
-                                }}
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Color</label>
-                            <select
-                                className="form-select text-black"
-                                name="color"
-                                value={filters.color}
-                                onChange={handleFilterChange}
-                            >
-                                <option value="">All Colors</option>
-                                {AVAILABLE_COLORS.map(color => (
-                                    <option key={`mobile-${color.value}`} value={color.value}>
-                                        {color.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">Size</label>
-                            <select
-                                className="form-select text-black"
-                                name="size"
-                                value={filters.size}
-                                onChange={handleFilterChange}
-                            >
-                                <option value="">All</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                            </select>
+                        <p onClick={() => setSearchParams()} className='text-secondary reset-filters'>Reset filters</p>
+                    </div>                        <div className="mb-3 d-flex flex-nowrap align-items-center">
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <label className="form-label mb-0">Category</label>
+                            </div>
+                            <div style={{ width: "75%" }}>
+                                <select
+                                    className="form-select form-select-sm text-black"
+                                    name="category"
+                                    value={filters.category}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">All</option>
+                                    <option value="earrings">Earrings</option>
+                                    <option value="bracelets">Bracelets</option>
+                                    <option value="necklaces">Necklaces</option>
+                                    <option value="jackets">Jackets</option>
+                                    <option value="outerwear">Outerwear</option>
+                                    <option value="shirts">Shirts</option>
+                                    <option value="knits">Knitwear</option>
+                                    <option value="trousers">Trousers</option>
+                                    <option value="skirts">Skirts</option>
+                                    <option value="dresses">Dresses</option>
+                                </select>
+                            </div>
+                        </div>                        <div className="mb-3 d-flex flex-nowrap align-items-center">
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <label className="form-label mb-0">Min Price</label>
+                            </div>
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <input
+                                    type="number"
+                                    className="form-control form-control-sm text-black"
+                                    name="minPrice"
+                                    value={filters.minPrice}
+                                    onChange={handleFilterChange}
+                                    min="0"
+                                    step="1"
+                                    onKeyDown={(e) => {
+                                        if (e.key === '-' || e.key === 'e') {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <label className="form-label mb-0">Max Price</label>
+                            </div>
+                            <div style={{ width: "25%" }}>
+                                <input
+                                    type="number"
+                                    className="form-control form-control-sm text-black"
+                                    name="maxPrice"
+                                    value={filters.maxPrice}
+                                    onChange={handleFilterChange}
+                                    min={filters.minPrice || 0}
+                                    step="1"
+                                    onKeyDown={(e) => {
+                                        if (e.key === '-' || e.key === 'e') {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>                        <div className="mb-3 d-flex flex-nowrap align-items-center">
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <label className="form-label mb-0">Color</label>
+                            </div>
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <select
+                                    className="form-select form-select-sm text-black"
+                                    name="color"
+                                    value={filters.color}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">All Colors</option>
+                                    {AVAILABLE_COLORS.map(color => (
+                                        <option key={`mobile-${color.value}`} value={color.value}>
+                                            {color.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="me-2" style={{ width: "25%" }}>
+                                <label className="form-label mb-0">Size</label>
+                            </div>
+                            <div style={{ width: "25%" }}>
+                                <select
+                                    className="form-select form-select-sm text-black"
+                                    name="size"
+                                    value={filters.size}
+                                    onChange={handleFilterChange}
+                                >
+                                    <option value="">All</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div className="mb-3 form-check">

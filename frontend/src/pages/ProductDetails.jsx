@@ -286,27 +286,26 @@ const ProductDetails = () => {
 
                 <div className="product__photo">
                     <div className="photo-container">
-                        <div className="photo-main">
-                            <div className="controls">
-                                <div style={{ position: 'relative' }}>
-                                    <button
-                                        className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
-                                        onClick={handleWishlist}
-                                        aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                                    >
-                                        <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
-                                    </button>
-                                    {showTooltip && (
-                                        <div className="wishlist-tooltip">
-                                            {!selectedColor
-                                                ? 'Please select a color first'
-                                                : !selectedVariation
-                                                    ? 'Please select a size first'
-                                                    : ''}
-                                        </div>
-                                    )}
-                                </div>
+                        <div className="photo-main">                            <div className="controls">
+                            <div className="wishlist-button-container">
+                                <button
+                                    className={`btn wishlist-btn ${isInWishlist ? 'in-wishlist' : ''}`}
+                                    onClick={handleWishlist}
+                                    aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                                >
+                                    <i className={`bi bi-heart${isInWishlist ? '-fill' : ''}`}></i>
+                                </button>
+                                {showTooltip && (
+                                    <div className="wishlist-tooltip">
+                                        {!selectedColor
+                                            ? 'Please select a color first'
+                                            : !selectedVariation
+                                                ? 'Please select a size first'
+                                                : ''}
+                                    </div>
+                                )}
                             </div>
+                        </div>
                             <img
                                 className="img_main"
                                 src={currentImage}
@@ -332,17 +331,16 @@ const ProductDetails = () => {
                     <div className="title">
                         <h1>{product.name}</h1>
                     </div>
-                    {/* // Replace the current price display with this */}
-                    <div className="price d-flex align-items-center">
+                    {/* // Replace the current price display with this */}                    <div className="price d-flex align-items-center">
                         {product.discount > 0 ? (
                             <>
-                                <span style={{ textDecoration: 'line-through', color: '#999', marginRight: '10px' }}>
+                                <span className="original-price">
                                     € {formatPrice(product.price)}
                                 </span>
-                                <span style={{ color: '#c00' }}>
+                                <span className="discounted-price">
                                     € {formatPrice(product.price - (product.price * Number(product.discount) / 100))}
                                 </span>
-                                <span style={{ fontSize: '0.85rem', marginLeft: '8px', backgroundColor: '#c00', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>
+                                <span className="discount-badge">
                                     &minus; {formatPrice(product.discount)} %
                                 </span>
                             </>
@@ -361,8 +359,7 @@ const ProductDetails = () => {
                                         setSelectedColor(colorOption.color);
                                         setSelectedVariation(null);
                                     }}
-                                >
-                                    <div
+                                >                                        <div
                                         className="color-preview"
                                         style={{ backgroundColor: colorOption.color_hex }}
                                     />

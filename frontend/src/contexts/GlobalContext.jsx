@@ -99,7 +99,6 @@ function GlobalProvider({ children }) {
 
 
     }, [wishlistItems]);
-    console.log(wishlistItems);
 
 
     // Funzione semplificata per gestire la wishlist

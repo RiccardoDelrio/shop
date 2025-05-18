@@ -160,8 +160,7 @@ const Cart = () => {
                     </div>
                 </div>
             </div >
-        </div >
-    );
+        </div >);
 };
 
-export default Carrello;
+export default Cart;
