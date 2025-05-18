@@ -187,7 +187,7 @@ const Profile = () => {
 
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="state">State/Province</label>
+                                <label htmlFor="state">State/Province *</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -195,6 +195,7 @@ const Profile = () => {
                                     name="state"
                                     value={formData.state}
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                         </div>
@@ -231,7 +232,7 @@ const Profile = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="phone">Phone</label>
+                        <label htmlFor="phone">Phone *</label>
                         <input
                             type="tel"
                             className="form-control"
@@ -239,6 +240,7 @@ const Profile = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
+                            required
                         />
                     </div>
 

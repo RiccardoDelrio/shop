@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
 
                         <h5 className="mt-4 fw-bold">3. What Data We Collect</h5>
                         <ul>
-                            <li>Identification data (name, surname, email, phone number)</li>
+                            <li>Identification data (name, surname, email, phone number - all required for order processing)</li>
                             <li>Data necessary for shipping and billing</li>
                             <li>Browsing data collected through technical and analytical cookies</li>
                         </ul>
