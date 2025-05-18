@@ -12,7 +12,7 @@ export default function Wishlist() {
             {wishlistItems.length === 0 ? (
                 <div className="text-center">
                     <p>Your wishlist is empty</p>
-                    <Link to="/catalogo" className="btn btn-primary">
+                    <Link to="/search" className="btn btn-primary">
                         Continue Shopping
                     </Link>
                 </div>
