@@ -1,6 +1,6 @@
 const connection = require("../database/db");
 const sendEmail = require("../utils/sendEmail");
-const { isvalidEmail } = require("../utils/validation");
+const { isValidEmail } = require("../utils/validation");
 
 // Add email to newsletter list
 const submitEmail = async (req, res) => {
@@ -12,7 +12,7 @@ const submitEmail = async (req, res) => {
   }
 
   // Use the validation function
-  if (!validateEmail(email)) {
+  if (!isValidEmail(email)) {
     return res.status(400).json({ error: "Invalid email format" });
   }
 
