@@ -157,7 +157,8 @@ const Checkout = () => {
         });
 
         if (paymentResult.error) {
-            setFormStatus({ error: paymentResult.error.message });
+            setFormStatus({ error: paymentResult.error.message })
+            setIsLoading(false)
             return;
         }
 
