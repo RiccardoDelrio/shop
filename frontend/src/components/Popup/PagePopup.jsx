@@ -57,9 +57,8 @@ export default function WelcomePopup() {
             // Modifica il messaggio di successo per includere il link di disiscrizione
             .then(() => {
                 setMessage([
-                    "We're delighted to welcome you to our curated selections.",
-                    "A confirmation has been delivered to your specified address.",
-                    "Subscription management is available in your welcome correspondence."
+                    "Welcome to Boolique's exclusive community.",
+                    "Confirmation sent. Subscription details in your inbox."
                 ]);
                 setTimeout(() => {
                     setIsFading(true);

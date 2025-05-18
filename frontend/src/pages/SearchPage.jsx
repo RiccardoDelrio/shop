@@ -143,7 +143,7 @@ export default function SearchPage() {
         <div className="catalogo-container">
             <div className="catalogo-header">
                 <div className="d-flex justify-content-between align-items-center">
-                    <h2 className="catalogo-title">
+                    <h2 className="catalogo-title m-0">
                         {filters.search ? `Results for: "${filters.search}"` : (
                             filters.category ? `${filters.category.charAt(0).toUpperCase() + filters.category.slice(1)}` : 'All products'
                         )}
