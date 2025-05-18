@@ -164,4 +164,4 @@ const Cart = () => {
     );
 };
 
-export default Carrello;
+export default Cart;
