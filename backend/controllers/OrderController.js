@@ -121,7 +121,7 @@ async function createOrder(req, res) {
     const deliveryValue = total >= 500 ? '0' : '30'; // Ensure it's a string to match ENUM
     // Calculate final price
     const final_price = total - discountAmount + parseInt(deliveryValue);
-    // Calculate VAT (22%) from the total (which already includes it)
+    // Calculate IVA (22%) from the total (which already includes it)
     const ivaAmount = Number((total - (total / 1.22)).toFixed(2));
 
     // Check if token was provided to identify already logged in users
@@ -367,7 +367,7 @@ async function createOrder(req, res) {
                                         <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 5px; text-align: right;">VAT included (22%):</td>
+                                        <td style="padding: 5px; text-align: right;">IVA included (22%):</td>
                                         <td style="padding: 5px; text-align: right;">€${ivaAmount.toFixed(2)}</td>
                                     </tr>
                                     ${discount > 0 ? `
@@ -457,7 +457,7 @@ async function createOrder(req, res) {
                                         <td style="padding: 5px; text-align: right; width: 100px;">€${total.toFixed(2)}</td>
                                     </tr>
                                     <tr>
-                                    <td style="padding: 5px; text-align: right;">VAT included (22%):</td>
+                                    <td style="padding: 5px; text-align: right;">IVA included (22%):</td>
                                     <td style="padding: 5px; text-align: right;">€${ivaAmount.toFixed(2)}</td>
                                 </tr>
                                     ${discount > 0 ? `

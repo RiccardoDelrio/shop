@@ -3,7 +3,7 @@ import { useGlobal } from "../contexts/GlobalContext";
 import { Link } from "react-router-dom";
 import './pageCarrello.css'
 
-const Carrello = () => {
+const Cart = () => {
     const { cartItems, setCartItems } = useGlobal();
 
     const subtotal = calculateSubTotal(cartItems);
@@ -12,8 +12,9 @@ const Carrello = () => {
     const shipPrice = subtotal >= 500 ? 0 : 30;
 
     // Format a number to display as currency (with comma as decimal separator)
-    const formatCurrency = (value) => {
-        return value.toFixed(2).replace('.', ',');
+    const formatCurrency = (price) => {
+        const num = Number(price);
+        return num % 1 === 0 ? num.toString() : num.toFixed(2);
     };
 
     const handleRemoveItems = (index) => {
@@ -61,9 +62,9 @@ const Carrello = () => {
         <div className="main-container cart-wrapper">
             <div className="container py-4">
                 <div className="row">
-                    {/* Colonna prodotti */}
-                    <div className="col-md-8">
-                        <h4>Oggetto</h4>
+                    {/* Products column */}
+                    <div className="col-lg-8">
+                        <h4>Item</h4>
                         <hr />
                         {cartItems.map((item, index) => (
                             <div key={`${item.id}-${item.variations.id}-${index}`} className="d-flex gap-3 mb-4 border-bottom pb-3 cart-product">
@@ -115,40 +116,46 @@ const Carrello = () => {
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
                                 </div>
-
                             </div>
                         ))}
                     </div>
 
-                    {/* Colonna riepilogo */}
-                    <div className="col-md-4">
+                    {/* Summary column */}
+                    <div className="col-lg-4">
                         <div className=" rounded p-4 summary-column">
-                            <h5>Riepilogo</h5>
-                            <p>Subtotale: {formatCurrency(subtotal)} €</p>
-                            <p>VAT included: {formatCurrency(ivaAmount)} €</p>
-                            <p>Spedizione: {formatCurrency(shipPrice)} €</p>
+                            <h4 className="text-center">Summary</h4>
+                            <p className="d-flex w-100 justify-content-between">
+                                <span>Subtotal</span> {formatCurrency(subtotal)} €
+                            </p>
+                            <p className="d-flex w-100 justify-content-between">
+                                <span>IVA included</span> {formatCurrency(ivaAmount)} €
+                            </p>
+                            <p className="d-flex w-100 justify-content-between">
+                                <span>Shipping</span> {formatCurrency(shipPrice)} €
+                            </p>
                             {shipPrice === 0 ? (
-                                <p className="text-success">La spedizione è GRATUITA!</p>
+                                <p className="text-success">Shipping is FREE!</p>
                             ) : (
                                 <p className="text-secondary small">
                                     <i className="bi bi-info-circle me-1"></i>
-                                    Spendi ancora {formatCurrency(500 - subtotal)} € per ottenere la spedizione gratuita.
+                                    Spend {cartItems.length > 0 ? (`${formatCurrency(500 - subtotal)} € more `) : (`at least ${formatCurrency(500)}`)}  to get free shipping.
                                 </p>
                             )}
                             <hr />
-                            <h5><strong>Totale ordine: {formatCurrency(calculateTotal())} €</strong></h5>
-                            <button
-                                disabled={cartItems.length === 0}
-                                className="btn btn-success w-100 mt-3 cta-button">
-                                <Link className="text-decoration-none text-white" to={'/checkout'}>
-                                    Procedi all'Acquisto
-                                </Link>
-                            </button>
+                            {cartItems.length > 0 && (
+                                <div>
+                                    <h5><strong>Order total: {formatCurrency(calculateTotal())} €</strong></h5>
+                                    <button
+                                        disabled={cartItems.length === 0}
+                                        className="btn btn-success w-100 mt-3 cta-button">
+                                        <Link className="text-decoration-none text-white" to={'/checkout'}>
+                                            Proceed to Checkout
+                                        </Link>
+                                    </button>
+                                </div>
+
+                            )}
                         </div>
                     </div>
                 </div>
