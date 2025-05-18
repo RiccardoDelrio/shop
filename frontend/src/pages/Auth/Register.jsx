@@ -105,7 +105,7 @@ const Register = () => {
                 <h2 className="auth-title">Register</h2>
 
                 {success && (
-                    <div className="alert alert-success" role="alert">
+                    <div className="alert alert-success mt-2 mb-3" role="alert">
                         <i className="fa-solid fa-check-circle me-2"></i>
                         Registration completed successfully! You will be redirected...
                     </div>
@@ -113,7 +113,7 @@ const Register = () => {
 
                 {error && (
                     <div
-                        className="alert alert-danger border-danger shadow-sm mb-4"
+                        className="alert alert-danger border-danger shadow-sm mt-2 mb-3"
                         role="alert"
                         style={{
                             // Removed animation: 'fadeIn 0.5s' which was overriding the CSS animation

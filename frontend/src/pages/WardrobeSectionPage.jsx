@@ -32,7 +32,8 @@ export default function WardrobeSectionPage() {
             {section.categories.map(category => (
                 categoryProducts[category.slug]?.length > 0 && (
                     <div key={category.id} className="mb-5">
-                        <h2 className="mb-4">{category.name}</h2>
+                        {/* Only show category name if it's different from section name */}
+                        {category.name !== section.name && <h2 className="mb-4">{category.name}</h2>}
                         <Slider>
                             {categoryProducts[category.slug].map(product => (
                                 <ProductCards

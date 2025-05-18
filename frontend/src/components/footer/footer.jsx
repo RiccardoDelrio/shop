@@ -43,7 +43,8 @@ export default function Footer() {
                                 <div className="col-6">
                                     <h5 className="text-center">Products</h5>
                                     <ul className="nav flex-column text-center info-list">
-                                        <li className="nav-item mb-2">                                            <NavLink to="/" className="nav-link p-0 footer-nav-link">Discounts</NavLink>
+                                        <li className="nav-item mb-2">
+                                            <NavLink to="/" className="nav-link p-0 footer-nav-link">Exclusive Offers</NavLink>
                                         </li>
                                         <li className="nav-item mb-2">
                                             <NavLink to="/search" className="nav-link p-0 footer-nav-link">Catalog</NavLink>
@@ -61,7 +62,9 @@ export default function Footer() {
                             <div className="info-box p-4 border rounded text-center">
                                 <h5>Contact Us</h5>
                                 <p className="mb-1"><strong>Phone:</strong> +39 345 678 9012</p>
-                                <p className="mb-1"><strong>Email:</strong> bulique.noreply@gmail.com</p>
+                                <p className="mb-1">
+                                    <strong>Email:</strong> <a href="mailto:bulique.noreply@gmail.com" className="footer-link">boolique.noreply@gmail.com</a>
+                                </p>
                                 <p className="mb-1"><strong>VAT N°:</strong> IT12345678901</p>
                                 <div className="social-links mt-3">
                                     <a href="#" className="me-3 facebook">
