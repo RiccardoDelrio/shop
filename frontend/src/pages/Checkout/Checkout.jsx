@@ -303,58 +303,60 @@ const Checkout = () => {
     return (
         <div className="checkout-container my-5">
             {/* Accordion Cart Summary */}
-            <div className="cart-accordion mb-4">
-                <div
-                    className="accordion-header"
-                    onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                >
-                    <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="mb-0">
-                            <i className="fa-solid fa-shopping-cart me-2"></i>
-                            Order Summary ({cartItems.length} items)
-                        </h5>
-                        <span className="accordion-toggle">
-                            <i className={`fa-solid ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-                        </span>
-                    </div>
-                    <div className="d-flex justify-content-between mt-2">
-                        <span>Total:</span>
-                        <strong>{calculateCartTotal()}€</strong>
-                    </div>
-                </div>
-
-                <div className={`accordion-content ${isAccordionOpen ? 'open' : ''}`}>
-                    {cartItems.map((item, index) => (
-                        <div key={index} className="cart-item-row">
-                            <div className="cart-item-details">
-                                <div className="cart-item-title">{item.name}</div>
-                                <div className="cart-item-variant">
-                                    <small>Color: {item.variations.color}, Size: {item.variations.size}</small>
-                                </div>
-                            </div>
-                            <div className="cart-item-price">
-                                <div className="quantity">{item.quantità} x {item.price.toFixed(2)}€</div>
-                                <div className="subtotal">{(item.price * item.quantità).toFixed(2)}€</div>
-                            </div>
+            {cartSummary.length > 0 && (
+                <div className="cart-accordion mb-4">
+                    <div
+                        className="accordion-header"
+                        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                    >
+                        <div className="d-flex justify-content-between align-items-center">
+                            <h5 className="mb-0">
+                                <i className="fa-solid fa-shopping-cart me-2"></i>
+                                Order Summary ({cartItems.length} items)
+                            </h5>
+                            <span className="accordion-toggle">
+                                <i className={`fa-solid ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                            </span>
                         </div>
-                    ))}
-
-                    <div className="cart-summary-footer">
-                        <div className="d-flex justify-content-between">
-                            <span>Subtotal:</span>
-                            <span>{calculateCartTotal()}€</span>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                            <span>Shipping:</span>
-                            <span>Free</span>
-                        </div>
-                        <div className="d-flex justify-content-between total-row">
-                            <strong>Total:</strong>
+                        <div className="d-flex justify-content-between mt-2">
+                            <span>Total:</span>
                             <strong>{calculateCartTotal()}€</strong>
                         </div>
                     </div>
+
+                    <div className={`accordion-content ${isAccordionOpen ? 'open' : ''}`}>
+                        {cartItems.map((item, index) => (
+                            <div key={index} className="cart-item-row">
+                                <div className="cart-item-details">
+                                    <div className="cart-item-title">{item.name}</div>
+                                    <div className="cart-item-variant">
+                                        <small>Color: {item.variations.color}, Size: {item.variations.size}</small>
+                                    </div>
+                                </div>
+                                <div className="cart-item-price">
+                                    <div className="quantity">{item.quantità} x {item.price.toFixed(2)}€</div>
+                                    <div className="subtotal">{(item.price * item.quantità).toFixed(2)}€</div>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="cart-summary-footer">
+                            <div className="d-flex justify-content-between">
+                                <span>Subtotal:</span>
+                                <span>{calculateCartTotal()}€</span>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                                <span>Shipping:</span>
+                                <span>Free</span>
+                            </div>
+                            <div className="d-flex justify-content-between total-row">
+                                <strong>Total:</strong>
+                                <strong>{calculateCartTotal()}€</strong>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {!isAuthenticated && (
                 <div className="mb-4 p-3 border rounded bg-light">
