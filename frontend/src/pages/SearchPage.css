@@ -1,6 +1,13 @@
 /* SearchPage.css */
 .catalogo-container {
     padding: 20px 0;
+
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 1.2rem;
+        }
+    }
+
 }
 
 .catalogo-header {

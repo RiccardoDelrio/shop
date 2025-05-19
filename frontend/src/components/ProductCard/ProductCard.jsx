@@ -18,8 +18,8 @@ const ProductCards = ({ name, description, price, image, slug, discount }) => { 
 
     return (
 
-        <div className="col card-container d-flex justify-content-center align-items-center">
-            <div className="card custom-card">                {discount > 0 && (
+        <div className="col  card-container d-flex justify-content-center align-items-center  ">
+            <div className="card custom-card mx-0">                {discount > 0 && (
                 <p className="position-absolute discounted-tag rounded-pill bg-warning px-3"><span className="h6">- </span>{formatDiscount(discount)}%</p>
             )}
                 <img
