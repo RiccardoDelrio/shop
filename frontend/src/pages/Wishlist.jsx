@@ -79,16 +79,9 @@ export default function Wishlist() {
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title text-truncate">{item.name}</h5>
-                                <div className="selected-variants mb-2">
-                                    <span className="badge bg-light text-dark me-2">
-                                        Color: {item.selectedColor}
-                                    </span>
-                                    <span className="badge bg-light text-dark">
-                                        Size: {item?.selectedVariation?.size}
-                                    </span>
-                                </div>
-                                <p className="card-text">€ {item.price}</p>
-                                <div className="d-flex justify-content-between">
+
+                                <p className="card-text ">€ {item.price}</p>
+                                <div className="d-flex justify-content-between align-items-center">
                                     <Link
                                         to={`/product/${item.slug}`}
                                         className="btn btn-primary btn-sm"

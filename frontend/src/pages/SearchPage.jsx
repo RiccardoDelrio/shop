@@ -315,7 +315,7 @@ export default function SearchPage() {
             <div className="catalogo-content">
                 <div className="row g-4">
                     {/* Desktop Filters Sidebar - visibile solo su desktop */}
-                    <div className="col-lg-3 d-none d-lg-block">
+                    <div className="col-lg-3 d-none d-lg-block ">
                         <div className="filter-sidebar p-3 rounded">
                             <div className='d-flex justify-content-between'>
                                 <h4 className="mb-3">Filters</h4>
