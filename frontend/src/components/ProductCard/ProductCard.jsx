@@ -45,7 +45,7 @@ const ProductCards = ({ name, description, price, image, slug, discount }) => { 
                         ) : (
                             <div>€{formatPrice(numericPrice)}</div>
                         )}
-                        <Link to={`/product/${slug}`} className="btn card-link mt-3">Dettagli</Link>
+                        <Link to={`/product/${slug}`} className="btn card-link mt-3">Details</Link>
                     </div>
                 </div>
             </div>

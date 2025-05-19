@@ -169,13 +169,46 @@
 
 .register-button {
     background-color: var(--accent-color);
-    color: white;
+    color: white !important;
     box-shadow: 0 4px 15px rgba(125, 162, 188, 0.25);
 }
 
 .register-button:hover {
     background-color: var(--accent-color);
     opacity: 0.9;
+    color: white;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(125, 162, 188, 0.35);
+}
+
+/* Stili per i pulsanti nel menu mobile */
+.nav-links .mobile-auth-buttons .auth-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.nav-links .mobile-auth-buttons .login-button,
+.nav-links .mobile-auth-buttons .register-button {
+    display: inline-block;
+    width: calc(50% - 5px);
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 0.8rem 0;
+    margin: 0.5rem 0;
+}
+
+/* Adattamenti per il menu utente nel mobile */
+.nav-links .user-menu-container {
+    width: 100%;
+}
+
+.nav-links .user-dropdown {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-top: 1rem;
 }

@@ -75,7 +75,7 @@ const Cart = () => {
             {isOpen && (
                 <div ref={cartRef} className='cartPopup'>
                     <div className='cartHeader'>
-                        <h3>Il tuo carrello</h3>
+                        <h3>Your Cart</h3>
                         <button onClick={toggleCart}>
                             <i className="fa-solid fa-xmark"></i>
                         </button>
@@ -123,16 +123,16 @@ const Cart = () => {
                                     </div>
                                 ))}
                                 <div className='total'>
-                                    Totale : <span>{calculateTotal(cartItems)}€</span>
+                                    Sub Total : <span>{calculateTotal(cartItems)}€</span>
                                 </div>
                             </div>
                         ) : (
-                            <p className='emptyCart'>Il carrello è vuoto</p>
+                            <p className='emptyCart'>You cart is empty</p>
                         )}
                     </div>
 
                     <div className='cartFooter'>
-                        <Link onClick={toggleCart} to="/carello">Vai al carrello <span><i className='fa-solid fa-arrow-right'></i></span></Link>
+                        <Link onClick={toggleCart} to="/carello">Go to your cart <span><i className='fa-solid fa-arrow-right'></i></span></Link>
                     </div>
                 </div>
             )}

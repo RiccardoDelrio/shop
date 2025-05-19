@@ -42,7 +42,7 @@ const ProductCardListView = ({ name, description, price, image, slug, discount }
                 <div>
 
                     <Link to={`/product/${slug}`} className="product-button">
-                        Dettagli
+                        Details
                         <i className="fa-solid fa-arrow-right"></i>
 
                     </Link>

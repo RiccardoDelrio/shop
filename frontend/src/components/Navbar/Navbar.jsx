@@ -17,6 +17,7 @@ const Navbar = () => {
     useEffect(() => {
         fetchWardrobeSections();
     }, []);
+
     useEffect(() => {
         if (isMenuOpen) {
             document.body.classList.add('no-scroll');
@@ -73,7 +74,7 @@ const Navbar = () => {
                     <div onClick={closeMenu}>
                         <SearchBar />
                     </div>
-                    <div onClick={closeMenu}>
+                    <div className="d-md-block d-none" onClick={closeMenu}>
                         <UserMenu />
                     </div>
                     <div onClick={closeMenu}>
@@ -83,10 +84,12 @@ const Navbar = () => {
                         <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
                     </div>
                 </div>
-            </div>            {/* Bottom row with centered navigation links */}
+            </div>
+            {/* Bottom row with centered navigation links */}
             <div className="navbar-bottom-row">
                 <ul className={`nav-links ${isMenuOpen ? 'menuOpen' : ''}`} ref={menuRef}>
-                    <li className="navlink" onClick={closeMenu}><Link to="/">Home</Link></li>                    {wardrobeSections.map(section => (
+                    <li className="navlink" onClick={closeMenu}><Link to="/">Home</Link></li>
+                    {wardrobeSections.map(section => (
                         <li key={section.id} className="navlink" onClick={closeMenu}>
                             <Link to={`/wardrobe-section/${section.slug}`}>{section.name}</Link>
                         </li>
@@ -98,6 +101,12 @@ const Navbar = () => {
                             <i className="bi bi-heart"></i>
                             <span className="ms-2">Wishlist</span>
                         </Link>
+                    </li>
+                    {/* Aggiungo i pulsanti di login/register solo nel menu mobile */}
+                    <li className="navlink d-md-none" onClick={closeMenu}>
+                        <div className="mobile-auth-buttons">
+                            <UserMenu />
+                        </div>
                     </li>
                 </ul>
             </div>
