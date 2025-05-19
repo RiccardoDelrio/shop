@@ -1,5 +1,5 @@
 import React from 'react';
-import '../index.css';
+import './Size-table.css';
 
 export default function SizeTable() {
     return (
@@ -14,7 +14,7 @@ export default function SizeTable() {
                 </div>
                 <div className='table-container'>
 
-                    <table className=" table-color table table-bordered table-striped text-center mt-5">
+                    <table className="table-color table table-bordered table-striped text-center">
                         <tbody>
                             <tr>
                                 <td colSpan={8}>
