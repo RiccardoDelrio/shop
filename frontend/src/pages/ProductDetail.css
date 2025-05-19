@@ -455,6 +455,35 @@
     border-radius: 4px;
 }
 
+@media (max-width: 768px) {
+
+    .price,
+    .original-price,
+    .discount-badge,
+    .discounted-price {
+        font-size: 1rem;
+    }
+
+    .product {
+        gap: 0;
+        padding: 0;
+
+        h1 {
+            font-size: 2rem !important;
+
+        }
+
+        .product__photo {
+            padding: 0;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+        }
+    }
+
+}
+
 .wishlist-button-container {
     position: relative;
 }
