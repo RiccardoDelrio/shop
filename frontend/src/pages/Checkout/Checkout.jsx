@@ -303,7 +303,7 @@ const Checkout = () => {
     return (
         <div className="checkout-container my-5">
             {/* Accordion Cart Summary */}
-            {cartSummary.length > 0 && (
+            {cartItems.length > 0 && (
                 <div className="cart-accordion mb-4">
                     <div
                         className="accordion-header"
