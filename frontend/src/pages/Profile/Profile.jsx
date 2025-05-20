@@ -56,7 +56,7 @@ const Profile = () => {
         } else {
             setLoading(false);
         }
-    }, [currentUser, getProfile]);
+    }, []);
 
     const handleChange = (e) => {
         setFormData({
